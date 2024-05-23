@@ -25,9 +25,9 @@ export default function App() {
   }
   return (
     <>
-      <MDBNavbar expand='lg' light bgColor='light'>
+      <MDBNavbar expand='lg px-2' light bgColor='light'>
         <MDBContainer fluid>
-          <MDBNavbarBrand href='#'>Navbar</MDBNavbarBrand>
+          <MDBNavbarBrand href='/home'>Navbar</MDBNavbarBrand>
           <MDBNavbarToggler
             type='button'
             data-target='#navbarTogglerDemo02'
@@ -41,7 +41,7 @@ export default function App() {
           <MDBCollapse navbar open={openNavNoTogglerSecond}>
             <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
               <MDBNavbarItem>
-                <MDBNavbarLink active aria-current='page' href='#'>
+                <MDBNavbarLink active aria-current='page' href='/home'>
                   Home
                 </MDBNavbarLink>
               </MDBNavbarItem>

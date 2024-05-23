@@ -21,7 +21,7 @@ export default function App() {
     <>
       <MDBNavbar expand='lg' light bgColor='light'>
         <MDBContainer fluid>
-          <MDBNavbarBrand href='#'>Navbar</MDBNavbarBrand>
+          <MDBNavbarBrand href='/home'>CharFair</MDBNavbarBrand>
           <MDBNavbarToggler
             type='button'
             data-target='#navbarTogglerDemo02'
@@ -35,7 +35,7 @@ export default function App() {
           <MDBCollapse navbar open={openNavNoTogglerSecond}>
             <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
               <MDBNavbarItem>
-                <MDBNavbarLink active aria-current='page' href='#'>
+                <MDBNavbarLink active aria-current='page' href='/home'>
                   Home
                 </MDBNavbarLink>
               </MDBNavbarItem>

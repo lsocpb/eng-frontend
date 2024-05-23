@@ -1,17 +1,15 @@
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 import './Login.css';
 import {
     MDBInput,
     MDBCol,
     MDBRow,
-    MDBCheckbox,
     MDBBtn,
-    MDBIcon,
     MDBContainer,
 } from 'mdb-react-ui-kit';
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -62,7 +60,7 @@ function Login() {
                         progress: undefined,
                     });
                     setTimeout(() => {
-                        window.location.href = "/protected";
+                        window.location.href = "/home";
                     }, 1000);
                 } else {
                     toast.error(data.message || 'Login failed', {
@@ -97,14 +95,14 @@ function Login() {
         <MDBContainer className="my-5 gradient-form overflow-hidden">
             <MDBRow className="justify-content-center align-items-center">
                 <MDBCol col='6' className="mb-2 align-items-center justify-content-center text-center">
-                    <div className="d-flex flex-column ms-5">
+                    <div className="d-flex flex-column">
                         <div className="text-center">
                             <img src={process.env.PUBLIC_URL + '/logo.png'} style={{width: '110px'}} alt="logo"/>
                             <h4>We are The CharFair Team</h4>
                         </div>
                         <p>Please login to your account</p>
                         <MDBInput
-                            wrapperClass='mb-4 w-75 mx-auto'
+                            wrapperClass='mb-4 w-25 mx-auto'
                             label='Username'
                             id='form1'
                             type='username'
@@ -112,7 +110,7 @@ function Login() {
                             onChange={(e) => setUsername(e.target.value)}
                         />
                         <MDBInput
-                            wrapperClass='mb-4 w-75 mx-auto'
+                            wrapperClass='mb-4 w-25 mx-auto'
                             label='Password'
                             id='form2'
                             type='password'
@@ -120,15 +118,15 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <div
-                            className="d-flex flex-row text-center align-items-center justify-content-center mb-5 pb-1">
-                            <MDBBtn className="mb-4 w-50 gradient-custom-2 mx-5" onClick={handleSubmit}>
+                            className="d-flex flex-column text-center align-items-center justify-content-center mb-5">
+                            <MDBBtn className="w-25 gradient-custom-2" onClick={handleSubmit}>
                                 LOGIN
                             </MDBBtn>
-                            <a className="text-muted mx-5 mb-4" href="#!">Forgot password?</a>
+                            <a className="text-muted mt-2" href="#!">Forgot password?</a>
                         </div>
                         <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
                             <p className="mb-0">Don't have an account?</p>
-                            <MDBBtn outline className='mx-2' color='danger'>
+                            <MDBBtn outline className='mx-2' color='danger' href="/register">
                                 SING UP
                             </MDBBtn>
                         </div>
@@ -141,4 +139,4 @@ function Login() {
 }
 
 
-export default Login;
+export default withAuthRedirect(Login);

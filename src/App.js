@@ -4,6 +4,7 @@ import Login from './Components/LoginForm/Login';
 import ProtectedPage from './Protected';
 import RoleNavbar from './Components/Navbar/RoleNavbar';
 import Register from "./Components/Register/Register";
+import HomePage from "./Components/HomePage/HomePage";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Router>
             <RoleNavbar/>
             <Routes>
+                <Route path="/home" element={<HomePage/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/protected" element={<ProtectedPage/>}/>

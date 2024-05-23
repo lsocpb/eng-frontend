@@ -11,8 +11,9 @@ import {
 }
     from 'mdb-react-ui-kit';
 import './Register.css'
+import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 
-function App() {
+function Register() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -47,20 +48,19 @@ function App() {
     }
 
     return (
-        <MDBContainer>
+        <MDBContainer className='overflow-hidden my-5'>
+            <MDBCol className='mb-5 p-5 justify-content-center align-items-center'>
+                <MDBCardBody className='d-flex flex-column text-center justify-content-center align-items-center'>
 
-            <MDBCol className='mx-5 mb-5 p-5'>
-                <MDBCardBody className='p-5 text-center'>
+                    <h2 className="fw-bold mb-5">Sign up now!</h2>
 
-                    <h2 className="fw-bold mb-5">Sign up now</h2>
-
-                    <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' value={username}
+                    <MDBInput wrapperClass='mb-4 w-25' label='Username' id='form1' type='text' value={username}
                               onChange={(e) => setUsername(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4' label='Email' id='form2' type='email' value={email}
+                    <MDBInput wrapperClass='mb-4 w-25' label='Email' id='form2' type='email' value={email}
                               onChange={(e) => setEmail(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4' label='Password' id='form3' type='password' value={password}
+                    <MDBInput wrapperClass='mb-4 w-25' label='Password' id='form3' type='password' value={password}
                               onChange={(e) => setPassword(e.target.value)}/>
-                    <MDBBtn className='w-100 mb-4 gradient-custom-2' size='md' onClick={handleSubmit}>sign up</MDBBtn>
+                    <MDBBtn className='w-md-50 mb-4 gradient-custom-2' size='md' onClick={handleSubmit}>sign up</MDBBtn>
 
                     <div className="text-center">
 
@@ -91,4 +91,4 @@ function App() {
     );
 }
 
-export default App;
+export default withAuthRedirect(Register);

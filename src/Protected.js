@@ -10,7 +10,6 @@ function ProtectedPage() {
         console.log(token)
       try {
         const response = await fetch(`http://localhost:8000/auth/verify-token/${token}`);
-
         if (!response.ok) {
           throw new Error('Token verification failed');
         }
