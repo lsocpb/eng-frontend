@@ -60,7 +60,7 @@ function Register() {
                               onChange={(e) => setEmail(e.target.value)}/>
                     <MDBInput wrapperClass='mb-4 w-25' label='Password' id='form3' type='password' value={password}
                               onChange={(e) => setPassword(e.target.value)}/>
-                    <MDBBtn className='w-md-50 mb-4 gradient-custom-2' size='md' onClick={handleSubmit}>sign up</MDBBtn>
+                    <MDBBtn className='w-25 mb-4 btn-danger' size='md' onClick={handleSubmit}>sign up</MDBBtn>
 
                     <div className="text-center">
 

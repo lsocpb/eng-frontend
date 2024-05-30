@@ -1,30 +1,12 @@
 import React from 'react';
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn,
-  MDBRipple
-} from 'mdb-react-ui-kit';
 
-export default function App() {
-  return (
-    <MDBCard className='w-25 h-25 mx-5'>
-      <MDBRipple rippleColor='light' rippleTag='div' className='bg-image hover-overlay'>
-        <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
-        <a>
-          <div className='mask' style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
-        </a>
-      </MDBRipple>
-      <MDBCardBody>
-        <MDBCardTitle>Card title</MDBCardTitle>
-        <MDBCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
-        </MDBCardText>
-        <MDBBtn href='#'>Button</MDBBtn>
-      </MDBCardBody>
-    </MDBCard>
-  );
+export default function Widget() {
+    return (
+        <div className="bg-white text-black py-5 px-3 text-center">
+            <h1 className="text-danger display-4 font-weight-bold mb-4">Join Us in Making a Difference</h1>
+            <p className="lead mb-4">Explore unique items and experiences while supporting a great cause.</p>
+            <button className="btn btn-danger btn-lg rounded-pill">Start Bidding</button>
+            <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow" src={process.env.PUBLIC_URL + '/home-bg.png'} alt="Charity Bidding Platform" />
+        </div>
+    );
 }

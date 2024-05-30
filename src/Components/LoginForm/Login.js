@@ -119,7 +119,7 @@ function Login() {
                         />
                         <div
                             className="d-flex flex-column text-center align-items-center justify-content-center mb-5">
-                            <MDBBtn className="w-25 gradient-custom-2" onClick={handleSubmit}>
+                            <MDBBtn className="w-25 btn-danger" onClick={handleSubmit}>
                                 LOGIN
                             </MDBBtn>
                             <a className="text-muted mt-2" href="#!">Forgot password?</a>

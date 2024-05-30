@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Navbar.css';
 import {
   MDBNavbar,
   MDBContainer,
@@ -27,7 +26,7 @@ export default function App() {
     <>
       <MDBNavbar expand='lg px-2' light bgColor='light'>
         <MDBContainer fluid>
-          <MDBNavbarBrand href='/home'>Navbar</MDBNavbarBrand>
+          <MDBNavbarBrand href='/home'>CharFair</MDBNavbarBrand>
           <MDBNavbarToggler
             type='button'
             data-target='#navbarTogglerDemo02'
@@ -38,17 +37,17 @@ export default function App() {
           >
             <MDBIcon icon='bars' fas />
           </MDBNavbarToggler>
-          <MDBCollapse navbar open={openNavNoTogglerSecond}>
-            <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
+          <MDBCollapse navbar open={openNavNoTogglerSecond} className='justify-content-center align-items-center'>
+            <MDBNavbarNav className='ms-auto mb-2 mb-lg-0 align-items-center'>
               <MDBNavbarItem>
                 <MDBNavbarLink active aria-current='page' href='/home'>
                   Home
                 </MDBNavbarLink>
               </MDBNavbarItem>
               <MDBNavbarItem>
-                <MDBNavbarLink tabIndex={-1} aria-disabled='true' onClick={userLogout}>
+                <MDBBtn className="btn btn-outline-danger rounded-pill" tabIndex={-1} aria-disabled='true' onClick={userLogout}>
                   Logout
-                </MDBNavbarLink>
+                </MDBBtn>
               </MDBNavbarItem>
             </MDBNavbarNav>
           </MDBCollapse>
