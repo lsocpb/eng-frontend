@@ -122,7 +122,7 @@ export default function Widget() {
                      src={process.env.PUBLIC_URL + '/home-bg.png'} alt="Charity Bidding Platform"/>
             </div>
             <div className="d-flex aligns-items-center justify-content-center mt-5">
-                <form className="row g-3">
+                <form className="row g-3 w-100 align-items-center justify-content-center">
                     <div className="col-auto">
                         <input
                             type="text"
@@ -140,7 +140,7 @@ export default function Widget() {
                     <div className="col-auto">
                         <button
                             type="submit"
-                            className="btn bg-color custom-bg-text mb-3"
+                            className="btn bg-color custom-bg-text mb-2"
                             onClick={searchProducts}
                         >
                             Search
@@ -150,7 +150,7 @@ export default function Widget() {
             </div>
             <div className="container mt-5 mb-2">
                 <h1 className="text-danger font-weight-bold mb-4 text-center">Recent Bids</h1>
-                <div className="row">
+                <div className="row w-100">
                     <Slider {...settings}>
                         {exampleProducts.map((product, index) => (
                             <ProductCard key={index} item={product.item}/>

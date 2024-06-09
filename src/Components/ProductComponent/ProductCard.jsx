@@ -13,13 +13,13 @@ const ProductCard = (product) => {
 
   return (
     <div className="col">
-      <div class="card product-card rounded-card custom-bg h-100">
+      <div class="card product-card rounded-card custom-bg h-100 shadow-5-strong">
         <img
           src={iphone}
           class="card-img-top img-fluid rounded"
           alt="img"
           style={{
-            maxHeight: "300px", // Adjust the maximum height as needed
+            maxHeight: "300px",
             width: "auto",
             margin: "0 auto",
           }}
@@ -48,7 +48,7 @@ const ProductCard = (product) => {
           <div className="d-flex justify-content-between mt-2">
             <Link
               to={`/product/${product.item.id}/category/${product.item.category.id}`}
-              className="btn btn-md bg-color custom-bg-text"
+              className="mt-1 btn btn-md bg-color custom-bg-text justify-content-center align-items-center text-center rounded-9"
             >
               Start Bid
             </Link>
