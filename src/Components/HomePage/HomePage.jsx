@@ -69,39 +69,39 @@ export default function Widget() {
     ];
 
     var settings = {
-    dots: false,
-    infinite: true,
-    speed: 700,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  };
+        dots: false,
+        infinite: true,
+        speed: 700,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        initialSlide: 0,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: false
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
 
     const searchProducts = (e) => {
         e.preventDefault();
@@ -149,13 +149,13 @@ export default function Widget() {
                 </form>
             </div>
             <div className="container mt-5 mb-2">
-                <h1 className= "text-danger font-weight-bold mb-4 text-center">Recent Bids</h1>
+                <h1 className="text-danger font-weight-bold mb-4 text-center">Recent Bids</h1>
                 <div className="row">
-                <Slider {...settings}>
-                    {exampleProducts.map((product, index) => (
-                        <ProductCard key={index} item={product.item}/>
-                    ))}
-                </Slider>
+                    <Slider {...settings}>
+                        {exampleProducts.map((product, index) => (
+                            <ProductCard key={index} item={product.item}/>
+                        ))}
+                    </Slider>
                 </div>
             </div>
         </div>

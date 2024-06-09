@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.slick-prev:before {
+  color: palevioletred !important;
+  background-color: #ffffff;
+}
+.slick-next:before {
+  color: palevioletred !important;
+  background-color: #ffffff;
+}
