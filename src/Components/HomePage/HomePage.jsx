@@ -148,7 +148,7 @@ export default function Widget() {
                     </div>
                 </form>
             </div>
-            <div className="container mt-5 mb-2">
+            <div className="container mt-5 mb-2" style={{height: '1000px'}}>
                 <h1 className="text-danger font-weight-bold mb-4 text-center">Recent Bids</h1>
                 <div className="row w-100">
                     <Slider {...settings}>

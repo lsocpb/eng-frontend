@@ -13,7 +13,7 @@ const ProductCard = (product) => {
 
   return (
     <div className="col">
-      <div class="card product-card rounded-card custom-bg h-100 shadow-5-strong">
+      <div class="card product-card rounded-card custom-bg h-100 shadow-5-strong mb-1 mt-1">
         <img
           src={iphone}
           class="card-img-top img-fluid rounded"
