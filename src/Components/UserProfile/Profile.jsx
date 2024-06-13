@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     MDBCol,
     MDBContainer,
@@ -21,12 +21,12 @@ import {Bar, Doughnutm, Line} from "react-chartjs-2";
 
 export default function ProfilePage() {
     return (
-        <section style={{backgroundColor: '#eee'}}>
+        <section style={{backgroundColor: '#ffffff'}}>
             <MDBContainer className="py-5">
 
                 <MDBRow>
                     <MDBCol lg="4">
-                        <MDBCard className="mb-4">
+                        <MDBCard className="mb-4" style={{backgroundColor: '#FBF4F5'}}>
                             <MDBCardBody className="text-center">
                                 <MDBCardImage
                                     src="https://1000logos.net/wp-content/uploads/2020/09/Allegro-Logo.png"
@@ -34,27 +34,31 @@ export default function ProfilePage() {
                                     className="rounded-circle"
                                     style={{width: '150px'}}
                                     fluid/>
-                                <p className="text-muted mt-2 mb-1">Allegro sp z.o.o</p>
-                                <p className="text-muted mb-4">Warsaw, Poland</p>
+                                <p className="text-black mt-2 mb-1">Allegro sp z.o.o</p>
+                                <p className="text-black mb-4">Warsaw, Poland</p>
                             </MDBCardBody>
                         </MDBCard>
 
                         <MDBCard className="mb-4 mb-lg-0">
                             <MDBCardBody className="p-0">
                                 <MDBListGroup flush className="rounded-3">
-                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3"
+                                                      style={{backgroundColor: '#FBF4F5'}}>
                                         <MDBIcon fas icon="globe fa-lg text-warning"/>
                                         <MDBCardText>https://allegro.pl</MDBCardText>
                                     </MDBListGroupItem>
-                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3"
+                                                      style={{backgroundColor: '#FBF4F5'}}>
                                         <MDBIcon fab icon="twitter fa-lg" style={{color: '#55acee'}}/>
                                         <MDBCardText>@allegro</MDBCardText>
                                     </MDBListGroupItem>
-                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3"
+                                                      style={{backgroundColor: '#FBF4F5'}}>
                                         <MDBIcon fab icon="instagram fa-lg" style={{color: '#ac2bac'}}/>
                                         <MDBCardText>allegro</MDBCardText>
                                     </MDBListGroupItem>
-                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3">
+                                    <MDBListGroupItem className="d-flex justify-content-between align-items-center p-3"
+                                                      style={{backgroundColor: '#FBF4F5'}}>
                                         <MDBIcon fab icon="facebook fa-lg" style={{color: '#3b5998'}}/>
                                         <MDBCardText>Allegro</MDBCardText>
                                     </MDBListGroupItem>
@@ -63,7 +67,7 @@ export default function ProfilePage() {
                         </MDBCard>
                     </MDBCol>
                     <MDBCol lg="8">
-                        <MDBCard className="mb-4">
+                        <MDBCard className="mb-4" style={{backgroundColor: '#FBF4F5'}}>
                             <MDBCardBody>
                                 <MDBRow>
                                     <MDBCol sm="3">
@@ -105,7 +109,7 @@ export default function ProfilePage() {
 
                         <MDBRow>
                             <MDBCol md="6">
-                                <MDBCard className="mb-4 mb-md-0">
+                                <MDBCard className="mb-4 mb-md-0" style={{backgroundColor: '#FBF4F5'}}>
                                     <MDBCardBody>
                                         <Bar
                                             data={{
@@ -114,10 +118,10 @@ export default function ProfilePage() {
                                                     {
                                                         label: 'Sales',
                                                         data: [12, 19, 3, 5, 2, 3, 10],
-                                                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                                        backgroundColor: '#EC5B62',
+                                                        borderColor: '#C94A51',
                                                         borderWidth: 2,
-                                                        hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)',
+                                                        hoverBackgroundColor: '#C94A51',
                                                     },
                                                 ],
                                             }}
@@ -165,7 +169,7 @@ export default function ProfilePage() {
                                 </MDBCard>
                             </MDBCol>
                             <MDBCol md="6">
-                                <MDBCard className="mb-4 mb-md-0">
+                                <MDBCard className="mb-4 mb-md-0" style={{backgroundColor: '#FBF4F5'}}>
                                     <MDBCardBody>
                                         <Line
                                             data={{
@@ -175,12 +179,12 @@ export default function ProfilePage() {
                                                         label: 'Bids',
                                                         data: [12, 19, 3, 5, 2, 3, 10],
                                                         fill: true,
-                                                        borderColor: 'rgb(75, 192, 192)',
+                                                        borderColor: '#C94A51',
                                                         tension: 0.3,
                                                         borderWidth: 3,
                                                         pointRadius: 5,
-                                                        pointBackgroundColor: 'rgba(75, 192, 192, 0.8)',
-                                                        pointBorderColor: 'rgba(75, 192, 192, 1)',
+                                                        pointBackgroundColor: '#C94A51',
+                                                        pointBorderColor: '#C94A51',
                                                         pointHoverRadius: 7,
                                                     },
                                                 ],
