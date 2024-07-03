@@ -12,13 +12,17 @@ import {
     from 'mdb-react-ui-kit';
 import './Register.css'
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-
+    const [street, setStreet] = useState('');
+    const [city, setCity] = useState('');
+    const [zip, setZip] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
@@ -37,11 +41,43 @@ function Register() {
                 body: JSON.stringify({
                     username: username,
                     password: password,
-                    email: email
+                    email: email,
+                    address: {
+                        street: street,
+                        city: city,
+                        zip: zip
+                    }
                 }),
             });
-            const data = await response.json();
-            console.log(data);
+            if(!response.ok){
+                const errorData = await response.json();
+                toast.error(errorData.message || 'Register failed', {
+                        position: "top-center",
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                throw new Error(errorData.message);
+            }
+
+            if (response.ok){
+                const data = await response.json();
+                toast.success(data.message || 'Register successful', {
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 1000);
+            }
         } catch (error) {
             setError(error.response.data.detail);
         }
@@ -60,6 +96,12 @@ function Register() {
                               onChange={(e) => setEmail(e.target.value)}/>
                     <MDBInput wrapperClass='mb-4 w-25' label='Password' id='form3' type='password' value={password}
                               onChange={(e) => setPassword(e.target.value)}/>
+                    <MDBInput wrapperClass='mb-4 w-25' label='Street' id='form4' type='text' value={street}
+                                onChange={(e) => setStreet(e.target.value)}/>
+                    <MDBInput wrapperClass='mb-4 w-25' label='City' id='form5' type='text' value={city}
+                                onChange={(e) => setCity(e.target.value)}/>
+                    <MDBInput wrapperClass='mb-4 w-25' label='Zip' id='form6' type='text' value={zip}
+                                onChange={(e) => setZip(e.target.value)}/>
                     <MDBBtn className='w-25 mb-4 btn-danger' size='md' onClick={handleSubmit}>sign up</MDBBtn>
 
                     <div className="text-center">
@@ -86,7 +128,7 @@ function Register() {
 
                 </MDBCardBody>
             </MDBCol>
-
+            <ToastContainer/>
         </MDBContainer>
     );
 }

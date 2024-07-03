@@ -48,12 +48,11 @@ const ProductCard = (product) => {
           <div className="d-flex justify-content-between mt-2">
             <Link
               to={`/product/${product.item.id}/category/${product.item.category.id}`}
-              className="mt-2 btn btn-md bg-color custom-bg-text justify-content-center align-items-center text-center text-white rounded-9 btn-danger"
-            style={{backgroundColor: "#EC5B62"}}>
+              className="mb-2 btn btn-md bg-color custom-bg-text justify-content-center align-items-center text-center text-white rounded-9 btn-danger">
               Start Bid
             </Link>
 
-            <div className="text-color">
+            <div className="mt-1 text-color">
               <p>
                 <span>
                   <h4>Price : ${product.item.price}</h4>
