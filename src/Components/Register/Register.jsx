@@ -89,27 +89,33 @@ function Register() {
                 <MDBCardBody className='d-flex flex-column text-center justify-content-center align-items-center'>
 
                     <h2 className="fw-bold mb-5">Sign up now!</h2>
-
-                    <MDBInput wrapperClass='mb-4 w-25' label='Username' id='form1' type='text' value={username}
-                              onChange={(e) => setUsername(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4 w-25' label='Email' id='form2' type='email' value={email}
-                              onChange={(e) => setEmail(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4 w-25' label='Password' id='form3' type='password' value={password}
-                              onChange={(e) => setPassword(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4 w-25' label='Street' id='form4' type='text' value={street}
-                                onChange={(e) => setStreet(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4 w-25' label='City' id='form5' type='text' value={city}
-                                onChange={(e) => setCity(e.target.value)}/>
-                    <MDBInput wrapperClass='mb-4 w-25' label='Zip' id='form6' type='text' value={zip}
-                                onChange={(e) => setZip(e.target.value)}/>
-                    <MDBBtn className='w-25 mb-4 btn-danger' size='md' onClick={handleSubmit}>sign up</MDBBtn>
-
+                    <MDBRow className='mb-4'>
+                        <MDBCol md='6'>
+                            <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' value={username}
+                                      onChange={(e) => setUsername(e.target.value)}/>
+                            <MDBInput wrapperClass='mb-4' label='Email' id='form2' type='email' value={email}
+                                      onChange={(e) => setEmail(e.target.value)}/>
+                            <MDBInput wrapperClass='mb-4' label='Password' id='form3' type='password' value={password}
+                                      onChange={(e) => setPassword(e.target.value)}/>
+                        </MDBCol>
+                        <MDBCol md='6'>
+                            <MDBInput wrapperClass='mb-4' label='Street' id='form4' type='text' value={street}
+                                      onChange={(e) => setStreet(e.target.value)}/>
+                            <MDBInput wrapperClass='mb-4' label='City' id='form5' type='text' value={city}
+                                      onChange={(e) => setCity(e.target.value)}/>
+                            <MDBInput wrapperClass='mb-4' label='Zip' id='form6' type='text' value={zip}
+                                      onChange={(e) => setZip(e.target.value)}/>
+                        </MDBCol>
+                        <div className="d-flex justify-content-center">
+                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' onClick={handleSubmit}>Sign up</MDBBtn>
+                        </div>
+                    </MDBRow>
                     <div className="text-center">
 
                         <p>or sign up with:</p>
 
                         <MDBBtn tag='a' color='none' className='mx-3'>
-                            <MDBIcon fab icon='facebook-f' size="sm"/>
+                        <MDBIcon fab icon='facebook-f' size="sm"/>
                         </MDBBtn>
 
                         <MDBBtn tag='a' color='none' className='mx-3'>

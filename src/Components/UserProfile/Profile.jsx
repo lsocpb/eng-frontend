@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import {
     MDBCol,
     MDBContainer,
@@ -7,19 +8,54 @@ import {
     MDBCardText,
     MDBCardBody,
     MDBCardImage,
-    MDBBtn,
-    MDBBreadcrumb,
-    MDBBreadcrumbItem,
-    MDBProgress,
-    MDBProgressBar,
     MDBIcon,
     MDBListGroup,
+    MDBSpinner,
     MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import {Chart as ChartJS} from 'chart.js/auto';
 import {Bar, Doughnutm, Line} from "react-chartjs-2";
 
 export default function ProfilePage() {
+    const [profileData, setProfileData] = useState(null);
+
+    useEffect(() => {
+        const fetchProfileData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('active-user')}` // Assuming you store the token in localStorage
+                    }
+                });
+                setProfileData(response.data);
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        };
+
+        fetchProfileData();
+    }, []);
+
+    if (!profileData) {
+        return (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)'
+            }}>
+                <MDBSpinner role='status' color='danger' style={{width: '6rem', height: '6rem'}}>
+                    <span className='visually-hidden'>Loading...</span>
+                </MDBSpinner>
+            </div>
+        );
+    }
+
     return (
         <section style={{backgroundColor: '#ffffff'}}>
             <MDBContainer className="py-5">
@@ -34,8 +70,8 @@ export default function ProfilePage() {
                                     className="rounded-circle"
                                     style={{width: '150px'}}
                                     fluid/>
-                                <p className="text-black mt-2 mb-1">Allegro sp z.o.o</p>
-                                <p className="text-black mb-4">Warsaw, Poland</p>
+                                <p className="text-black mt-2 mb-1">{profileData.username}</p>
+                                <p className="text-black mb-4">{profileData.address.city}, Poland</p>
                             </MDBCardBody>
                         </MDBCard>
 
@@ -74,7 +110,7 @@ export default function ProfilePage() {
                                         <MDBCardText>Full Name</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">Allegro S.A</MDBCardText>
+                                        <MDBCardText className="text-muted">{profileData.username}</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                                 <hr/>
@@ -83,16 +119,16 @@ export default function ProfilePage() {
                                         <MDBCardText>Email</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">allegro@allegro.com</MDBCardText>
+                                        <MDBCardText className="text-muted">{profileData.email}</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                                 <hr/>
                                 <MDBRow>
                                     <MDBCol sm="3">
-                                        <MDBCardText>Phone</MDBCardText>
+                                        <MDBCardText>City</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">+48 501 100 100</MDBCardText>
+                                        <MDBCardText className="text-muted">{profileData.address.city}</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                                 <hr/>
@@ -101,7 +137,18 @@ export default function ProfilePage() {
                                         <MDBCardText>Address</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">Warsaw, Poland</MDBCardText>
+                                        <MDBCardText
+                                            className="text-muted">{profileData.address.street}</MDBCardText>
+                                    </MDBCol>
+                                </MDBRow>
+                                <hr/>
+                                <MDBRow>
+                                    <MDBCol sm="3">
+                                        <MDBCardText>Zip Code</MDBCardText>
+                                    </MDBCol>
+                                    <MDBCol sm="9">
+                                        <MDBCardText
+                                            className="text-muted">{profileData.address.zip}</MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
                             </MDBCardBody>
