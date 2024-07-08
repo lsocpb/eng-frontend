@@ -15,6 +15,7 @@ import {
 } from 'mdb-react-ui-kit';
 import {Chart as ChartJS} from 'chart.js/auto';
 import {Bar, Doughnutm, Line} from "react-chartjs-2";
+import ImageUpload from "./ImageUpload";
 
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState(null);
@@ -24,7 +25,7 @@ export default function ProfilePage() {
             try {
                 const response = await axios.get('http://localhost:8000/profile', {
                     headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('active-user')}` // Assuming you store the token in localStorage
+                        'Authorization': `Bearer ${sessionStorage.getItem('active-user')}`
                     }
                 });
                 setProfileData(response.data);
@@ -32,9 +33,15 @@ export default function ProfilePage() {
                 console.error('Error fetching profile data:', error);
             }
         };
-
         fetchProfileData();
     }, []);
+
+    const handleUploadSuccess = (imageUrl) => {
+        setProfileData(prevData => ({
+            ...prevData,
+            profile_image_url: imageUrl
+        }));
+    };
 
     if (!profileData) {
         return (
@@ -65,11 +72,12 @@ export default function ProfilePage() {
                         <MDBCard className="mb-4" style={{backgroundColor: '#FBF4F5'}}>
                             <MDBCardBody className="text-center">
                                 <MDBCardImage
-                                    src="https://1000logos.net/wp-content/uploads/2020/09/Allegro-Logo.png"
+                                    src={profileData.profile_image_url}
                                     alt="avatar"
                                     className="rounded-circle"
                                     style={{width: '150px'}}
                                     fluid/>
+                                <ImageUpload onUploadSuccess={handleUploadSuccess} />
                                 <p className="text-black mt-2 mb-1">{profileData.username}</p>
                                 <p className="text-black mb-4">{profileData.address.city}, Poland</p>
                             </MDBCardBody>

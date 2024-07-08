@@ -10,6 +10,7 @@ import {
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
+import Cookies from "js-cookie";
 
 function Login() {
     const [username, setUsername] = useState('');
