@@ -51,6 +51,16 @@ export default function App() {
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
+                                <MDBNavbarLink active aria-current='page' href='/admin/category/all'>
+                                    All Categories
+                                </MDBNavbarLink>
+                            </MDBNavbarItem>
+                            <MDBNavbarItem>
+                                <MDBNavbarLink active aria-current='page' href='/product/add'>
+                                    Sell Product
+                                </MDBNavbarLink>
+                            </MDBNavbarItem>
+                            <MDBNavbarItem>
                                 <MDBBtn className="btn btn-outline-danger rounded-pill" tabIndex={-1}
                                         aria-disabled='true' onClick={userLogout}>
                                     Logout
