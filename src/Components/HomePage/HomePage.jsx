@@ -8,11 +8,11 @@ export default function Widget() {
     const exampleProducts = [
         {
             item: {
-                id: 1,
+                id: 10,
                 name: 'Product 1',
                 description: 'This is a description for product 1.',
                 category: {
-                    id: 101,
+                    id: 3,
                     name: 'Category 1',
                 },
                 price: 1000,
@@ -20,11 +20,11 @@ export default function Widget() {
         },
         {
             item: {
-                id: 2,
+                id: 10,
                 name: 'Product 2',
                 description: 'This is a description for product 2.',
                 category: {
-                    id: 102,
+                    id: 3,
                     name: 'Category 2',
                 },
                 price: 2000,
@@ -32,11 +32,11 @@ export default function Widget() {
         },
         {
             item: {
-                id: 3,
+                id: 10,
                 name: 'Product 3',
                 description: 'This is a description for product 3.',
                 category: {
-                    id: 103,
+                    id: 3,
                     name: 'Category 3',
                 },
                 price: 3000,
@@ -44,11 +44,11 @@ export default function Widget() {
         },
         {
             item: {
-                id: 4,
+                id: 10,
                 name: 'Product 4',
                 description: 'This is a description for product 4.',
                 category: {
-                    id: 103,
+                    id: 3,
                     name: 'Category 4',
                 },
                 price: 3000,
@@ -56,11 +56,11 @@ export default function Widget() {
         },
         {
             item: {
-                id: 5,
+                id: 10,
                 name: 'Product 5',
                 description: 'This is a description for product 5.',
                 category: {
-                    id: 103,
+                    id: 3,
                     name: 'Category 4',
                 },
                 price: 3000,
