@@ -81,66 +81,95 @@ const ProductPage = () => {
 
     return (
         <MDBContainer fluid className="my-5 px-5">
-            <MDBCard className="shadow-5-strong" style={{backgroundColor: '#FBF4F5'}}>
-                <MDBRow className='g-0'>
-                    <MDBCol md='6'>
-                        <MDBCarousel showControls showIndicators fade>
-                            {[product.image_url_1, product.image_url_2, product.image_url_3].filter(Boolean).map((url, index) => (
-                                <MDBCarouselItem key={index} itemId={index + 1}>
-                                    <img src={url} alt={`Product image ${index + 1}`} style={imageStyle}/>
-                                </MDBCarouselItem>
-                            ))}
-                        </MDBCarousel>
-                    </MDBCol>
-                    <MDBCol md='6'>
+            <MDBRow>
+                <MDBCol md='8'>
+                    <MDBCard className="shadow-6-strong mb-4">
                         <MDBCardBody>
-                            <MDBCardTitle className="h2 mb-4 text-danger">{product.name}</MDBCardTitle>
-                            <MDBCardText className="lead mb-4">{product.description}</MDBCardText>
-                            <MDBCardText className="h4 text-danger mb-4">
-                                <strong>Price:</strong> ${product.price.toFixed(2)}
-                            </MDBCardText>
-                            <MDBCardText>
-                                <strong>Status:</strong> <MDBBadge color='warning'
-                                                                   className="ms-2">{product.status}</MDBBadge>
-                            </MDBCardText>
-                            <MDBCardText>
-                                <strong>Quantity:</strong> {product.quantity}
-                            </MDBCardText>
-                            <MDBCardText>
-                                <strong>Category:</strong> {product.category_id}
-                            </MDBCardText>
-                            {product.end_date && (
-                                <MDBCardText>
-                                    <strong>Campaign Ends:</strong> {new Date(product.end_date).toLocaleDateString()}
-                                </MDBCardText>
-                            )}
-                            <MDBCardText>
-                                <strong>Seller ID:</strong> {product.seller_id}
-                            </MDBCardText>
-                            {product.buyer_id && (
-                                <MDBCardText>
-                                    <strong>Supported by:</strong> {product.buyer_id}
-                                </MDBCardText>
-                            )}
-                            <MDBCardText className="small text-muted">
-                                Product ID: {product.id}
-                            </MDBCardText>
+                            <MDBCarousel showControls showIndicators fade>
+                                {[product.image_url_1, product.image_url_2, product.image_url_3].filter(Boolean).map((url, index) => (
+                                    <MDBCarouselItem key={index} itemId={index + 1}>
+                                        <img src={url} alt={`Product image ${index + 1}`} style={imageStyle}/>
+                                    </MDBCarouselItem>
+                                ))}
+                            </MDBCarousel>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol>
 
-                            <MDBBtn color='danger' className='mb-2 w-100'>
-                                <MDBIcon fas icon="heart" className="me-2"/> Support This Cause
-                            </MDBBtn>
-                            <MDBBtn color='warning' className='mb-2 w-100'>
-                                <MDBIcon fas icon="heart" className="me-2"/> Share on socials!
-                            </MDBBtn>
-
-                            <MDBCardText className="text-center text-muted">
+                <MDBCol md='4'>
+                    <MDBCard className="shadow-6-strong mb-4">
+                        <MDBCardBody>
+                            <MDBCardTitle className="h2 mb-3">{product.name}</MDBCardTitle>
+                            <MDBCardText className="h5 mb-4">
+                                Quantity: <span style={{
+                                backgroundColor: '#f8f9fa',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '0.5rem',
+                                color: '#495057',
+                                fontWeight: 'bold'
+                            }}>{product.quantity}</span>
+                            </MDBCardText>
+                            <MDBCardText className="h2 mb-4">
+                                ${parseFloat(product.price).toFixed(2)}
+                            </MDBCardText>
+                            <MDBCardText>
+                                <strong>Status:</strong> <MDBBadge rounder pill color='secondary'
+                                                                   className="ms-2 mb-2">{product.status}</MDBBadge>
+                            </MDBCardText>
+                            <div className="mt-4 d-flex flex-column">
+                                <MDBBtn rounded pill color='danger' className='mb-2 w-auto'>
+                                    <MDBIcon fas icon="heart" className="me-2"/> Support This Cause
+                                </MDBBtn>
+                                <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'>
+                                    <MDBIcon fas icon="heart" className="me-2"/> Share on socials!
+                                </MDBBtn>
+                            </div>
+                            <MDBCardText className="text-center text-muted mt-2">
                                 <MDBIcon fas icon="info-circle" className="me-2"/>
                                 Your support makes a difference!
                             </MDBCardText>
                         </MDBCardBody>
-                    </MDBCol>
-                </MDBRow>
-            </MDBCard>
+                    </MDBCard>
+
+                    <MDBCard className="shadow-6-strong bg-light">
+                        <MDBCardBody className="d-flex flex-column align-items-center">
+                            <MDBCardText>
+                                <h2 className="text-center mb-3">Champion Seller</h2>
+                            </MDBCardText>
+                            <MDBCardImage
+                                src={product.seller.profile_image_url}
+                                alt="Champion Profile Picture"
+                                className="rounded-circle mb-3 border border-danger"
+                                style={{width: '120px', height: '120px', objectFit: 'cover'}}
+                            />
+                            <MDBCardText className="text-center mb-3">
+                                <strong className="h4 text-danger">{product.seller.username}</strong>
+                            </MDBCardText>
+                            <MDBCardText className="text-center text-muted mb-3">
+                                Supporting this cause since
+                            </MDBCardText>
+                            <MDBBtn color="danger" className="rounded-pill">
+                                <MDBIcon fas icon="heart" className="me-2"/> Support This Champion
+                            </MDBBtn>
+                            <MDBCardText className="text-center mt-3 small">
+                                <MDBIcon fas icon="star" className="text-warning me-2"/>
+                                verified seller
+                            </MDBCardText>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol>
+            </MDBRow>
+
+            <MDBRow className="mt-2">
+                <MDBCol md='8'>
+                    <MDBCard className="shadow-6-strong">
+                        <MDBCardBody>
+                            <MDBCardText className="h2">About</MDBCardText>
+                            <MDBCardText className="lead">{product.description}</MDBCardText>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol>
+            </MDBRow>
         </MDBContainer>
     );
 };

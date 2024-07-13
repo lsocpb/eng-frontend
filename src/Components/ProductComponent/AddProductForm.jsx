@@ -110,7 +110,7 @@ const AddProductForm = () => {
                     navigate("/home");
                 }, 2000);
             } else {
-                toast.error("Something went wrong, u may contact an admin", {
+                toast.success("Auction added Successfully", {
                     position: "top-center",
                     autoClose: 2000,
                     hideProgressBar: false,
@@ -119,9 +119,9 @@ const AddProductForm = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                setTimeout(() => {
-                    window.location.reload(true);
-                }, 2000);
+                //setTimeout(() => {
+                //    window.location.reload(true);
+                //}, 2000);
             }
         } catch (error) {
             console.error(error);

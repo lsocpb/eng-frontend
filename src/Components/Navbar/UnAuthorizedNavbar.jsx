@@ -17,7 +17,10 @@ export default function App() {
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid>
-                <MDBNavbarBrand href='/home'>CharFair</MDBNavbarBrand>
+                <MDBNavbarBrand href='/home' className="d-flex mx-2">
+                    <img src={process.env.PUBLIC_URL + '/chairfair.png'} style={{width: '150px', height: '60px'}}
+                         alt="CharFair logo"/>
+                </MDBNavbarBrand>
                 <MDBNavbarToggler
                     type='button'
                     data-target='#navbarTogglerDemo02'
@@ -30,14 +33,14 @@ export default function App() {
                 </MDBNavbarToggler>
                 <MDBCollapse navbar open={openNavNoTogglerSecond} className="justify-content-end">
                     <MDBNavbarNav className='w-auto mb-lg-0 align-items-center'>
-                        <div className="d-flex">
+                        <div className="d-flex mx-3">
                             <MDBNavbarItem>
                                 <MDBBtn href='/register' className='btn btn-outline-danger rounded-pill'>
                                     Register
                                 </MDBBtn>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBBtn href='/login' className='btn btn-outline-danger rounded-pill' tabIndex={-1}
+                                <MDBBtn href='/login' className='btn btn-danger rounded-pill' tabIndex={-1}
                                         aria-disabled='true'>
                                     Login
                                 </MDBBtn>

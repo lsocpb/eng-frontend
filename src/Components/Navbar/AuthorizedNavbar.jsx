@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     MDBNavbar,
     MDBContainer,
@@ -10,7 +10,6 @@ import {
     MDBBtn,
     MDBIcon,
     MDBNavbarNav,
-    MDBInputGroup
 } from 'mdb-react-ui-kit';
 
 export default function App() {
@@ -22,11 +21,14 @@ export default function App() {
         sessionStorage.removeItem('active-user');
         window.location.reload();
     }
+
     return (
         <>
-            <MDBNavbar expand='lg px-2' light bgColor='light'>
+            <MDBNavbar sticky bgColor='white' expand='lg'>
                 <MDBContainer fluid>
-                    <MDBNavbarBrand href='/home'>CharFair</MDBNavbarBrand>
+                    <MDBNavbarBrand href='/home' className='mx-3 d-flex'>
+                        <img src={process.env.PUBLIC_URL + '/chairfair.png'} style={{width: '150px', height: '60px'}} alt="CharFair logo"/>
+                    </MDBNavbarBrand>
                     <MDBNavbarToggler
                         type='button'
                         data-target='#navbarTogglerDemo02'
@@ -37,33 +39,31 @@ export default function App() {
                     >
                         <MDBIcon icon='bars' fas/>
                     </MDBNavbarToggler>
-                    <MDBCollapse navbar open={openNavNoTogglerSecond}
-                                 className='justify-content-center align-items-center'>
-                        <MDBNavbarNav className='ms-auto mb-lg-0 align-items-center'>
+                    <MDBCollapse navbar open={openNavNoTogglerSecond} className='justify-content-center'>
+                        <MDBNavbarNav className='mb-2 px-4 mb-lg-0 align-items-center'>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/home'>
-                                    Home
+                                <MDBNavbarLink active aria-current='page' href='/home' className='text-dark'>
+                                    <MDBIcon fas icon="home" className="me-2" /> Home
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/profile'>
-                                    Profile
+                                <MDBNavbarLink active aria-current='page' href='/profile' className='text-dark'>
+                                    <MDBIcon fas icon="user" className="me-2" /> Profile
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/admin/category/all'>
-                                    All Categories
+                                <MDBNavbarLink active aria-current='page' href='/admin/category/all' className='text-dark'>
+                                    <MDBIcon fas icon="list" className="me-2" /> Causes
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/product/add'>
-                                    Sell Product
+                                <MDBNavbarLink active aria-current='page' href='/product/add' className='text-dark'>
+                                    <MDBIcon fas icon="hand-holding-heart" className="me-2" /> Donate
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBBtn className="btn btn-outline-danger rounded-pill" tabIndex={-1}
-                                        aria-disabled='true' onClick={userLogout}>
-                                    Logout
+                                <MDBBtn color='danger' className="rounded-pill" onClick={userLogout}>
+                                    <MDBIcon fas icon="sign-out-alt" className="me-2" /> Logout
                                 </MDBBtn>
                             </MDBNavbarItem>
                         </MDBNavbarNav>
