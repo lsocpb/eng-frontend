@@ -10,10 +10,12 @@ import {
     MDBBtn,
     MDBIcon,
     MDBNavbarNav,
+    MDBInputGroup,
 } from 'mdb-react-ui-kit';
 
 export default function App() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
+    const [searchText, setSearchText] = useState("");
 
     const user = sessionStorage.getItem('active-user');
 
@@ -21,6 +23,12 @@ export default function App() {
         sessionStorage.removeItem('active-user');
         window.location.reload();
     }
+
+    const searchProducts = (e) => {
+        e.preventDefault();
+        // Implement search functionality here
+        console.log("Searching for:", searchText);
+    };
 
     return (
         <>
@@ -39,30 +47,47 @@ export default function App() {
                     >
                         <MDBIcon icon='bars' fas/>
                     </MDBNavbarToggler>
-                    <MDBCollapse navbar open={openNavNoTogglerSecond} className='justify-content-center'>
+                    <MDBCollapse navbar open={openNavNoTogglerSecond}>
                         <MDBNavbarNav className='mb-2 px-4 mb-lg-0 align-items-center'>
+                            <MDBNavbarItem className="flex-grow-1 mx-5 mt-1">
+                                <form onSubmit={searchProducts}>
+                                    <MDBInputGroup>
+                                        <input
+                                            type='search'
+                                            className='form-control rounded-pill'
+                                            placeholder='Search for products...'
+                                            aria-label='Search'
+                                            value={searchText}
+                                            onChange={(e) => setSearchText(e.target.value)}
+                                        />
+                                        <MDBBtn color='danger' rippleColor='dark' className='rounded-pill ms-2' type='submit'>
+                                            <MDBIcon fas icon='search' />
+                                        </MDBBtn>
+                                    </MDBInputGroup>
+                                </form>
+                            </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink active aria-current='page' href='/home' className='text-dark'>
-                                    <MDBIcon fas icon="home" className="me-2" /> Home
+                                    <MDBIcon fas icon="home" className="me-2 mx-4"/> Home
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink active aria-current='page' href='/profile' className='text-dark'>
-                                    <MDBIcon fas icon="user" className="me-2" /> Profile
+                                    <MDBIcon fas icon="user" className="me-2 mx-4"/> Profile
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink active aria-current='page' href='/admin/category/all' className='text-dark'>
-                                    <MDBIcon fas icon="list" className="me-2" /> Causes
+                                    <MDBIcon fas icon="list" className="me-2 mx-4" /> Causes
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
                                 <MDBNavbarLink active aria-current='page' href='/product/add' className='text-dark'>
-                                    <MDBIcon fas icon="hand-holding-heart" className="me-2" /> Donate
+                                    <MDBIcon fas icon="hand-holding-heart" className="me-2 mx-4" /> Donate
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBBtn color='danger' className="rounded-pill" onClick={userLogout}>
+                                <MDBBtn color='danger' className="rounded-pill mx-5" onClick={userLogout}>
                                     <MDBIcon fas icon="sign-out-alt" className="me-2" /> Logout
                                 </MDBBtn>
                             </MDBNavbarItem>

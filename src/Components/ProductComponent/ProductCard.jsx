@@ -1,7 +1,11 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from "react-router-dom";
 import CategoryNavigator from "../Category/CategoryNavigator";
-import iphone from "../../images/iphone.png";
-const ProductCard = (product) => {
+
+const ProductCard = ({ item }) => {
+  const [imageStyle, setImageStyle] = useState({});
+  const imageRef = useRef(null);
+
   const descriptionToShow = (description, maxLength) => {
     if (description.length <= maxLength) {
       return description;
@@ -11,43 +15,67 @@ const ProductCard = (product) => {
     }
   };
 
+  useEffect(() => {
+    const img = imageRef.current;
+    if (img) {
+      const handleLoad = () => {
+        if (img.naturalHeight < 300) {
+          setImageStyle({
+            objectFit: 'contain',
+            height: `${img.naturalHeight}px`,
+          });
+        } else {
+          setImageStyle({
+            objectFit: 'cover',
+            height: '300px',
+          });
+        }
+      };
+
+      img.addEventListener('load', handleLoad);
+      return () => img.removeEventListener('load', handleLoad);
+    }
+  }, [item.image_url_1]);
+
   return (
     <div className="col">
-      <div class="card product-card rounded-card custom-bg h-100 shadow-5-strong mb-1 mt-1">
-        <img
-          src={iphone}
-          class="card-img-top img-fluid rounded"
-          alt="img"
-          style={{
-            maxHeight: "300px",
-            width: "auto",
-            margin: "0 auto",
-          }}
-        />
+      <div className="card product-card rounded-card custom-bg h-100 shadow-5-strong mb-1 mt-1">
+        <div style={{ height: '300px', overflow: 'hidden' }}>
+          <img
+            ref={imageRef}
+            src={item.image_url_1}
+            className="card-img-top img-fluid rounded"
+            alt={item.name}
+            style={{
+              width: '100%',
+              ...imageStyle,
+            }}
+          />
+        </div>
 
-        <div class="card-body text-color">
+        <div className="card-body text-color">
           <h5>
             Category:{" "}
             <CategoryNavigator
               item={{
-                id: product.item.category.id,
-                name: product.item.category.name,
+                id: item.category_id,
+                name: "Category Name" // You might need to fetch this separately
               }}
             />
           </h5>
-          <h5 class="card-title d-flex justify-content-between">
+          <h5 className="card-title d-flex justify-content-between">
             <div>
-              <b>{product.item.name}</b>
+              <b>{item.name}</b>
             </div>
           </h5>
           <p className="card-text">
-            <b>{descriptionToShow(product.item.description, 50)}</b>
+            <b>{descriptionToShow(item.description, 50)}</b>
           </p>
         </div>
-        <div class="card-footer">
+        <div className="card-footer">
           <div className="d-flex justify-content-between mt-2">
             <Link
-              to={`/product/${product.item.id}/category/${product.item.category.id}`}
+              to={`/product/${item.id}/category/${item.category_id}`}
               className="mb-2 btn btn-md bg-color custom-bg-text justify-content-center align-items-center text-center text-white rounded-9 btn-danger">
               Start Bid
             </Link>
@@ -55,7 +83,7 @@ const ProductCard = (product) => {
             <div className="mt-1 text-color">
               <p>
                 <span>
-                  <h4>Price : ${product.item.price}</h4>
+                  <h4>Price : ${item.price}</h4>
                 </span>
               </p>
             </div>
