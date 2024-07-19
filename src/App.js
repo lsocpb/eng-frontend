@@ -10,6 +10,7 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import ViewAllCategories from "./Components/Category/ViewAllCategories";
 import AddProductForm from "./Components/ProductComponent/AddProductForm";
 import ProductPage from "./Components/ProductComponent/ProductView";
+import CategoryPage from "./Components/Category/CategoryProduct";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/admin/category/all" element={<ViewAllCategories/>}/>
                     <Route path="/product/add" element={<AddProductForm/>}/>
                     <Route path="/product/:productId/category/:categoryId" element={<ProductPage/>}/>
+                    <Route path="/product/category/:categoryId" element={<CategoryPage/>}/>
                 </Route>
             </Routes>
         </Router>

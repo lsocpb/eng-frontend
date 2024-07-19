@@ -11,11 +11,54 @@ code {
     monospace;
 }
 
-.slick-prev:before {
-  color: palevioletred !important;
-  background-color: #ffffff;
+.slick-slider {
+    position: relative;
 }
-.slick-next:before {
-  color: palevioletred !important;
-  background-color: #ffffff;
+
+.custom-next-arrow {
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-next-arrow i {
+    color: white;
+}
+
+.custom-next-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom-prev-arrow {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-prev-arrow i {
+    color: white;
+}
+
+.custom-prev-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }

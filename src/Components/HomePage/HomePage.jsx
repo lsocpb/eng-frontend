@@ -6,19 +6,19 @@ import {
     MDBBtn,
     MDBCard,
     MDBCardBody,
-    MDBCardTitle,
+    MDBCardTitle, MDBCarousel, MDBCarouselItem,
     MDBCol,
     MDBContainer, MDBIcon,
-    MDBListGroup, MDBListGroupItem,
+    MDBListGroup, MDBListGroupItem, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader,
     MDBRow,
     MDBSpinner
 } from "mdb-react-ui-kit";
+import {useNavigate} from "react-router-dom";
 
 export default function Widget() {
     const [products, setProducts] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-
 
     const retrieveAllCategory = useCallback(async () => {
         const response = await axios.get(
@@ -27,6 +27,11 @@ export default function Widget() {
         console.log(response.data);
         return response.data;
     }, []);
+
+    const navigate = useNavigate()
+    const handleCategoryClick = async (categoryId) => {
+        navigate(`/product/category/${categoryId}`)
+    };
 
     useEffect(() => {
         const getAllCategory = async () => {
@@ -86,13 +91,33 @@ export default function Widget() {
         );
     }
 
+    const SampleNextArrow = (props) => {
+        const {onClick} = props;
+        return (
+            <div className="custom-next-arrow" onClick={onClick}>
+                <MDBIcon icon={"angle-right"} size="2x" className="d-flex"/>
+            </div>
+        );
+    };
+
+    const SamplePrevArrow = (props) => {
+        const {onClick} = props;
+        return (
+            <div className="custom-prev-arrow" onClick={onClick}>
+                <MDBIcon icon={"angle-left"} size="2x" className="d-flex"/>
+            </div>
+        );
+    };
+
     var settings = {
         dots: false,
         infinite: true,
         speed: 700,
-        slidesToShow: 3,
+        slidesToShow: 4,
         slidesToScroll: 1,
         initialSlide: 0,
+        nextArrow: <SampleNextArrow/>,
+        prevArrow: <SamplePrevArrow/>,
         responsive: [
             {
                 breakpoint: 1024,
@@ -133,13 +158,14 @@ export default function Widget() {
                     <MDBCol md="3">
                         <MDBCard className="h-100 shadow-5-strong">
                             <MDBCardBody>
-                                <MDBCardTitle className="text-center mb-4">Look for a product</MDBCardTitle>
+                                <MDBCardTitle className="text-center mb-4">Looking for a product?</MDBCardTitle>
                                 <MDBListGroup flush>
                                     {allCategories.map((category, index) => (
                                         <MDBListGroupItem
                                             key={index}
                                             className="d-flex align-items-center border-0 py-3 hover-shadow"
-                                            style={{transition: 'all 0.3s'}}
+                                            style={{transition: 'all 0.3s', cursor: 'pointer'}}
+                                            onClick={() => handleCategoryClick(category.id)}
                                         >
                                             <MDBIcon
                                                 icon={category.icon}
@@ -151,7 +177,12 @@ export default function Widget() {
                                                     textAlign: 'center'
                                                 }}
                                             />
-                                            <span className="fw-bold">{category.name}</span>
+                                            <span className="fw-bold flex-grow-1">{category.name}</span>
+                                            <MDBIcon
+                                                icon="angle-right"
+                                                className="ms-auto"
+                                                style={{color: '#6c757d'}}
+                                            />
                                         </MDBListGroupItem>
                                     ))}
                                 </MDBListGroup>
@@ -167,8 +198,18 @@ export default function Widget() {
                                     <p className="lead mb-4">Explore unique items and experiences while supporting a
                                         great cause.</p>
                                     <button className="btn btn-danger btn-lg rounded-pill">Start Bidding</button>
-                                    <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow"
-                                         src={process.env.PUBLIC_URL + '/output1.png'} alt="Charity Bidding Platform"/>
+                                    <MDBCarousel showControls showIndicators fade>
+                                        <MDBCarouselItem itemId={1}>
+                                            <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow"
+                                                 src={process.env.PUBLIC_URL + '/output1.png'}
+                                                 alt="Charity Bidding Platform"/>
+                                        </MDBCarouselItem>
+                                        <MDBCarouselItem itemId={2}>
+                                            <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow"
+                                                 src={process.env.PUBLIC_URL + '/output2.png'}
+                                                 alt="Charity Bidding Platform"/>
+                                        </MDBCarouselItem>
+                                    </MDBCarousel>
                                 </div>
                             </MDBCardBody>
                         </MDBCard>
@@ -254,16 +295,32 @@ export default function Widget() {
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
-            <div className="container mt-5 mb-2" style={{height: '1000px'}}>
-                <h1 className="text-danger font-weight-bold mb-4 text-center">Recent Bids</h1>
-                <div className="row w-100">
-                    <Slider {...settings}>
-                        {products.map((product, index) => (
-                            <ProductCard key={index} item={product}/>
-                        ))}
-                    </Slider>
-                </div>
-            </div>
+            <MDBContainer fluid className="mb-4">
+                <MDBRow className="justify-content-center">
+                    <MDBCol md="12">
+                        <MDBCard className="h-100 shadow-5-strong">
+                            <MDBCardBody>
+                                <h2 className="font-weight-bold mb-4 text-center">
+                                    <MDBIcon fas icon="gavel" className="me-2"/>
+                                    Recent Bids
+                                </h2>
+                                <p className="text-center text-muted mb-4">
+                                    Check out the latest exciting items up for auction!
+                                </p>
+                                <div className="slider-container">
+                                    <Slider {...settings}>
+                                        {products.map((product, index) => (
+                                            <div key={index} className="px-4">
+                                                <ProductCard item={product}/>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div>
+                            </MDBCardBody>
+                        </MDBCard>
+                    </MDBCol>
+                </MDBRow>
+            </MDBContainer>
         </div>
     );
 }

@@ -6,11 +6,16 @@ import {useNavigate} from "react-router-dom";
 import {MDBBtn, MDBInput} from "mdb-react-ui-kit";
 import "./AddProductForm.css";
 
+const formatDateTimeLocal = (date) => {
+    return date.toISOString().slice(0, 16);
+};
+
 const AddProductForm = () => {
     const [categories, setCategories] = useState([]);
 
     const seller = sessionStorage.getItem("active-user");
     const seller_jwtToken = sessionStorage.getItem("active-user");
+    const [minDate, setMinDate] = useState(formatDateTimeLocal(new Date()));
 
     let navigate = useNavigate();
 
@@ -72,6 +77,19 @@ const AddProductForm = () => {
             return;
         }
 
+        if (new Date(endDate) <= new Date()) {
+            toast.error("End date must be in the future", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+
         const formData = new FormData();
         formData.append("name", product.name);
         formData.append("description", product.description);
@@ -119,9 +137,9 @@ const AddProductForm = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                //setTimeout(() => {
-                //    window.location.reload(true);
-                //}, 2000);
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 2000);
             }
         } catch (error) {
             console.error(error);
@@ -245,6 +263,7 @@ const AddProductForm = () => {
                                             className="form-control"
                                             id="endDate"
                                             value={endDate}
+                                            min={minDate}
                                             onChange={(e) => setEndDate(e.target.value)}
                                         />
                                     </div>

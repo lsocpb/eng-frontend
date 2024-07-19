@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from "react-router-dom";
 import CategoryNavigator from "../Category/CategoryNavigator";
+import {MDBCard} from "mdb-react-ui-kit";
 
 const ProductCard = ({ item }) => {
   const [imageStyle, setImageStyle] = useState({});
@@ -38,7 +39,7 @@ const ProductCard = ({ item }) => {
   }, [item.image_url_1]);
 
   return (
-    <div className="col">
+    <MDBCard>
       <div className="card product-card rounded-card custom-bg h-100 shadow-5-strong mb-1 mt-1">
         <div style={{ height: '300px', overflow: 'hidden' }}>
           <img
@@ -55,11 +56,9 @@ const ProductCard = ({ item }) => {
 
         <div className="card-body text-color">
           <h5>
-            Category:{" "}
             <CategoryNavigator
               item={{
                 id: item.category_id,
-                name: "Category Name" // You might need to fetch this separately
               }}
             />
           </h5>
@@ -76,21 +75,21 @@ const ProductCard = ({ item }) => {
           <div className="d-flex justify-content-between mt-2">
             <Link
               to={`/product/${item.id}/category/${item.category_id}`}
-              className="mb-2 btn btn-md bg-color custom-bg-text justify-content-center align-items-center text-center text-white rounded-9 btn-danger">
+              className="mb-2 btn btn-md bg-color custom-bg-text text-center text-white rounded-9 btn-danger">
               Start Bid
             </Link>
 
-            <div className="mt-1 text-color">
+            <div className="mx-2 mt-1 text-color">
               <p>
                 <span>
-                  <h4>Price : ${item.price}</h4>
+                  <h4>${item.price}</h4>
                 </span>
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </MDBCard>
   );
 };
 
