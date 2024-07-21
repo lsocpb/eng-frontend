@@ -138,8 +138,8 @@ const AddProductForm = () => {
                     progress: undefined,
                 });
                 setTimeout(() => {
-                    window.location.reload(true);
-                }, 2000);
+                    navigate(`/product/${data.product_id}/category/${product.category_id}`);
+            }, 2000);
             }
         } catch (error) {
             console.error(error);

@@ -12,6 +12,8 @@ import {
     MDBSpinner,
     MDBBadge, MDBCardText, MDBRow, MDBCol, MDBCardImage, MDBListGroup, MDBListGroupItem, MDBIcon
 } from 'mdb-react-ui-kit';
+import Countdown from 'react-countdown';
+import FilterSidebar from "./FilterSidebar";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -22,6 +24,13 @@ export default function CategoryPage() {
     const [allCategories, setAllCategories] = useState([]);
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [filters, setFilters] = useState({
+        price: 5000,
+        status: {
+            active: false,
+            inactive: false
+        }
+    });
 
     const retrieveAllCategory = useCallback(async () => {
         const response = await axios.get(
@@ -111,6 +120,89 @@ export default function CategoryPage() {
         navigate(`/product/${productId}/category/${categoryId}`);
     }
 
+    const countdownStyles = {
+        container: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#f8f9fa',
+            borderRadius: '8px',
+            padding: '10px',
+            marginTop: '10px',
+        },
+        timeUnit: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            margin: '0 8px',
+        },
+        number: {
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            color: '#dc3545',
+        },
+        label: {
+            fontSize: '0.8rem',
+            color: '#6c757d',
+            textTransform: 'uppercase',
+        },
+    };
+
+    const renderer = ({days, hours, minutes, seconds, completed}) => {
+        if (completed) {
+            return <span style={{color: '#dc3545', fontWeight: 'bold'}}>Auction ended</span>;
+        } else {
+            return (
+                <div style={countdownStyles.container}>
+                    <div style={countdownStyles.timeUnit}>
+                        <span style={countdownStyles.number}>{days}</span>
+                        <span style={countdownStyles.label}>days</span>
+                    </div>
+                    <div style={countdownStyles.timeUnit}>
+                        <span style={countdownStyles.number}>{hours}</span>
+                        <span style={countdownStyles.label}>hours</span>
+                    </div>
+                    <div style={countdownStyles.timeUnit}>
+                        <span style={countdownStyles.number}>{minutes}</span>
+                        <span style={countdownStyles.label}>min</span>
+                    </div>
+                    <div style={countdownStyles.timeUnit}>
+                        <span style={countdownStyles.number}>{seconds}</span>
+                        <span style={countdownStyles.label}>sec</span>
+                    </div>
+                </div>
+            );
+        }
+    };
+
+    const handleFilterChange = (filterType, value, checked) => {
+        setFilters(prevFilters => {
+            if (filterType === 'status') {
+                return {
+                    ...prevFilters,
+                    status: {
+                        ...prevFilters.status,
+                        [value]: checked
+                    }
+                };
+            }
+            return {
+                ...prevFilters,
+                [filterType]: filterType === 'price' ? parseFloat(value) : value
+            };
+        });
+    };
+
+    const filteredProducts = products.filter(product => {
+        return (
+            parseFloat(product.price) <= parseFloat(filters.price) &&
+            ((!filters.status.active && !filters.status.inactive) ||
+                (filters.status.active && product.status === 'active') ||
+                (filters.status.inactive && product.status === 'inactive'))
+        );
+    });
+
+
     return (
         <MDBContainer className="py-5">
             <MDBRow className="mb-4">
@@ -155,7 +247,7 @@ export default function CategoryPage() {
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
-                <MDBCol md="9">
+                <MDBCol md="7">
                     <MDBCard className="shadow-5-strong">
                         <MDBCardBody>
                             {loading ? (
@@ -164,9 +256,9 @@ export default function CategoryPage() {
                                 </MDBSpinner>
                             ) : error ? (
                                 <p className="text-center">No products found in this category.</p>
-                            ) : products.length > 0 ? (
+                            ) : filteredProducts.length > 0 ? (
                                 <MDBRow>
-                                    {products.map((product) => (
+                                    {filteredProducts.map((product) => (
                                         <MDBCol key={product.id} size="12" className="mb-4">
                                             <hr></hr>
                                             <MDBCard onClick={() => handleProductClick(product.id)}
@@ -201,8 +293,11 @@ export default function CategoryPage() {
                                                                     className="text-muted">Quantity: {product.quantity}</small>
                                                             </MDBCardText>
                                                             <MDBCardText>
-                                                                <small className="text-muted">End
-                                                                    Date: {new Date(product.end_date).toLocaleString()}</small>
+                                                                <small className="text-muted">
+                                                                    Ends in: <Countdown
+                                                                    date={new Date(product.end_date)}
+                                                                    renderer={renderer}/>
+                                                                </small>
                                                             </MDBCardText>
                                                             <MDBCardText>
                                                                 <h2 className="text-dark">
@@ -226,6 +321,9 @@ export default function CategoryPage() {
                             }
                         </MDBCardBody>
                     </MDBCard>
+                </MDBCol>
+                <MDBCol md="2">
+                    <FilterSidebar onFilterChange={handleFilterChange}/>
                 </MDBCol>
             </MDBRow>
         </MDBContainer>

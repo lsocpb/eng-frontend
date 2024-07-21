@@ -20,13 +20,13 @@ function App() {
                 <Route path="/home" element={<HomePage/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/product/:productId/category/:categoryId" element={<ProductPage/>}/>
+                <Route path="/product/category/:categoryId" element={<CategoryPage/>}/>
                 <Route element={<ProtectedRoute/>}>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/protected" element={<ProtectedPage/>}/>
                     <Route path="/admin/category/all" element={<ViewAllCategories/>}/>
                     <Route path="/product/add" element={<AddProductForm/>}/>
-                    <Route path="/product/:productId/category/:categoryId" element={<ProductPage/>}/>
-                    <Route path="/product/category/:categoryId" element={<CategoryPage/>}/>
                 </Route>
             </Routes>
         </Router>

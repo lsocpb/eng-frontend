@@ -74,7 +74,7 @@ const ProductPage = () => {
     const imageStyle = {
         width: '100%',
         height: '800px',
-        objectFit: 'cover',
+        objectFit: 'contain',
         objectPosition: 'center',
         transition: 'opacity 0.5s ease-in-out'
     };
