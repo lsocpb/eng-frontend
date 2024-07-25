@@ -69,3 +69,19 @@ code {
 .custom-prev-arrow:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
+.search-form {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .search-form {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-form {
+    width: 500px;
+  }
+}
