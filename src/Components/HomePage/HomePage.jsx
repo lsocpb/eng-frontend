@@ -113,7 +113,7 @@ export default function Widget() {
         dots: false,
         infinite: true,
         speed: 700,
-        slidesToShow: 4,
+        slidesToShow: 3,
         slidesToScroll: 1,
         initialSlide: 0,
         nextArrow: <SampleNextArrow/>,
@@ -152,11 +152,11 @@ export default function Widget() {
     };
 
     return (
-        <div>
+        <MDBContainer>
             <MDBContainer fluid className="py-5">
                 <MDBRow>
                     <MDBCol md="3">
-                        <MDBCard className="h-100 shadow-5-strong">
+                        <MDBCard className="h-auto shadow-5-strong">
                             <MDBCardBody>
                                 <MDBCardTitle className="text-center mb-4">Looking for a product?</MDBCardTitle>
                                 <MDBListGroup flush>
@@ -192,24 +192,46 @@ export default function Widget() {
                     <MDBCol md="6">
                         <MDBCard className="h-100 shadow-5-strong">
                             <MDBCardBody>
-                                <div className="bg-white text-black py-5 px-3 text-center">
+                                <div className="bg-white text-black py-5 px-4 text-center">
                                     <h1 className="text-danger display-4 font-weight-bold mb-4">Join Us in Making a
                                         Difference</h1>
                                     <p className="lead mb-4">Explore unique items and experiences while supporting a
                                         great cause.</p>
-                                    <button className="btn btn-danger btn-lg rounded-pill">Start Bidding</button>
-                                    <MDBCarousel showControls showIndicators fade>
+                                    <button className="btn btn-danger btn-lg rounded-pill mb-4">Start Bidding</button>
+
+                                    <MDBCarousel showControls showIndicators fade className="mb-4">
                                         <MDBCarouselItem itemId={1}>
-                                            <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow"
+                                            <img className="img-fluid d-block mx-auto rounded-lg shadow"
                                                  src={process.env.PUBLIC_URL + '/output1.png'}
                                                  alt="Charity Bidding Platform"/>
                                         </MDBCarouselItem>
                                         <MDBCarouselItem itemId={2}>
-                                            <img className="img-fluid d-block mx-auto mt-4 rounded-lg shadow"
+                                            <img className="img-fluid d-block mx-auto rounded-lg shadow"
                                                  src={process.env.PUBLIC_URL + '/output2.png'}
                                                  alt="Charity Bidding Platform"/>
                                         </MDBCarouselItem>
                                     </MDBCarousel>
+
+                                    <div className="row mt-5">
+                                        <div className="col-md-4 mb-3">
+                                            <i className="fas fa-heart fa-3x text-danger mb-3"></i>
+                                            <h4>Support</h4>
+                                            <p>Your bids directly impact lives and communities in need.</p>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <i className="fas fa-gift fa-3x text-danger mb-3"></i>
+                                            <h4>Unique</h4>
+                                            <p>Bid on one-of-a-kind items and unforgettable experiences.</p>
+                                        </div>
+                                        <div className="col-md-4 mb-3">
+                                            <i className="fas fa-users fa-3x text-danger mb-3"></i>
+                                            <h4>Community</h4>
+                                            <p>Connect with like-minded individuals passionate about giving back.</p>
+                                        </div>
+                                    </div>
+                                    <p className="font-weight-bold text-danger">100% of proceeds go directly to our
+                                        partner
+                                        charities.</p>
                                 </div>
                             </MDBCardBody>
                         </MDBCard>
@@ -299,28 +321,39 @@ export default function Widget() {
                 <MDBRow className="justify-content-center">
                     <MDBCol md="12">
                         <MDBCard className="h-100 shadow-5-strong">
-                            <MDBCardBody>
-                                <h2 className="font-weight-bold mb-4 text-center">
-                                    <MDBIcon fas icon="gavel" className="me-2"/>
-                                    Recent Bids
+                            <MDBCardBody className="bg-light rounded-lg shadow-sm p-4">
+                                <h2 className="font-weight-bold mb-4 text-center text-danger">
+                                    <MDBIcon fas icon="heart" className="me-2"/>
+                                    Last Auctions
                                 </h2>
                                 <p className="text-center text-muted mb-4">
-                                    Check out the latest exciting items up for auction!
+                                    Bid on unique items and experiences to support wonderful causes!
                                 </p>
-                                <div className="slider-container">
+                                <div className="slider-container mb-4">
                                     <Slider {...settings}>
                                         {products.map((product, index) => (
-                                            <div key={index} className="px-4">
+                                            <div key={index} className="px-3 py-1">
                                                 <ProductCard item={product}/>
                                             </div>
                                         ))}
                                     </Slider>
+                                </div>
+                                <div className="text-center">
+                                    <MDBBtn color="danger" className="rounded-pill px-4 py-2">
+                                        <MDBIcon fas icon="gavel" className="me-2"/>
+                                        View All Auctions
+                                    </MDBBtn>
+                                </div>
+                                <div className="mt-4 text-center">
+                                    <small className="text-muted">
+                                        100% of proceeds go directly to our partner charities
+                                    </small>
                                 </div>
                             </MDBCardBody>
                         </MDBCard>
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
-        </div>
+        </MDBContainer>
     );
 }
