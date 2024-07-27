@@ -1,13 +1,9 @@
 import AuthorizedNav from './AuthorizedNavbar';
 import UnauthorizedNav from './UnAuthorizedNavbar';
+import {useUser} from '../UserContext/UserContext';
 
 const RoleNavbar = () => {
-    const user = sessionStorage.getItem("active-user");
-
-    if (user != null) {
-        return <AuthorizedNav />;
-    } else {
-        return <UnauthorizedNav />;
-    }
+    const {user} = useUser();
+    return user ? <AuthorizedNav/> : <UnauthorizedNav/>;
 }
 export default RoleNavbar;

@@ -3,7 +3,15 @@ import axios from "axios";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {useNavigate} from "react-router-dom";
-import {MDBBtn, MDBInput} from "mdb-react-ui-kit";
+import {
+    MDBBtn,
+    MDBInput,
+    MDBModal, MDBModalBody,
+    MDBModalContent,
+    MDBModalDialog, MDBModalFooter,
+    MDBModalHeader,
+    MDBModalTitle
+} from "mdb-react-ui-kit";
 import "./AddProductForm.css";
 
 const formatDateTimeLocal = (date) => {
@@ -16,6 +24,7 @@ const AddProductForm = () => {
     const seller = sessionStorage.getItem("active-user");
     const seller_jwtToken = sessionStorage.getItem("active-user");
     const [minDate, setMinDate] = useState(formatDateTimeLocal(new Date()));
+    const [showModal, setShowModal] = useState(false);
 
     let navigate = useNavigate();
 
@@ -62,7 +71,13 @@ const AddProductForm = () => {
         });
     };
 
-    const saveProduct = async (e) => {
+    const saveProduct = (e) => {
+        e.preventDefault();
+        setShowModal(true);
+    };
+
+    const handleConfirm = async (e) => {
+        setShowModal(false);
         e.preventDefault();
         if (!seller) {
             toast.error("Seller Id is missing!!!", {
@@ -126,7 +141,7 @@ const AddProductForm = () => {
 
                 setTimeout(() => {
                     navigate("/home");
-                }, 2000);
+                }, 1000);
             } else {
                 toast.success("Auction added Successfully", {
                     position: "top-center",
@@ -139,7 +154,7 @@ const AddProductForm = () => {
                 });
                 setTimeout(() => {
                     navigate(`/product/${data.product_id}/category/${product.category_id}`);
-            }, 2000);
+                }, 1000);
             }
         } catch (error) {
             console.error(error);
@@ -157,7 +172,7 @@ const AddProductForm = () => {
             });
             setTimeout(() => {
                 window.location.reload(true);
-            }, 2000);
+            }, 1000);
         }
     };
 
@@ -346,6 +361,26 @@ const AddProductForm = () => {
                     </div>
                 </div>
             </div>
+            <MDBModal
+                open={showModal}
+                onOpen={setShowModal}
+                tabIndex='-1'>
+                <MDBModalDialog>
+                    <MDBModalContent>
+                        <MDBModalHeader>
+                            <MDBModalTitle>Confirm Auction</MDBModalTitle>
+                            <MDBBtn className='btn-close' color='none' onClick={() => setShowModal(false)}></MDBBtn>
+                        </MDBModalHeader>
+                        <MDBModalBody>Are you sure you want to start this auction?</MDBModalBody>
+                        <MDBModalFooter>
+                            <MDBBtn className="btn-outline-danger" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </MDBBtn>
+                            <MDBBtn color="danger" onClick={handleConfirm}>Confirm</MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModalContent>
+                </MDBModalDialog>
+            </MDBModal>
             <ToastContainer/>
         </div>
     );

@@ -1,22 +1,39 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {MDBBtn, MDBInput} from "mdb-react-ui-kit";
+import { MDBInput, MDBSpinner } from "mdb-react-ui-kit";
 
 const ImageUpload = ({ onUploadSuccess }) => {
-    const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+    const ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'];
+    const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+    const validateFile = (file) => {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (!ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension)) {
+            return "Invalid file type. Allowed types are: " + ALLOWED_IMAGE_EXTENSIONS.join(', ');
+        }
+
+        if (file.size > MAX_IMAGE_SIZE) {
+            return "File size too large. Maximum size is 5MB.";
+        }
+
+        return null;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const validationError = validateFile(file);
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
+
         setLoading(true);
         setError(null);
-
-        if (!file) return;
 
         const formData = new FormData();
         formData.append('file', file);
@@ -32,19 +49,24 @@ const ImageUpload = ({ onUploadSuccess }) => {
             onUploadSuccess(response.data.url);
         } catch (error) {
             setLoading(false);
-            setError('Error uploading image');
+            if (error.response && error.response.status === 400) {
+                setError(error.response.data.detail);
+            } else {
+                setError('Error uploading image');
+            }
             console.error('Error uploading image:', error);
         }
     };
 
     return (
         <div className="mt-2">
-            <form onSubmit={handleSubmit}>
-                <MDBInput type="file" onChange={handleFileChange} />
-                <MDBBtn className="btn-danger mt-2" type="submit" disabled={loading}>
-                    {loading ? 'Uploading...' : 'Upload Image'}
-                </MDBBtn>
-            </form>
+            <MDBInput
+                type="file"
+                onChange={handleFileChange}
+                disabled={loading}
+                accept={ALLOWED_IMAGE_EXTENSIONS.map(ext => `.${ext}`).join(',')}
+            />
+            {loading && <MDBSpinner className="mt-2" />}
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );

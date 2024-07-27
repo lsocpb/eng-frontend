@@ -23,14 +23,22 @@ function Register() {
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
     const [zip, setZip] = useState('');
+    const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const formDetails = new URLSearchParams();
-        formDetails.append('username', username);
-        formDetails.append('password', password);
-        formDetails.append('email', email);
+        const payload = {
+            username,
+            password,
+            email,
+            phone,
+            address: {
+                street,
+                city,
+                zip
+            }
+        };
 
         try {
             const response = await fetch('http://localhost:8000/auth/register', {
@@ -38,34 +46,12 @@ function Register() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    email: email,
-                    address: {
-                        street: street,
-                        city: city,
-                        zip: zip
-                    }
-                }),
+                body: JSON.stringify(payload),
             });
-            if(!response.ok){
-                const errorData = await response.json();
-                toast.error(errorData.message || 'Register failed', {
-                        position: "top-center",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                throw new Error(errorData.message);
-            }
 
-            if (response.ok){
-                const data = await response.json();
-                toast.success(data.message || 'Register successful', {
+            if (!response.ok) {
+                const errorData = await response.json();
+                toast.error(errorData.detail || 'Register failed', {
                     position: "top-center",
                     autoClose: 1000,
                     hideProgressBar: false,
@@ -74,14 +60,27 @@ function Register() {
                     draggable: true,
                     progress: undefined,
                 });
-                setTimeout(() => {
-                        window.location.href = "/login";
-                    }, 1000);
+                throw new Error(errorData.detail || 'Register failed');
             }
+
+            const data = await response.json();
+            toast.success(data.message || 'Register successful', {
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1000);
         } catch (error) {
-            setError(error.response.data.detail);
+            console.error('Error:', error);
+            setError('An unexpected error occurred. Please try again later.');
         }
-    }
+    };
 
     return (
         <MDBContainer className='overflow-hidden my-5'>
@@ -105,6 +104,8 @@ function Register() {
                                       onChange={(e) => setCity(e.target.value)}/>
                             <MDBInput wrapperClass='mb-4' label='Zip' id='form6' type='text' value={zip}
                                       onChange={(e) => setZip(e.target.value)}/>
+                            <MDBInput wrapperClass='mb-4' label='Phone' id='form6' type='text' value={phone}
+                                      onChange={(e) => setPhone(e.target.value)}/>
                         </MDBCol>
                         <div className="d-flex justify-content-center">
                             <MDBBtn className='w-50 mt-3 btn-danger' size='md' onClick={handleSubmit}>Sign up</MDBBtn>
@@ -115,7 +116,7 @@ function Register() {
                         <p>or sign up with:</p>
 
                         <MDBBtn tag='a' color='none' className='mx-3'>
-                        <MDBIcon fab icon='facebook-f' size="sm"/>
+                            <MDBIcon fab icon='facebook-f' size="sm"/>
                         </MDBBtn>
 
                         <MDBBtn tag='a' color='none' className='mx-3'>

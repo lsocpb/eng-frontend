@@ -11,14 +11,18 @@ import {
     MDBIcon,
     MDBListGroup,
     MDBSpinner,
-    MDBListGroupItem
+    MDBListGroupItem, MDBBtn
 } from 'mdb-react-ui-kit';
 import {Chart as ChartJS} from 'chart.js/auto';
 import {Bar, Doughnutm, Line} from "react-chartjs-2";
 import ImageUpload from "./ImageUpload";
+import {useNavigate} from "react-router-dom";
+import {useUser} from "../UserContext/UserContext";
 
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState(null);
+    const navigate = useNavigate()
+    const { logout } = useUser();
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -80,6 +84,17 @@ export default function ProfilePage() {
                                 <ImageUpload onUploadSuccess={handleUploadSuccess} />
                                 <p className="text-black mt-2 mb-1">{profileData.username}</p>
                                 <p className="text-black mb-4">{profileData.address.city}, Poland</p>
+                                <div className="d-flex align-items-center justify-content-center">
+                                {profileData.role === 'admin' && (
+                                    <MDBBtn color="danger" onClick={() => navigate('/admin')}>
+                                        Admin Page
+                                    </MDBBtn>
+
+                                )}
+                                <MDBBtn className="btn-outline-danger mx-2" onClick={logout}>
+                                        Logout
+                                </MDBBtn>
+                                </div>
                             </MDBCardBody>
                         </MDBCard>
 

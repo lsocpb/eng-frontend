@@ -109,6 +109,10 @@ export default function Widget() {
         );
     };
 
+    const handleViewAllAuctions = () => {
+        navigate('/product/category/1')
+    }
+
     var settings = {
         dots: false,
         infinite: true,
@@ -339,7 +343,7 @@ export default function Widget() {
                                     </Slider>
                                 </div>
                                 <div className="text-center">
-                                    <MDBBtn color="danger" className="rounded-pill px-4 py-2">
+                                    <MDBBtn color="danger" className="rounded-pill px-4 py-2" onClick={handleViewAllAuctions}>
                                         <MDBIcon fas icon="gavel" className="me-2"/>
                                         View All Auctions
                                     </MDBBtn>

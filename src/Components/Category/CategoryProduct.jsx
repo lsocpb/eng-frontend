@@ -264,23 +264,20 @@ export default function CategoryPage() {
                                             <MDBCard onClick={() => handleProductClick(product.id)}
                                                      className="hover-shadow">
                                                 <MDBRow className="g-0">
-                                                    <MDBCol md="4" className="d-flex align-items-stretch">
-                                                        <div style={{
-                                                            width: '100%',
-                                                            position: 'relative',
-                                                            overflow: 'hidden'
-                                                        }}>
-                                                            <MDBCardImage
+                                                    <MDBCol xs="12" md="4" className="d-flex align-items-stretch">
+                                                        <div className="w-100 position-relative"
+                                                             style={{minHeight: '200px'}}>
+                                                            <img
                                                                 src={product.image_url_1}
                                                                 alt={product.name}
-                                                                className="rounded-start"
+                                                                className="img-fluid rounded-start"
                                                                 style={{
                                                                     position: 'absolute',
                                                                     top: 0,
                                                                     left: 0,
                                                                     width: '100%',
                                                                     height: '100%',
-                                                                    objectFit: 'cover'
+                                                                    objectFit: 'fill'
                                                                 }}
                                                             />
                                                         </div>
