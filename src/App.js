@@ -12,7 +12,7 @@ import ProductPage from "./Components/ProductComponent/ProductView";
 import CategoryPage from "./Components/Category/CategoryProduct";
 import AdminPage from "./Components/AdminPage/AdminPage";
 import { UserProvider } from './Components/UserContext/UserContext';
-
+import ContactForm from './Components/ContactForm/ContactForm';
 function App() {
     return (
         <Router>
@@ -28,6 +28,7 @@ function App() {
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
                         <Route path="/product/add" element={<AddProductForm />} />
+                        <Route path="/contact" element={<ContactForm />} />
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
                         <Route path="/admin" element={<AdminPage />} />
