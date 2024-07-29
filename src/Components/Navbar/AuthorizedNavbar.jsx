@@ -17,16 +17,8 @@ export default function App() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const user = sessionStorage.getItem('active-user');
-
-    const userLogout = () => {
-        sessionStorage.removeItem('active-user');
-        window.location.reload();
-    }
-
     const searchProducts = (e) => {
         e.preventDefault();
-        // Implement search functionality here
         console.log("Searching for:", searchText);
     };
 

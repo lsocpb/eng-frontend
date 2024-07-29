@@ -76,7 +76,7 @@ export default function ProfilePage() {
                         <MDBCard className="mb-4" style={{backgroundColor: '#FBF4F5'}}>
                             <MDBCardBody className="text-center">
                                 <MDBCardImage
-                                    src={profileData.profile_image_url}
+                                    src={profileData.profile_image_url || 'https://via.placeholder.com/150x150'}
                                     alt="avatar"
                                     className="rounded-circle"
                                     style={{width: '150px'}}
