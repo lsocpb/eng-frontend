@@ -1,10 +1,3 @@
-/**
- * @fileoverview
- * Unit tests for the Login component.
- * These tests use the Testing Library and are configured with Jest.
- * They verify the rendering of the component and the functionality of the login form.
- */
-
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';

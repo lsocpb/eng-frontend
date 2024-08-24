@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
     MDBBtn,
     MDBContainer,
-    MDBCard,
     MDBCardBody,
     MDBCol,
     MDBRow,
@@ -14,7 +13,18 @@ import './Register.css'
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {showSuccessToast, showErrorToast} from "../ToastNotifications/ToastNotifications";
 
+/**
+ * The `Register` component renders a user registration form.
+ * On successful registration, the user is redirected to the login page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <Register />
+ * );
+ */
 function Register() {
 
     const [username, setUsername] = useState('');
@@ -26,8 +36,24 @@ function Register() {
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
 
+    const validateForm = () => {
+        if (!username || !password || !email || !street || !city || !zip || !phone) {
+            showErrorToast('Username and password are required');
+            return false;
+        }
+        setError('');
+        return true;
+    };
+
+    /**
+     * Handles form submission by sending a POST request to the registration endpoint.
+     *
+     * @param {React.FormEvent} e - The form submit event.
+     * @returns {void}
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;
         const payload = {
             username,
             password,
@@ -51,28 +77,11 @@ function Register() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                toast.error(errorData.detail || 'Register failed', {
-                    position: "top-center",
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                throw new Error(errorData.detail || 'Register failed');
+                showErrorToast(errorData.detail || 'Register failed');
             }
 
             const data = await response.json();
-            toast.success(data.message || 'Register successful', {
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            showSuccessToast(data.message || 'Register successful');
             setTimeout(() => {
                 window.location.href = "/login";
             }, 1000);
