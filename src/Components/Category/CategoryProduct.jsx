@@ -1,21 +1,19 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import axios, {all} from 'axios';
+import axios from 'axios';
 import {
     MDBContainer,
     MDBCard,
     MDBCardBody,
     MDBCardTitle,
-    MDBTable,
-    MDBTableHead,
-    MDBTableBody,
     MDBSpinner,
-    MDBBadge, MDBCardText, MDBRow, MDBCol, MDBCardImage, MDBListGroup, MDBListGroupItem, MDBIcon
+    MDBBadge, MDBCardText, MDBRow, MDBCol
 } from 'mdb-react-ui-kit';
 import Countdown from 'react-countdown';
 import FilterSidebar from "./FilterSidebar";
 import CategoryList from "./CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {countdownStyles} from "../Utils/countdownStyles";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -80,11 +78,6 @@ export default function CategoryPage() {
         fetchData();
     }, [categoryId]);
 
-    const getIconColor = (index) => {
-        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F06292', '#AED581', '#FFD54F'];
-        return colors[index % colors.length];
-    };
-
     useEffect(() => {
         const getAllCategory = async () => {
             try {
@@ -112,41 +105,9 @@ export default function CategoryPage() {
         <LoadingSpinner/>
     }
 
-    const handleCategoryClick = (categoryId) => {
-        navigate(`/product/category/${categoryId}`);
-    };
-
     const handleProductClick = (productId) => {
         navigate(`/product/${productId}/category/${categoryId}`);
     }
-
-    const countdownStyles = {
-        container: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#f8f9fa',
-            borderRadius: '8px',
-            padding: '10px',
-            marginTop: '10px',
-        },
-        timeUnit: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            margin: '0 8px',
-        },
-        number: {
-            fontSize: '1.2rem',
-            fontWeight: 'bold',
-            color: '#dc3545',
-        },
-        label: {
-            fontSize: '0.8rem',
-            color: '#6c757d',
-            textTransform: 'uppercase',
-        },
-    };
 
     const renderer = ({days, hours, minutes, seconds, completed}) => {
         if (completed) {

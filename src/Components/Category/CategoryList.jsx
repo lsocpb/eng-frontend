@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {
     MDBCard,
@@ -8,9 +8,9 @@ import {
     MDBListGroup,
     MDBListGroupItem,
     MDBIcon,
-    MDBSpinner
 } from 'mdb-react-ui-kit';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {IconColors} from "../../constans/iconColorsConstans";
 
 const CategoryList = () => {
     const [allCategories, setAllCategories] = useState([]);
@@ -68,8 +68,8 @@ const CategoryList = () => {
     };
 
     const getIconColor = (index) => {
-        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F06292', '#AED581', '#FFD54F'];
-        return colors[index % colors.length];
+        const colorKeys = Object.keys(IconColors);
+        return IconColors[colorKeys[index % colorKeys.length]];
     };
 
     if (loading) {
