@@ -10,7 +10,7 @@ import {
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
-import Cookies from "js-cookie";
+import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNotifications';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ function Login() {
 
     const validateForm = () => {
         if (!username || !password) {
-            setError('Username and password are required');
+            showErrorToast('Username and password are required');
             return false;
         }
         setError('');
@@ -51,40 +51,16 @@ function Login() {
                 const data = await response.json();
                 sessionStorage.setItem('active-user', data.access_token);
                 if (data.access_token !== null) {
-                    toast.success(data.message || 'Login successful', {
-                        position: "top-center",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    showSuccessToast('Login successful');
                     setTimeout(() => {
                         window.location.href = "/home";
                     }, 1000);
                 } else {
-                    toast.error(data.message || 'Login failed', {
-                        position: "top-center",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    showErrorToast('Wrong username or password');
                 }
             } else {
                 const data = await response.json();
-                toast.error(data.message || 'Wrong username or password', {
-                    position: "top-center",
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                showErrorToast(data.message || 'Wrong username or password');
             }
         } catch (error) {
             setLoading(false);
