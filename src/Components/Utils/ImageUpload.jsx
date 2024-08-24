@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { MDBInput, MDBSpinner } from "mdb-react-ui-kit";
-
+import { AllowedImageExtensions, MaxImageSize } from '../../constans/fileValidationConstans'
+/**
+ * Component for handling image uploads with validation and feedback.
+ *
+ * @component
+ * @example
+ * const handleUploadSuccess = (imageUrl) => {
+ *   console.log("Uploaded image URL:", imageUrl);
+ * };
+ * return <ImageUpload onUploadSuccess={handleUploadSuccess} />;
+ *
+ * @param {Object} props - The component props.
+ * @param {function} props.onUploadSuccess - Callback function to handle successful image upload. Receives the URL of the uploaded image as an argument.
+ *
+ * @returns {JSX.Element} A file input for uploading images with validation, loading state, and error handling.
+ */
 const ImageUpload = ({ onUploadSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'];
-    const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
-
+    /**
+     * Validates the selected file based on its extension and size.
+     *
+     * @param {File} file - The file to be validated.
+     * @returns {string|null} An error message if validation fails, otherwise null.
+     */
     const validateFile = (file) => {
         const fileExtension = file.name.split('.').pop().toLowerCase();
-        if (!ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension)) {
-            return "Invalid file type. Allowed types are: " + ALLOWED_IMAGE_EXTENSIONS.join(', ');
+        if (!Object.values(AllowedImageExtensions).includes(fileExtension)) {
+            return `Invalid file type. Allowed types are: ${Object.values(AllowedImageExtensions).join(', ')}`;
         }
 
-        if (file.size > MAX_IMAGE_SIZE) {
+        if (file.size > MaxImageSize.FIVE_MB) {
             return "File size too large. Maximum size is 5MB.";
         }
 
@@ -64,7 +82,7 @@ const ImageUpload = ({ onUploadSuccess }) => {
                 type="file"
                 onChange={handleFileChange}
                 disabled={loading}
-                accept={ALLOWED_IMAGE_EXTENSIONS.map(ext => `.${ext}`).join(',')}
+                accept={Object.values(AllowedImageExtensions).map(ext => `.${ext}`).join(',')}
             />
             {loading && <MDBSpinner className="mt-2" />}
             {error && <p style={{ color: 'red' }}>{error}</p>}

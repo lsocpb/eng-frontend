@@ -32,6 +32,7 @@ function App() {
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
                         <Route path="/admin" element={<AdminPage />} />
+                        <Route path="/admin/category/all" element={<ViewAllCategories />} />
                     </Route>
                 </Routes>
             </UserProvider>

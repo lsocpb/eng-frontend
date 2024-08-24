@@ -19,6 +19,7 @@ import {
     MDBProgressBar
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ProductPage = () => {
     const {productId, categoryId} = useParams();
@@ -43,23 +44,7 @@ const ProductPage = () => {
     }, [productId]);
 
     if (loading) {
-        return (
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)'
-            }}>
-                <MDBSpinner role='status' color='danger' style={{width: '6rem', height: '6rem'}}>
-                    <span className='visually-hidden'>Loading...</span>
-                </MDBSpinner>
-            </div>
-        );
+        <LoadingSpinner/>
     }
 
     if (error) {

@@ -102,9 +102,77 @@ function AdminPage() {
         {label: 'New Users', value: '22,123', percentage: '80%', color: '#F44336'}
     ];
 
+    const RecentActivities = () => (
+        <MDBCard className="mb-4">
+            <MDBCardBody>
+                <MDBCardTitle>Recent Activities</MDBCardTitle>
+                <ul className="list-unstyled">
+                    {[
+                        {action: "New user registered", time: "5 minutes ago", icon: "user-plus"},
+                        {action: "New auction created", time: "1 hour ago", icon: "gavel"},
+                        {action: "Bid placed on Item #1234", time: "2 hours ago", icon: "hand-holding-usd"},
+                        {action: "Auction #5678 completed", time: "1 day ago", icon: "check-circle"},
+                    ].map((activity, index) => (
+                        <li key={index} className="mb-2">
+                            <MDBIcon fas icon={activity.icon} className="me-2"/>
+                            {activity.action} <small className="text-muted">- {activity.time}</small>
+                        </li>
+                    ))}
+                </ul>
+            </MDBCardBody>
+        </MDBCard>
+    );
+
+    const CategoryDistribution = () => {
+        const data = {
+            labels: ['Electronics', 'Fashion', 'Home & Garden', 'Sports', 'Other'],
+            datasets: [
+                {
+                    data: [30, 25, 20, 15, 10],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                },
+            ],
+        };
+
+        return (
+            <MDBCard className="mb-4">
+                <MDBCardBody>
+                    <MDBCardTitle>Auction Categories Distribution</MDBCardTitle>
+                    <Doughnut data={data} options={{responsive: true, maintainAspectRatio: false}}/>
+                </MDBCardBody>
+            </MDBCard>
+        );
+    };
+
+    const TopUsers = () => (
+        <MDBCard className="mb-4">
+            <MDBCardBody>
+                <MDBCardTitle>Top Users</MDBCardTitle>
+                <ul className="list-unstyled">
+                    {[
+                        {name: "John Doe", auctions: 15, bids: 45},
+                        {name: "Jane Smith", auctions: 12, bids: 38},
+                        {name: "Bob Johnson", auctions: 10, bids: 30},
+                    ].map((user, index) => (
+                        <li key={index} className="mb-2 d-flex justify-content-between align-items-center">
+            <span>
+              <MDBIcon fas icon="user-circle" className="me-2"/>
+                {user.name}
+            </span>
+                            <span>
+              <small className="text-muted me-2">{user.auctions} auctions</small>
+              <small className="text-muted">{user.bids} bids</small>
+            </span>
+                        </li>
+                    ))}
+                </ul>
+            </MDBCardBody>
+        </MDBCard>
+    );
+
     return (
         <MDBContainer className="py-5" style={{backgroundColor: '#f8f9fa'}}>
-            <h2 className="text-center mb-5" style={{color: '#4a4a4a'}}>Admin Dashboard</h2>
+            <h2 className="text-center mb-5" style={{color: '#4a4a4a'}}>Site statistic</h2>
             <MDBRow className="mb-4">
                 <StatCard
                     title="Users"
@@ -140,7 +208,7 @@ function AdminPage() {
                 />
             </MDBRow>
             <MDBRow className="mb-4">
-                <MDBCol md={12}>
+                <MDBCol md={8}>
                     <MDBCard className="h-auto">
                         <MDBCardBody>
                             <MDBCardTitle>Traffic</MDBCardTitle>
@@ -203,6 +271,10 @@ function AdminPage() {
                             </div>
                         </MDBCardBody>
                     </MDBCard>
+                </MDBCol>
+                <MDBCol md={4}>
+                    <RecentActivities/>
+                    <TopUsers/>
                 </MDBCol>
             </MDBRow>
             <MDBRow>

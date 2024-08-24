@@ -15,6 +15,7 @@ import {
 } from "mdb-react-ui-kit";
 import {useNavigate} from "react-router-dom";
 import CategoryList from "../Category/CategoryList";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 export default function Widget() {
     const [products, setProducts] = useState([]);
@@ -22,20 +23,15 @@ export default function Widget() {
     const [loading, setLoading] = useState(true);
 
     const retrieveAllCategory = useCallback(async () => {
-        console.log("retrieveAllCategory called");
         const cachedCategories = localStorage.getItem('allCategories');
         const cacheTimestamp = localStorage.getItem('categoriesCacheTimestamp');
         const now = new Date().getTime();
 
         if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
-            console.log("Returning cached categories");
             return JSON.parse(cachedCategories);
         }
-
-        console.log("Fetching categories from API");
         try {
             const response = await axios.get("http://localhost:8000/category/fetch/all");
-            console.log("API response:", response.data);
             const categories = response.data;
 
             localStorage.setItem('allCategories', JSON.stringify(categories));
@@ -43,7 +39,6 @@ export default function Widget() {
 
             return categories;
         } catch (error) {
-            console.error("Error fetching categories:", error);
             return [];
         }
     }, []);
@@ -68,7 +63,6 @@ export default function Widget() {
                 setAllCategories([]);
             } finally {
                 setLoading(false);
-                console.log("Categories fetched successfully");
             }
         };
         getAllCategory();
@@ -89,23 +83,7 @@ export default function Widget() {
     }, []);
 
     if (loading) {
-        return (
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)'
-            }}>
-                <MDBSpinner role='status' color='danger' style={{width: '6rem', height: '6rem'}}>
-                    <span className='visually-hidden'>Loading...</span>
-                </MDBSpinner>
-            </div>
-        );
+        <LoadingSpinner/>
     }
 
     const SampleNextArrow = (props) => {

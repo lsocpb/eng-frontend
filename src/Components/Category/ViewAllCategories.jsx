@@ -4,12 +4,12 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {MDBBadge, MDBBtn, MDBSpinner, MDBTable, MDBTableBody, MDBTableHead} from "mdb-react-ui-kit";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const ViewAllCategories = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    //TODO ADMIN JWT TOKEN
     const admin_jwtToken = sessionStorage.getItem("active-user");
 
     let navigate = useNavigate();
@@ -18,7 +18,6 @@ const ViewAllCategories = () => {
         const response = await axios.get(
             "http://localhost:8000/category/fetch/all"
         );
-        console.log(response.data);
         return response.data;
     }, []);
 
@@ -40,30 +39,13 @@ const ViewAllCategories = () => {
                 setAllCategories([]);
             } finally {
                 setLoading(false);
-                console.log("Categories fetched successfully");
             }
         };
         getAllCategory();
     }, [retrieveAllCategory]);
 
     if (loading) {
-        return (
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)'
-            }}>
-                <MDBSpinner role='status' color='danger' style={{width: '6rem', height: '6rem'}}>
-                    <span className='visually-hidden'>Loading...</span>
-                </MDBSpinner>
-            </div>
-        );
+        <LoadingSpinner/>
     }
 
     const deleteCategory = (categoryId, e) => {
@@ -99,10 +81,6 @@ const ViewAllCategories = () => {
             });
     };
 
-    const updateCategory = (category) => {
-        navigate("/admin/category/update", {state: category});
-    };
-
     return (
         <div className="mt-3">
             <div
@@ -111,11 +89,6 @@ const ViewAllCategories = () => {
                     height: "45rem",
                 }}
             >
-                <div
-                    className="mt-2 text-center bg-color"
-                >
-                    <h2 className="text-danger">All Categories</h2>
-                </div>
                 <div
                     className="card-body"
                     style={{
@@ -153,15 +126,8 @@ const ViewAllCategories = () => {
                                             </td>
                                             <td>
                                                 <MDBBtn
-                                                    onClick={() => updateCategory(category)}
-                                                    className="mt-2 btn-success btn-sm bg-color custom-bg-text ms-1"
-                                                >
-                                                    Update
-                                                </MDBBtn>
-
-                                                <MDBBtn
                                                     onClick={() => deleteCategory(category.id)}
-                                                    className="mt-2 btn-danger btn-sm bg-color custom-bg-text ms-1"
+                                                    className="mt-2 btn-danger btn-sm bg-color custom-bg-text mx-n3"
                                                 >
                                                     Delete
                                                 </MDBBtn>

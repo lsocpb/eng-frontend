@@ -10,6 +10,7 @@ import {
     MDBIcon,
     MDBSpinner
 } from 'mdb-react-ui-kit';
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const CategoryList = () => {
     const [allCategories, setAllCategories] = useState([]);
@@ -17,20 +18,16 @@ const CategoryList = () => {
     const navigate = useNavigate();
 
     const retrieveAllCategory = useCallback(async () => {
-        console.log("retrieveAllCategory called");
         const cachedCategories = localStorage.getItem('allCategories');
         const cacheTimestamp = localStorage.getItem('categoriesCacheTimestamp');
         const now = new Date().getTime();
 
         if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
-            console.log("Returning cached categories");
             return JSON.parse(cachedCategories);
         }
 
-        console.log("Fetching categories from API");
         try {
             const response = await axios.get("http://localhost:8000/category/fetch/all");
-            console.log("API response:", response.data);
             const categories = response.data;
 
             localStorage.setItem('allCategories', JSON.stringify(categories));
@@ -44,13 +41,10 @@ const CategoryList = () => {
     }, []);
 
     useEffect(() => {
-        console.log("useEffect triggered");
         const getAllCategory = async () => {
-            console.log("getAllCategory function called");
             try {
                 setLoading(true);
                 const categories = await retrieveAllCategory();
-                console.log("Categories retrieved:", categories);
                 if (Array.isArray(categories)) {
                     setAllCategories(categories);
                 } else if (categories && categories.categories) {
@@ -64,7 +58,6 @@ const CategoryList = () => {
                 setAllCategories([]);
             } finally {
                 setLoading(false);
-                console.log("Categories fetch completed, loading set to false");
             }
         };
         getAllCategory();
@@ -80,13 +73,7 @@ const CategoryList = () => {
     };
 
     if (loading) {
-        return (
-            <div className="d-flex justify-content-center align-items-center" style={{height: '200px'}}>
-                <MDBSpinner role='status'>
-                    <span className='visually-hidden'>Loading...</span>
-                </MDBSpinner>
-            </div>
-        );
+        <LoadingSpinner/>
     }
 
     return (

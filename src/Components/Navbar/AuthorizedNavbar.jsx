@@ -19,7 +19,6 @@ export default function App() {
 
     const searchProducts = (e) => {
         e.preventDefault();
-        console.log("Searching for:", searchText);
     };
 
     return (
