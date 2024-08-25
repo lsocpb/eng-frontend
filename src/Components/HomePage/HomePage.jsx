@@ -1,134 +1,37 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import ProductCard from "../ProductComponent/ProductCard";
 import Slider from "react-slick";
-import axios from "axios";
 import {
     MDBBtn,
     MDBCard,
     MDBCardBody,
-    MDBCardTitle, MDBCarousel, MDBCarouselItem,
+    MDBCarousel, MDBCarouselItem,
     MDBCol,
     MDBContainer, MDBIcon,
-    MDBListGroup, MDBListGroupItem, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader,
+    MDBListGroup, MDBListGroupItem,
     MDBRow,
-    MDBSpinner
 } from "mdb-react-ui-kit";
 import {useNavigate} from "react-router-dom";
 import CategoryList from "../Category/CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import {SampleNextArrow} from "../Arrows/SampleNextArrow";
-import {SamplePrevArrow} from "../Arrows/SamplePrevArrow";
+import {settings} from "../Utils/homePageSliderSettings";
+import useCategories from "../../hooks/useCategories";
+import useFetchProducts from "../../hooks/useFetchProducts";
 
-export default function Widget() {
-    const [products, setProducts] = useState([]);
-    const [allCategories, setAllCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const retrieveAllCategory = useCallback(async () => {
-        const cachedCategories = localStorage.getItem('allCategories');
-        const cacheTimestamp = localStorage.getItem('categoriesCacheTimestamp');
-        const now = new Date().getTime();
-
-        if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
-            return JSON.parse(cachedCategories);
-        }
-        try {
-            const response = await axios.get("http://localhost:8000/category/fetch/all");
-            const categories = response.data;
-
-            localStorage.setItem('allCategories', JSON.stringify(categories));
-            localStorage.setItem('categoriesCacheTimestamp', now.toString());
-
-            return categories;
-        } catch (error) {
-            return [];
-        }
-    }, []);
+export default function HomePage() {
+    const [allCategories, loadingCategories] = useCategories();
+    const [products, loadingProducts] = useFetchProducts();
 
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const getAllCategory = async () => {
-            try {
-                setLoading(true);
-                const allCategories = await retrieveAllCategory();
-                if (Array.isArray(allCategories)) {
-                    setAllCategories(allCategories);
-                } else if (allCategories && allCategories.categories) {
-                    setAllCategories(allCategories.categories);
-                } else {
-                    console.error("Invalid response format from API");
-                    setAllCategories([]);
-                }
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-                setAllCategories([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getAllCategory();
-    }, [retrieveAllCategory]);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/product/fetch/last`);
-                const data = await response.json();
-                setProducts(data.products);
-            } catch (err) {
-                console.error('Error fetching products:', err);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    if (loading) {
-        <LoadingSpinner/>
+    if (loadingCategories || loadingProducts) {
+        return <LoadingSpinner/>;
     }
 
     const handleViewAllAuctions = () => {
         navigate('/product/category/1')
     }
-
-    var settings = {
-        dots: false,
-        infinite: true,
-        speed: 700,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        initialSlide: 0,
-        nextArrow: <SampleNextArrow/>,
-        prevArrow: <SamplePrevArrow/>,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: false
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
-
 
     const handleContactClick = () => {
         navigate('/contact')

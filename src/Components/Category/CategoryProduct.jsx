@@ -14,6 +14,7 @@ import FilterSidebar from "./FilterSidebar";
 import CategoryList from "./CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {countdownStyles} from "../Utils/countdownStyles";
+import useCategories from "../../hooks/useCategories";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -21,7 +22,7 @@ export default function CategoryPage() {
     const [productId, setProductId] = useState(0);
     const [loading, setLoading] = useState(true);
     const {categoryId} = useParams();
-    const [allCategories, setAllCategories] = useState([]);
+    const [allCategories, loadingCategory] = useCategories();
     const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
@@ -32,77 +33,9 @@ export default function CategoryPage() {
         }
     });
 
-    const retrieveAllCategory = useCallback(async () => {
-        const cachedCategories = localStorage.getItem('allCategories');
-        const cacheTimestamp = localStorage.getItem('categoriesCacheTimestamp');
-        const now = new Date().getTime();
 
-        if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
-            return JSON.parse(cachedCategories);
-        }
-
-        try {
-            const response = await axios.get("http://localhost:8000/category/fetch/all");
-            const categories = response.data;
-
-            localStorage.setItem('allCategories', JSON.stringify(categories));
-            localStorage.setItem('categoriesCacheTimestamp', now.toString());
-
-            return categories;
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-            return [];
-        }
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const categoryResponse = await axios.get(`http://localhost:8000/category/${categoryId}`);
-                setCategoryName(categoryResponse.data.name);
-
-                const productsResponse = await axios.get(`http://localhost:8000/product/by-category/${categoryId}`);
-                setProducts(productsResponse.data.products);
-                setProductId(productsResponse.data.id);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setError('Failed to load data');
-                setProducts([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [categoryId]);
-
-    useEffect(() => {
-        const getAllCategory = async () => {
-            try {
-                setLoading(true);
-                const allCategories = await retrieveAllCategory();
-                if (Array.isArray(allCategories)) {
-                    setAllCategories(allCategories);
-                } else if (allCategories && allCategories.categories) {
-                    setAllCategories(allCategories.categories);
-                } else {
-                    console.error("Invalid response format from API");
-                    setAllCategories([]);
-                }
-            } catch (error) {
-                console.error("Error fetching categories:", error);
-                setAllCategories([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getAllCategory();
-    }, [retrieveAllCategory]);
-
-    if (loading) {
-        <LoadingSpinner/>
+    if (loadingCategory) {
+        return <LoadingSpinner/>;
     }
 
     const handleProductClick = (productId) => {

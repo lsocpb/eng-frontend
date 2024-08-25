@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
 import {
     MDBCard,
     MDBCardBody,
@@ -9,59 +8,10 @@ import {
     MDBListGroupItem,
     MDBIcon,
 } from 'mdb-react-ui-kit';
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {IconColors} from "../../constans/iconColorsConstans";
 
-const CategoryList = () => {
-    const [allCategories, setAllCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+const CategoryList = ({allCategories}) => {
     const navigate = useNavigate();
-
-    const retrieveAllCategory = useCallback(async () => {
-        const cachedCategories = localStorage.getItem('allCategories');
-        const cacheTimestamp = localStorage.getItem('categoriesCacheTimestamp');
-        const now = new Date().getTime();
-
-        if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
-            return JSON.parse(cachedCategories);
-        }
-
-        try {
-            const response = await axios.get("http://localhost:8000/category/fetch/all");
-            const categories = response.data;
-
-            localStorage.setItem('allCategories', JSON.stringify(categories));
-            localStorage.setItem('categoriesCacheTimestamp', now.toString());
-
-            return categories;
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-            return [];
-        }
-    }, []);
-
-    useEffect(() => {
-        const getAllCategory = async () => {
-            try {
-                setLoading(true);
-                const categories = await retrieveAllCategory();
-                if (Array.isArray(categories)) {
-                    setAllCategories(categories);
-                } else if (categories && categories.categories) {
-                    setAllCategories(categories.categories);
-                } else {
-                    console.error("Invalid response format from API");
-                    setAllCategories([]);
-                }
-            } catch (error) {
-                console.error("Error in getAllCategory:", error);
-                setAllCategories([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getAllCategory();
-    }, [retrieveAllCategory]);
 
     const handleCategoryClick = (categoryId) => {
         navigate(`/product/category/${categoryId}`);
@@ -71,10 +21,6 @@ const CategoryList = () => {
         const colorKeys = Object.keys(IconColors);
         return IconColors[colorKeys[index % colorKeys.length]];
     };
-
-    if (loading) {
-        <LoadingSpinner/>
-    }
 
     return (
         <MDBCard className="h-auto shadow-5-strong">
