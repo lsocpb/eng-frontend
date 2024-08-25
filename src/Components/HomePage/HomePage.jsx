@@ -16,6 +16,8 @@ import {
 import {useNavigate} from "react-router-dom";
 import CategoryList from "../Category/CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {SampleNextArrow} from "../Arrows/SampleNextArrow";
+import {SamplePrevArrow} from "../Arrows/SamplePrevArrow";
 
 export default function Widget() {
     const [products, setProducts] = useState([]);
@@ -85,24 +87,6 @@ export default function Widget() {
     if (loading) {
         <LoadingSpinner/>
     }
-
-    const SampleNextArrow = (props) => {
-        const {onClick} = props;
-        return (
-            <div className="custom-next-arrow" onClick={onClick}>
-                <MDBIcon icon={"angle-right"} size="2x" className="d-flex"/>
-            </div>
-        );
-    };
-
-    const SamplePrevArrow = (props) => {
-        const {onClick} = props;
-        return (
-            <div className="custom-prev-arrow" onClick={onClick}>
-                <MDBIcon icon={"angle-left"} size="2x" className="d-flex"/>
-            </div>
-        );
-    };
 
     const handleViewAllAuctions = () => {
         navigate('/product/category/1')
