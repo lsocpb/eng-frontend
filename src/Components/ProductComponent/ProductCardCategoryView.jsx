@@ -12,7 +12,7 @@ import CountdownTimer from '../CountdownTimer/CountdownTimer';
  * @param {Function} props.onClick - The click handler for the product card.
  * @returns {React.ReactElement} The product card component.
  */
-const ProductCardCategotyView = ({ product, onClick }) => {
+const ProductCardCategoryView = ({ product, onClick }) => {
   return (
     <MDBCol size="12" className="mb-4">
       <hr />
@@ -63,4 +63,4 @@ const ProductCardCategotyView = ({ product, onClick }) => {
   );
 };
 
-export default ProductCardCategotyView;
+export default ProductCardCategoryView;

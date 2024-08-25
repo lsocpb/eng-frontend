@@ -15,6 +15,9 @@ import CategoryList from "./CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {countdownStyles} from "../Utils/countdownStyles";
 import useCategories from "../../hooks/useCategories";
+import useFetchProducts from "../../hooks/useFetchProducts";
+import ProductCardCategoryView from "../ProductComponent/ProductCardCategoryView";
+import CountdownTimer from "../CountdownTimer/CountdownTimer";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -33,6 +36,27 @@ export default function CategoryPage() {
         }
     });
 
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const categoryResponse = await axios.get(`http://localhost:8000/category/${categoryId}`);
+                setCategoryName(categoryResponse.data.name);
+
+                const productsResponse = await axios.get(`http://localhost:8000/product/by-category/${categoryId}`);
+                setProducts(productsResponse.data.products);
+                setProductId(productsResponse.data.id);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Failed to load data');
+                setProducts([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [categoryId]);
 
     if (loadingCategory) {
         return <LoadingSpinner/>;
@@ -41,33 +65,6 @@ export default function CategoryPage() {
     const handleProductClick = (productId) => {
         navigate(`/product/${productId}/category/${categoryId}`);
     }
-
-    const renderer = ({days, hours, minutes, seconds, completed}) => {
-        if (completed) {
-            return <span style={{color: '#dc3545', fontWeight: 'bold'}}>Auction ended</span>;
-        } else {
-            return (
-                <div style={countdownStyles.container}>
-                    <div style={countdownStyles.timeUnit}>
-                        <span style={countdownStyles.number}>{days}</span>
-                        <span style={countdownStyles.label}>days</span>
-                    </div>
-                    <div style={countdownStyles.timeUnit}>
-                        <span style={countdownStyles.number}>{hours}</span>
-                        <span style={countdownStyles.label}>hours</span>
-                    </div>
-                    <div style={countdownStyles.timeUnit}>
-                        <span style={countdownStyles.number}>{minutes}</span>
-                        <span style={countdownStyles.label}>min</span>
-                    </div>
-                    <div style={countdownStyles.timeUnit}>
-                        <span style={countdownStyles.number}>{seconds}</span>
-                        <span style={countdownStyles.label}>sec</span>
-                    </div>
-                </div>
-            );
-        }
-    };
 
     const handleFilterChange = (filterType, value, checked) => {
         setFilters(prevFilters => {
@@ -113,72 +110,22 @@ export default function CategoryPage() {
                 <MDBCol md="7">
                     <MDBCard className="shadow-5-strong">
                         <MDBCardBody>
-                            {loading ? (
-                                <MDBSpinner role='status'>
-                                    <span className='visually-hidden'>Loading...</span>
-                                </MDBSpinner>
-                            ) : error ? (
+                            {error ? (
                                 <p className="text-center">No products found in this category.</p>
                             ) : filteredProducts.length > 0 ? (
                                 <MDBRow>
                                     {filteredProducts.map((product) => (
-                                        <MDBCol key={product.id} size="12" className="mb-4">
-                                            <hr></hr>
-                                            <MDBCard onClick={() => handleProductClick(product.id)}
-                                                     className="hover-shadow">
-                                                <MDBRow className="g-0">
-                                                    <MDBCol xs="12" md="4" className="d-flex align-items-stretch">
-                                                        <div className="w-100 position-relative"
-                                                             style={{minHeight: '200px'}}>
-                                                            <img
-                                                                src={product.image_url_1}
-                                                                alt={product.name}
-                                                                className="img-fluid rounded-start"
-                                                                style={{
-                                                                    position: 'absolute',
-                                                                    top: 0,
-                                                                    left: 0,
-                                                                    width: '100%',
-                                                                    height: '100%',
-                                                                    objectFit: 'fill'
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </MDBCol>
-                                                    <MDBCol md="8">
-                                                        <MDBCardBody>
-                                                            <MDBCardTitle>{product.name}</MDBCardTitle>
-                                                            <MDBCardText>
-                                                                <small
-                                                                    className="text-muted">Quantity: {product.quantity}</small>
-                                                            </MDBCardText>
-                                                            <MDBCardText>
-                                                                <small className="text-muted">
-                                                                    Ends in: <Countdown
-                                                                    date={new Date(product.end_date)}
-                                                                    renderer={renderer}/>
-                                                                </small>
-                                                            </MDBCardText>
-                                                            <MDBCardText>
-                                                                <h2 className="text-dark">
-                                                                    ${parseFloat(product.price).toFixed(2)}</h2>
-                                                            </MDBCardText>
-                                                            <MDBBadge
-                                                                color={product.status === 'active' ? 'success' : 'warning'}
-                                                                pill className="align-items-end">
-                                                                {product.status}
-                                                            </MDBBadge>
-                                                        </MDBCardBody>
-                                                    </MDBCol>
-                                                </MDBRow>
-                                            </MDBCard>
-                                        </MDBCol>
+                                        <ProductCardCategoryView
+                                            key={product.id}
+                                            product={product}
+                                            onClick={handleProductClick}
+                                            CountdownTimer={CountdownTimer}
+                                        />
                                     ))}
                                 </MDBRow>
                             ) : (
                                 <p className="text-center">No products found in this category.</p>
-                            )
-                            }
+                            )}
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
