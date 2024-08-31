@@ -8,6 +8,7 @@ import ProfileDetails from "./ProfileDetails";
 import ProfileImage from "./ProfileImage";
 import SocialLinks from "./SocialLinks";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {BASE_API_URL} from "../../api/config";
 
 /**
  * ProfilePage component
@@ -25,7 +26,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/profile', {
+                const response = await axios.get(`${BASE_API_URL}/profile`, {
                     headers: {
                         'Authorization': `Bearer ${sessionStorage.getItem('active-user')}`
                     }

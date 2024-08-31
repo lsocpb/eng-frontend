@@ -20,6 +20,7 @@ import {
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {BASE_API_URL} from "../../api/config";
 
 const ProductPage = () => {
     const {productId, categoryId} = useParams();
@@ -30,7 +31,7 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/product/get?product_id=${productId}`);
+                const response = await axios.get(`${BASE_API_URL}/product/get?product_id=${productId}`);
                 setProduct(response.data.product);
                 setLoading(false);
             } catch (err) {
@@ -44,7 +45,7 @@ const ProductPage = () => {
     }, [productId]);
 
     if (loading) {
-        <LoadingSpinner/>
+        return <LoadingSpinner/>;
     }
 
     if (error) {

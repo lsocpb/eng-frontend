@@ -10,6 +10,8 @@ import {
     MDBRow,
 } from "mdb-react-ui-kit";
 import {Line, Doughnut, Bar} from 'react-chartjs-2';
+import TopUsers from "./TopUsers";
+import StatCard from "./StatCard";
 import 'chart.js/auto';
 
 function AdminPage() {
@@ -54,47 +56,6 @@ function AdminPage() {
         }]
     });
 
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-        },
-        scales: {
-            x: {
-                display: false,
-            },
-            y: {
-                display: false,
-            },
-        },
-    };
-
-    const StatCard = ({title, value, change, icon, color, chartData}) => (
-        <MDBCol lg={3} md={6} className="mb-4">
-            <MDBCard className="h-100">
-                <MDBCardBody>
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                        <MDBIcon fas icon={icon} size="2x" style={{color: color}}/>
-                        <div style={{height: '50px', width: '100px'}}>
-                            <Line data={chartData} options={chartOptions}/>
-                        </div>
-                    </div>
-                    <MDBCardTitle>{title}</MDBCardTitle>
-                    <div className="d-flex justify-content-between align-items-end">
-                        <MDBCardText className="display-6 mb-0">{value}</MDBCardText>
-                        <div className={`text-${change >= 0 ? 'success' : 'danger'} d-flex align-items-center`}>
-                            <MDBIcon fas icon={change >= 0 ? 'arrow-up' : 'arrow-down'} className="me-1"/>
-                            <span>{Math.abs(change)}%</span>
-                        </div>
-                    </div>
-                </MDBCardBody>
-            </MDBCard>
-        </MDBCol>
-    );
-
     const footerData = [
         {label: 'Visits', value: '29,703', percentage: '40%', color: '#4CAF50'},
         {label: 'Unique', value: '24,093', percentage: '20%', color: '#2196F3'},
@@ -116,53 +77,6 @@ function AdminPage() {
                         <li key={index} className="mb-2">
                             <MDBIcon fas icon={activity.icon} className="me-2"/>
                             {activity.action} <small className="text-muted">- {activity.time}</small>
-                        </li>
-                    ))}
-                </ul>
-            </MDBCardBody>
-        </MDBCard>
-    );
-
-    const CategoryDistribution = () => {
-        const data = {
-            labels: ['Electronics', 'Fashion', 'Home & Garden', 'Sports', 'Other'],
-            datasets: [
-                {
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-                },
-            ],
-        };
-
-        return (
-            <MDBCard className="mb-4">
-                <MDBCardBody>
-                    <MDBCardTitle>Auction Categories Distribution</MDBCardTitle>
-                    <Doughnut data={data} options={{responsive: true, maintainAspectRatio: false}}/>
-                </MDBCardBody>
-            </MDBCard>
-        );
-    };
-
-    const TopUsers = () => (
-        <MDBCard className="mb-4">
-            <MDBCardBody>
-                <MDBCardTitle>Top Users</MDBCardTitle>
-                <ul className="list-unstyled">
-                    {[
-                        {name: "John Doe", auctions: 15, bids: 45},
-                        {name: "Jane Smith", auctions: 12, bids: 38},
-                        {name: "Bob Johnson", auctions: 10, bids: 30},
-                    ].map((user, index) => (
-                        <li key={index} className="mb-2 d-flex justify-content-between align-items-center">
-            <span>
-              <MDBIcon fas icon="user-circle" className="me-2"/>
-                {user.name}
-            </span>
-                            <span>
-              <small className="text-muted me-2">{user.auctions} auctions</small>
-              <small className="text-muted">{user.bids} bids</small>
-            </span>
                         </li>
                     ))}
                 </ul>

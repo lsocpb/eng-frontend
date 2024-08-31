@@ -5,19 +5,15 @@ import {
     MDBContainer,
     MDBCard,
     MDBCardBody,
-    MDBCardTitle,
-    MDBSpinner,
-    MDBBadge, MDBCardText, MDBRow, MDBCol
+    MDBRow, MDBCol
 } from 'mdb-react-ui-kit';
-import Countdown from 'react-countdown';
 import FilterSidebar from "./FilterSidebar";
 import CategoryList from "./CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import {countdownStyles} from "../Utils/countdownStyles";
 import useCategories from "../../hooks/useCategories";
-import useFetchProducts from "../../hooks/useFetchProducts";
 import ProductCardCategoryView from "../ProductComponent/ProductCardCategoryView";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
+import {BASE_API_URL} from "../../api/config";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -41,10 +37,12 @@ export default function CategoryPage() {
             setLoading(true);
             setError(null);
             try {
-                const categoryResponse = await axios.get(`http://localhost:8000/category/${categoryId}`);
-                setCategoryName(categoryResponse.data.name);
+                const [categoryResponse, productsResponse] = await Promise.all([
+                    axios.get(`${BASE_API_URL}/category/${categoryId}`),
+                    axios.get(`${BASE_API_URL}/product/by-category/${categoryId}`)
+                ]);
 
-                const productsResponse = await axios.get(`http://localhost:8000/product/by-category/${categoryId}`);
+                setCategoryName(categoryResponse.data.name);
                 setProducts(productsResponse.data.products);
                 setProductId(productsResponse.data.id);
             } catch (error) {
@@ -105,7 +103,7 @@ export default function CategoryPage() {
             </MDBRow>
             <MDBRow>
                 <MDBCol md="3">
-                    <CategoryList allCategories={allCategories} />
+                    <CategoryList allCategories={allCategories}/>
                 </MDBCol>
                 <MDBCol md="7">
                     <MDBCard className="shadow-5-strong">

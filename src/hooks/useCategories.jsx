@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import {BASE_API_URL} from "../api/config";
 
 /**
  * Custom hook to fetch categories from the server.
@@ -28,9 +29,8 @@ const useCategories = () => {
         if (cachedCategories && cacheTimestamp && now - parseInt(cacheTimestamp) < 24 * 60 * 60 * 1000) {
             return JSON.parse(cachedCategories);
         }
-
         try {
-            const response = await axios.get("http://localhost:8000/category/fetch/all");
+            const response = await axios.get(`${BASE_API_URL}/category/fetch/all`);
             const categories = response.data;
 
             localStorage.setItem('allCategories', JSON.stringify(categories));

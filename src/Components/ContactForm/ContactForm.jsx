@@ -10,6 +10,7 @@ import {
     MDBSpinner, MDBContainer,
 } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import {BASE_API_URL} from "../../api/config";
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const ContactForm = () => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            await axios.post('http://localhost:8000/send-email', {
+            await axios.post(`${BASE_API_URL}/send-email`, {
                 ...formData,
                 to: 'charfaircharity@gmail.com',
             });

@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {MDBBadge, MDBBtn, MDBSpinner, MDBTable, MDBTableBody, MDBTableHead} from "mdb-react-ui-kit";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import {BASE_API_URL} from "../../api/config";
 
 const ViewAllCategories = () => {
     const [allCategories, setAllCategories] = useState([]);
@@ -16,7 +17,7 @@ const ViewAllCategories = () => {
 
     const retrieveAllCategory = useCallback(async () => {
         const response = await axios.get(
-            "http://localhost:8000/category/fetch/all"
+            `${BASE_API_URL}/category/fetch/all`
         );
         return response.data;
     }, []);
@@ -50,7 +51,7 @@ const ViewAllCategories = () => {
 
     const deleteCategory = (categoryId, e) => {
         fetch(
-            "http://localhost:8000/category/delete?category_id=" + categoryId,
+            `${BASE_API_URL}/category/delete?category_id=` + categoryId,
             {
                 method: "DELETE",
                 headers: {

@@ -10,7 +10,9 @@ import {
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
-import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNotifications';
+import {showSuccessToast, showErrorToast} from '../ToastNotifications/ToastNotifications';
+import {BASE_API_URL} from "../../api/config";
+import axios from "axios";
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -37,13 +39,15 @@ function Login() {
         formDetails.append('password', password);
 
         try {
-            const response = await fetch('http://localhost:8000/auth/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: formDetails,
-            });
+            const response = await axios.post(
+                `${BASE_API_URL}/auth/token`,
+                formDetails,
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
+                }
+            );
 
             setLoading(false);
 

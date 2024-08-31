@@ -13,6 +13,7 @@ import {
     MDBModalTitle
 } from "mdb-react-ui-kit";
 import "./AddProductForm.css";
+import {BASE_API_URL} from "../../api/config";
 
 const formatDateTimeLocal = (date) => {
     return date.toISOString().slice(0, 16);
@@ -30,7 +31,7 @@ const AddProductForm = () => {
 
     const retrieveAllCategories = async () => {
         const response = await axios.get(
-            "http://localhost:8000/category/fetch/all"
+            `${BASE_API_URL}/category/fetch/all`
         );
         return response.data;
     };

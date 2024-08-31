@@ -1,4 +1,6 @@
 import {useState, useEffect} from 'react';
+import axios from 'axios';
+import { BASE_API_URL } from "../api/config";
 
 const useFetchProducts = () => {
     const [products, setProducts] = useState([]);
@@ -7,9 +9,8 @@ const useFetchProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/product/fetch/last`);
-                const data = await response.json();
-                setProducts(data.products);
+                const response = await axios.get(`${BASE_API_URL}/product/fetch/last`);
+                setProducts(response.data.products);
             } catch (err) {
                 console.error('Error fetching products:', err);
             } finally {

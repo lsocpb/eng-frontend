@@ -14,6 +14,8 @@ import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {showSuccessToast, showErrorToast} from "../ToastNotifications/ToastNotifications";
+import {BASE_API_URL} from "../../api/config";
+import axios from "axios";
 
 /**
  * The `Register` component renders a user registration form.
@@ -67,13 +69,15 @@ function Register() {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
+            const response = await axios.post(
+                `${BASE_API_URL}/auth/register`,
+                payload,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
 
             if (!response.ok) {
                 const errorData = await response.json();
