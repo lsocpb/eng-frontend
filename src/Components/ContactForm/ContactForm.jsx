@@ -12,6 +12,9 @@ import {
 import axios from 'axios';
 import {BASE_API_URL} from "../../api/config";
 
+/**
+ * ContactForm component renders a contact form.
+ */
 const ContactForm = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -21,10 +24,19 @@ const ContactForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
 
+    /**
+     * Handle form input changes
+     * @param e
+     */
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
+    /**
+     * Handle form submission
+     * @param e
+     * @returns {Promise<void>}
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);

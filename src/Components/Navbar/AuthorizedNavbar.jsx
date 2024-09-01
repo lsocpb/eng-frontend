@@ -12,8 +12,10 @@ import {
     MDBNavbarNav,
     MDBInputGroup,
 } from 'mdb-react-ui-kit';
-
-export default function App() {
+/**
+ * AuthorizedNavbar component displays a responsive navigation bar for authenticated users.
+ */
+export default function AuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
     const [searchText, setSearchText] = useState("");
 

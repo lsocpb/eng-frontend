@@ -1,3 +1,9 @@
+/**
+ * Styles for the countdown timer component.
+ *
+ * @type {Object}
+ * @property {Object} container - Style for the countdown timer container.
+ */
 export const countdownStyles = {
         container: {
             display: 'flex',

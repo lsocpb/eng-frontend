@@ -14,7 +14,10 @@ import {
 } from 'mdb-react-ui-kit';
 import './AdminNavbar.css';
 
-export default function App() {
+/**
+ * AdminNavbar component displays a responsive navigation bar for admin users.
+ */
+export default function AdminNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
     const [searchText, setSearchText] = useState("");
 

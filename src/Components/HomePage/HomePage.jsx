@@ -18,6 +18,15 @@ import {settings} from "../Utils/homePageSliderSettings";
 import useCategories from "../../hooks/useCategories";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
+/**
+ * HomePage component displays the main content of the home page, including:
+ * - A category list for browsing different product categories.
+ * - A central card with a call to action and carousel showcasing featured images.
+ * - A section with information about the charity and partnership opportunities.
+ * - A slider displaying the latest auctions with the option to view all auctions.
+ *
+ * It handles loading states for categories and products with a loading spinner.
+ */
 export default function HomePage() {
     const [allCategories, loadingCategories] = useCategories();
     const [products, loadingProducts] = useFetchProducts();
@@ -29,10 +38,16 @@ export default function HomePage() {
         return <LoadingSpinner/>;
     }
 
+    /**
+     * Redirects the user to the product category page.
+     */
     const handleViewAllAuctions = () => {
         navigate('/product/category/1')
     }
 
+    /**
+     * Redirects the user to the contact page.
+     */
     const handleContactClick = () => {
         navigate('/contact')
     }

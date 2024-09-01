@@ -11,7 +11,11 @@ import {
     MDBNavbarLink, MDBBtn,
 } from 'mdb-react-ui-kit';
 
-export default function App() {
+/**
+ * UnauthorizedNavbar component renders a navigation bar.
+ *
+ */
+export default function UnAuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
 
     return (
