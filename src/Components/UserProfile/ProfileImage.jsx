@@ -4,27 +4,6 @@ import ImageUpload from "../Utils/ImageUpload";
 /**
  * Component to display and manage the user's profile image with additional profile details and actions.
  *
- * @component
- * @example
- * const imageUrl = "https://example.com/profile.jpg";
- * const username = "John Doe";
- * const city = "New York";
- * const role = "admin";
- * const onUploadSuccess = (newImageUrl) => console.log("Image uploaded:", newImageUrl);
- * const onLogout = () => console.log("User logged out");
- * const onAdminNavigate = () => console.log("Navigate to admin page");
- * return (
- *   <ProfileImage
- *     imageUrl={imageUrl}
- *     username={username}
- *     city={city}
- *     role={role}
- *     onUploadSuccess={onUploadSuccess}
- *     onLogout={onLogout}
- *     onAdminNavigate={onAdminNavigate}
- *   />
- * );
- *
  * @param {Object} props - The component props.
  * @param {string} props.imageUrl - The URL of the user's profile image.
  * @param {string} props.username - The full name of the user.

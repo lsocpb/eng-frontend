@@ -3,7 +3,23 @@ import { Link } from "react-router-dom";
 import CategoryNavigator from "../Category/CategoryNavigator";
 import { MDBCard, MDBCardBody, MDBCardFooter, MDBIcon, MDBBadge, MDBTooltip } from "mdb-react-ui-kit";
 
+/**
+ * A card component that displays brief information about a product, including its image, description,
+ * category, seller details, and bid information.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Object} props.item - The product item data.
+ * @returns {React.Element} - A card UI displaying the product's summary details.
+ */
 const ProductCard = ({item}) => {
+    /**
+     * Truncates the product description if it exceeds the specified length.
+     *
+     * @param {string} description - The full product description.
+     * @param {number} maxLength - The maximum length of the description to display.
+     * @returns {string} - The truncated description with "..." appended if it was shortened.
+     */
     const descriptionToShow = (description, maxLength) => {
         if (description.length <= maxLength) {
             return description;

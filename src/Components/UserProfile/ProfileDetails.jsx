@@ -4,13 +4,6 @@ import {MDBCard, MDBCardBody, MDBCardText, MDBCol, MDBRow} from "mdb-react-ui-ki
 /**
  * Component to display profile details in a card layout using MDB components.
  *
- * @component
- * @example
- * const username = "John Doe";
- * const email = "johndoe@example.com";
- * const address = { city: "New York", street: "123 Main St", zip: "10001" };
- * return <ProfileDetails username={username} email={email} address={address} />;
- *
  * @param {Object} props - The component props.
  * @param {string} props.username - The full name of the user.
  * @param {string} props.email - The email address of the user.

@@ -20,12 +20,6 @@ import axios from "axios";
 /**
  * The `Register` component renders a user registration form.
  * On successful registration, the user is redirected to the login page.
- *
- * @component
- * @example
- * return (
- *   <Register />
- * );
  */
 function Register() {
 
@@ -38,6 +32,12 @@ function Register() {
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
 
+    /**
+     * Validates the form fields to ensure that all required fields are filled.
+     *
+     * @returns {boolean} - Returns `true` if all required fields are filled; otherwise, returns `false`.
+     *                      If any required field is missing, an error toast is shown and the function returns `false`.
+     */
     const validateForm = () => {
         if (!username || !password || !email || !street || !city || !zip || !phone) {
             showErrorToast('Username and password are required');

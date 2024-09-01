@@ -22,6 +22,14 @@ import axios from 'axios';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
 
+/**
+ * Component that displays detailed information about a product.
+ * Fetches product data based on the `productId` from the URL parameters
+ * and displays it along with seller information.
+ *
+ * @component
+ * @returns {React.Element} - Returns the product detail page with images, descriptions, and seller information.
+ */
 const ProductPage = () => {
     const {productId, categoryId} = useParams();
     const [product, setProduct] = useState(null);

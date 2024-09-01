@@ -15,10 +15,24 @@ import {
 import "./AddProductForm.css";
 import {BASE_API_URL} from "../../api/config";
 
+/**
+ * Utility function to format a Date object to a string suitable for the input[type="datetime-local"] element.
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} - The formatted date string in 'YYYY-MM-DDTHH:MM' format.
+ */
 const formatDateTimeLocal = (date) => {
     return date.toISOString().slice(0, 16);
 };
 
+/**
+ * A form component that allows users to add a new product to the auction platform.
+ * The form includes fields for product details such as name, description, category, quantity, price,
+ * auction deadline, and images. Upon submission, the product is added to the auction platform.
+ *
+ * @component
+ * @returns {React.Element} - A form UI that collects product data and allows users to start an auction.
+ */
 const AddProductForm = () => {
     const [categories, setCategories] = useState([]);
 
@@ -29,6 +43,9 @@ const AddProductForm = () => {
 
     let navigate = useNavigate();
 
+    /**
+     * Fetches all categories from the API and sets them in the component's state.
+     */
     const retrieveAllCategories = async () => {
         const response = await axios.get(
             `${BASE_API_URL}/category/fetch/all`
@@ -64,6 +81,11 @@ const AddProductForm = () => {
         category_id: "",
     });
 
+     /**
+     * Handles input changes and updates the product state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered by the input change.
+     */
     const handleInput = (e) => {
         const {name, value} = e.target;
         setProduct({
@@ -72,11 +94,21 @@ const AddProductForm = () => {
         });
     };
 
+     /**
+     * Validates the form inputs and prepares to submit the product by showing a confirmation modal.
+     *
+     * @param {React.MouseEvent<HTMLButtonElement>} e - The event triggered by the button click.
+     */
     const saveProduct = (e) => {
         e.preventDefault();
         setShowModal(true);
     };
 
+    /**
+     * Handles the confirmation of the auction submission, validates the inputs, and sends the data to the API.
+     *
+     * @param {React.MouseEvent<HTMLButtonElement>} e - The event triggered by the confirmation button click.
+     */
     const handleConfirm = async (e) => {
         setShowModal(false);
         e.preventDefault();
@@ -177,6 +209,13 @@ const AddProductForm = () => {
         }
     };
 
+    /**
+     * Truncates the file name to a specified length, adding an ellipsis in the middle if necessary.
+     *
+     * @param {string} fileName - The original file name.
+     * @param {number} maxLength - The maximum allowed length for the truncated file name.
+     * @returns {string} - The truncated file name with ellipsis.
+     */
     const truncateFileName = (fileName, maxLength = 20) => {
         if (fileName.length <= maxLength) return fileName;
         const extension = fileName.split('.').pop();
