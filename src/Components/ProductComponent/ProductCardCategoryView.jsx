@@ -6,23 +6,36 @@ import {
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
 /**
- * Renders a single product card.
+ * Renders a single product card with improved accessibility.
  * @param {Object} props - The component props.
  * @param {Object} props.product - The product data.
  * @param {Function} props.onClick - The click handler for the product card.
- * @returns {React.ReactElement} The product card component.
+ * @returns {React.ReactElement} The accessible product card component.
  */
 const ProductCardCategoryView = ({ product, onClick }) => {
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      onClick(product.id);
+    }
+  };
+
   return (
     <MDBCol size="12" className="mb-4">
       <hr />
-      <MDBCard onClick={() => onClick(product.id)} className="hover-shadow">
+      <MDBCard
+        onClick={() => onClick(product.id)}
+        onKeyDown={handleKeyDown}
+        className="hover-shadow"
+        tabIndex="0"
+        role="button"
+        aria-label={`View details for ${product.name}`}
+      >
         <MDBRow className="g-0">
           <MDBCol xs="12" md="4" className="d-flex align-items-stretch">
             <div className="w-100 position-relative" style={{minHeight: '200px'}}>
               <img
                 src={product.image_url_1}
-                alt={product.name}
+                alt={`Product image for ${product.name}`}
                 className="img-fluid rounded-start"
                 style={{
                   position: 'absolute',
