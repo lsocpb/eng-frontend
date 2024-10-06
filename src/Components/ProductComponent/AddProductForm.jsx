@@ -41,6 +41,7 @@ const AddProductForm = () => {
     const seller_jwtToken = Cookies.get("active-user");
     const [minDate, setMinDate] = useState(formatDateTimeLocal(new Date()));
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     let navigate = useNavigate();
 
@@ -80,9 +81,10 @@ const AddProductForm = () => {
         price: "",
         quantity: "",
         category_id: "",
+        is_bid: false,
     });
 
-     /**
+    /**
      * Handles input changes and updates the product state.
      *
      * @param {React.ChangeEvent<HTMLInputElement>} e - The event triggered by the input change.
@@ -95,7 +97,7 @@ const AddProductForm = () => {
         });
     };
 
-     /**
+    /**
      * Validates the form inputs and prepares to submit the product by showing a confirmation modal.
      *
      * @param {React.MouseEvent<HTMLButtonElement>} e - The event triggered by the button click.
@@ -145,12 +147,14 @@ const AddProductForm = () => {
         formData.append("price", parseFloat(product.price));
         formData.append("quantity", parseInt(product.quantity));
         formData.append("category_id", product.category_id);
+        formData.append("is_bid", product.is_bid);
         formData.append("end_date", new Date(endDate).getTime());
         formData.append("image1", selectedImage1);
         formData.append("image2", selectedImage2);
         formData.append("image3", selectedImage3);
 
         try {
+            setLoading(true);
             const response = await axios.post(
                 "http://localhost:8000/product/add",
                 formData,
@@ -204,9 +208,8 @@ const AddProductForm = () => {
                 draggable: true,
                 progress: undefined,
             });
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 1000);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -385,6 +388,27 @@ const AddProductForm = () => {
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div className="col-md-6 mb-3">
+                                                <label htmlFor="isBid" className="form-label text-muted">
+                                                    Is this a bid item?
+                                                </label>
+                                                <div className="form-check">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="form-check-input"
+                                                        id="is_bid"
+                                                        name="is_bid"
+                                                        onChange={(e) => setProduct({
+                                                            ...product,
+                                                            is_bid: e.target.checked
+                                                        })}
+                                                        checked={product.is_bid || false}
+                                                    />
+                                                    <label className="form-check-label" htmlFor="isBid">
+                                                        Yes, this item will be auctioned
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="col-12 text-center">
@@ -392,8 +416,17 @@ const AddProductForm = () => {
                                             type="submit"
                                             className="btn-danger btn-primary btn-lg px-5"
                                             onClick={saveProduct}
+                                            disabled={loading}
                                         >
-                                            Start Auction
+                                            {loading ? (
+                                                <>
+                                                    <span className="spinner-border spinner-border-sm me-2"
+                                                          role="status" aria-hidden="true"></span>
+                                                    Starting Auction...
+                                                </>
+                                            ) : (
+                                                'Start Auction'
+                                            )}
                                         </MDBBtn>
                                     </div>
                                 </div>
@@ -417,7 +450,17 @@ const AddProductForm = () => {
                             <MDBBtn className="btn-outline-danger" onClick={() => setShowModal(false)}>
                                 Cancel
                             </MDBBtn>
-                            <MDBBtn color="danger" onClick={handleConfirm}>Confirm</MDBBtn>
+                            <MDBBtn color="danger" onClick={handleConfirm} disabled={loading}>
+                                {loading ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status"
+                                              aria-hidden="true"></span>
+                                        Confirming...
+                                    </>
+                                ) : (
+                                    'Confirm'
+                                )}
+                            </MDBBtn>
                         </MDBModalFooter>
                     </MDBModalContent>
                 </MDBModalDialog>
