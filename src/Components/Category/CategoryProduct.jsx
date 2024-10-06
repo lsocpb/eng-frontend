@@ -56,7 +56,7 @@ export default function CategoryPage() {
         fetchData();
     }, [categoryId]);
 
-    if (loadingCategory) {
+    if (loading) {
         return <LoadingSpinner/>;
     }
 

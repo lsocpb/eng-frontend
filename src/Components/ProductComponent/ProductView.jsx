@@ -21,6 +21,8 @@ import {
 import axios from 'axios';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
+import CountdownTimer from "../CountdownTimer/CountdownTimer";
+import BidModal from "../BidModal/BidModal";
 
 /**
  * Component that displays detailed information about a product.
@@ -33,17 +35,20 @@ import {BASE_API_URL} from "../../api/config";
 const ProductPage = () => {
     const {productId, categoryId} = useParams();
     const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showBidModal, setShowBidModal] = useState(false);
+    const [isAuctionEnded, setIsAuctionEnded] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(`${BASE_API_URL}/product/get?product_id=${productId}`);
                 setProduct(response.data.product);
+                checkAuctionStatus(response.data.product.end_date);
                 setLoading(false);
             } catch (err) {
-                console.error('Error fetching product:', err);
                 setError(`Failed to fetch product data: ${err.message}`);
                 setLoading(false);
             }
@@ -51,6 +56,12 @@ const ProductPage = () => {
 
         fetchProduct();
     }, [productId]);
+
+    const checkAuctionStatus = (endDate) => {
+        const now = new Date();
+        const auctionEndDate = new Date(endDate);
+        setIsAuctionEnded(now > auctionEndDate);
+    };
 
     if (loading) {
         return <LoadingSpinner/>;
@@ -64,13 +75,15 @@ const ProductPage = () => {
         return <MDBContainer className="text-center mt-5"><h2 className="text-warning">Product not found</h2>
         </MDBContainer>;
     }
-
     const imageStyle = {
         width: '100%',
         height: '800px',
         objectFit: 'contain',
         objectPosition: 'center',
         transition: 'opacity 0.5s ease-in-out'
+    };
+    const toggleBidModal = () => {
+        setShowBidModal(!showBidModal);
     };
 
     return (
@@ -107,15 +120,24 @@ const ProductPage = () => {
                                 ${parseFloat(product.price).toFixed(2)}
                             </MDBCardText>
                             <MDBCardText>
-                                <strong>Status:</strong> <MDBBadge rounder pill color='secondary'
-                                                                   className="ms-2 mb-2">{product.status}</MDBBadge>
+                                <small className="text-muted">
+                                    Ends in: <CountdownTimer date={new Date(product.end_date)}/>
+                                </small>
                             </MDBCardText>
                             <div className="mt-4 d-flex flex-column">
-                                <MDBBtn rounded pill color='danger' className='mb-2 w-auto'>
-                                    <MDBIcon fas icon="heart" className="me-2"/> Support This Cause
+                                <MDBBtn
+                                    rounded
+                                    pill
+                                    color={isAuctionEnded ? 'secondary' : 'danger'}
+                                    className='mb-2 w-auto'
+                                    onClick={toggleBidModal}
+                                    disabled={isAuctionEnded}
+                                >
+                                    <MDBIcon fas icon="gavel" className="me-2"/>
+                                    {isAuctionEnded ? 'AUCTION ENDED' : 'PLACE A BID!'}
                                 </MDBBtn>
                                 <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'>
-                                    <MDBIcon fas icon="heart" className="me-2"/> Share on socials!
+                                    <MDBIcon fas icon="heart" className="me-2"/> SHARE ON SOCIALS!
                                 </MDBBtn>
                             </div>
                             <MDBCardText className="text-center text-muted mt-2">
@@ -128,7 +150,7 @@ const ProductPage = () => {
                     <MDBCard className="shadow-6-strong bg-light">
                         <MDBCardBody className="d-flex flex-column align-items-center">
                             <MDBCardText>
-                                <h2 className="text-center mb-3">Champion Seller</h2>
+                                <h2 className="text-center mb-3">Seller</h2>
                             </MDBCardText>
                             <MDBCardImage
                                 src={product.seller.profile_image_url}
@@ -139,12 +161,6 @@ const ProductPage = () => {
                             <MDBCardText className="text-center mb-3">
                                 <strong className="h4 text-danger">{product.seller.username}</strong>
                             </MDBCardText>
-                            <MDBCardText className="text-center text-muted mb-3">
-                                Supporting this cause since
-                            </MDBCardText>
-                            <MDBBtn color="danger" className="rounded-pill">
-                                <MDBIcon fas icon="heart" className="me-2"/> Support This Champion
-                            </MDBBtn>
                             <MDBCardText className="text-center mt-3 small">
                                 <MDBIcon fas icon="star" className="text-warning me-2"/>
                                 verified seller
@@ -164,6 +180,12 @@ const ProductPage = () => {
                     </MDBCard>
                 </MDBCol>
             </MDBRow>
+            <BidModal
+                isOpen={showBidModal}
+                toggle={toggleBidModal}
+                productName={product.name}
+                currentPrice={parseFloat(product.price).toFixed(2)}
+            />
         </MDBContainer>
     );
 };

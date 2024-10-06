@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import Login from './Components/LoginForm/Login';
 import RoleNavbar from './Components/Navbar/RoleNavbar';
 import Register from "./Components/Register/Register";
@@ -19,6 +19,7 @@ function App() {
             <UserProvider>
                 <RoleNavbar />
                 <Routes>
+                    <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />

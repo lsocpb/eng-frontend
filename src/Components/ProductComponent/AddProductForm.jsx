@@ -14,6 +14,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./AddProductForm.css";
 import {BASE_API_URL} from "../../api/config";
+import Cookies from "js-cookie";
 
 /**
  * Utility function to format a Date object to a string suitable for the input[type="datetime-local"] element.
@@ -36,8 +37,8 @@ const formatDateTimeLocal = (date) => {
 const AddProductForm = () => {
     const [categories, setCategories] = useState([]);
 
-    const seller = sessionStorage.getItem("active-user");
-    const seller_jwtToken = sessionStorage.getItem("active-user");
+    const seller = Cookies.get("active-user");
+    const seller_jwtToken = Cookies.get("active-user");
     const [minDate, setMinDate] = useState(formatDateTimeLocal(new Date()));
     const [showModal, setShowModal] = useState(false);
 

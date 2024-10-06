@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const withAuthRedirect = (Component) => {
     return (props) => {
@@ -7,7 +8,7 @@ const withAuthRedirect = (Component) => {
         const navigate = useNavigate();
 
         useEffect(() => {
-            const token = sessionStorage.getItem('active-user');
+            const token = Cookies.get('active-user');
             if (token) {
                 navigate('/home');
             } else {

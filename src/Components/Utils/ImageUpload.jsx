@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { MDBInput, MDBSpinner } from "mdb-react-ui-kit";
 import { AllowedImageExtensions, MaxImageSize } from '../../constans/fileValidationConstans'
+import Cookies from "js-cookie";
 /**
  * Component for handling image uploads with validation and feedback.
  *
@@ -60,7 +61,7 @@ const ImageUpload = ({ onUploadSuccess }) => {
             const response = await axios.post('http://localhost:8000/upload_profile_image', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${sessionStorage.getItem('active-user')}`
+                    'Authorization': `Bearer ${Cookies.get('active-user')}`
                 }
             });
             setLoading(false);

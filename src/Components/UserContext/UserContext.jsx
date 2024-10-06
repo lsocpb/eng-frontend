@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const UserContext = createContext(null);
 
 /**
- * Provides user authentication and management context.
+ * Provides user authentication and management context using cookies.
  *
  * The `UserProvider` component manages the user state based on the token stored in
- * sessionStorage. It decodes the token to retrieve user information and provides
+ * a cookie. It decodes the token to retrieve user information and provides
  * the user data and functions to update it or log out through context.
  *
  * @param {object} props - The component props.
@@ -21,7 +22,7 @@ export const UserProvider = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = sessionStorage.getItem('active-user');
+        const token = Cookies.get('active-user');
         if (token) {
             const decoded = jwtDecode(token);
             setUser({
@@ -35,11 +36,11 @@ export const UserProvider = ({ children }) => {
     }, []);
 
     /**
-     * Logs out the current user by removing the token from sessionStorage,
+     * Logs out the current user by removing the token cookie,
      * clearing the user state, and navigating to the login page.
      */
     const logout = () => {
-        sessionStorage.removeItem('active-user');
+        Cookies.remove('active-user');
         setUser(null);
         navigate('/login');
     };

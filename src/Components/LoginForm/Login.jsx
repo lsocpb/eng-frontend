@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNotifications';
+import Cookies from 'js-cookie';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -51,8 +52,8 @@ function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                sessionStorage.setItem('active-user', data.access_token);
-                if (data.access_token !== null) {
+                Cookies.set('active-user', data.access_token, { secure: true, sameSite: 'strict' });
+                if (data.access_token) {
                     showSuccessToast('Login successful');
                     setTimeout(() => {
                         window.location.href = "/home";

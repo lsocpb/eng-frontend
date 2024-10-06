@@ -6,7 +6,7 @@ import {
 import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
 /**
- * Renders a single product card with improved accessibility.
+ * Renders a single product card
  * @param {Object} props - The component props.
  * @param {Object} props.product - The product data.
  * @param {Function} props.onClick - The click handler for the product card.
@@ -62,12 +62,6 @@ const ProductCardCategoryView = ({ product, onClick }) => {
               <MDBCardText>
                 <h2 className="text-dark">${parseFloat(product.price).toFixed(2)}</h2>
               </MDBCardText>
-              <MDBBadge
-                color={product.status === 'active' ? 'success' : 'warning'}
-                pill className="align-items-end"
-              >
-                {product.status}
-              </MDBBadge>
             </MDBCardBody>
           </MDBCol>
         </MDBRow>

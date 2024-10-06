@@ -18,10 +18,6 @@ const RoleNavbar = () => {
         return <UnauthorizedNav />;
     }
 
-    if (user.role === 'admin') {
-        return <AdminNavbar />;
-    }
-
     return <AuthorizedNav />;
 }
 

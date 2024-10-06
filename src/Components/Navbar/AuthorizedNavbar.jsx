@@ -12,12 +12,14 @@ import {
     MDBNavbarNav,
     MDBInputGroup,
 } from 'mdb-react-ui-kit';
+import {useUser} from "../UserContext/UserContext";
 /**
  * AuthorizedNavbar component displays a responsive navigation bar for authenticated users.
  */
 export default function AuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const { user } = useUser();
 
     const searchProducts = (e) => {
         e.preventDefault();
@@ -70,6 +72,13 @@ export default function AuthorizedNavbar() {
                                         <MDBIcon fas icon="user" size={"lg"} className="me-2 mx-4"/>
                                     </MDBNavbarLink>
                                 </MDBNavbarItem>
+                                {user.role === 'admin' &&
+                                <MDBNavbarItem>
+                                    <MDBNavbarLink active aria-current='page' href='/admin' className='text-dark'>
+                                        <MDBIcon fas icon="cog" size={"lg"} className="me-2 mx-4"/>
+                                    </MDBNavbarLink>
+                                </MDBNavbarItem>
+                                }
                                 <MDBNavbarItem>
                                     <MDBBtn rounded pill aria-current='page' href='/product/add'
                                             className='mx-5 text-white btn-danger'>

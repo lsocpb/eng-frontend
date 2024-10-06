@@ -6,12 +6,13 @@ import {toast} from "react-toastify";
 import {MDBBadge, MDBBtn, MDBSpinner, MDBTable, MDBTableBody, MDBTableHead} from "mdb-react-ui-kit";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
+import Cookies from "js-cookie";
 
 const ViewAllCategories = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const admin_jwtToken = sessionStorage.getItem("active-user");
+    const admin_jwtToken = Cookies.get("active-user");
 
     let navigate = useNavigate();
 

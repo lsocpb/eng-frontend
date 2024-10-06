@@ -9,6 +9,7 @@ import ProfileImage from "./ProfileImage";
 import SocialLinks from "./SocialLinks";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
+import Cookies from "js-cookie";
 
 /**
  * ProfilePage component
@@ -28,7 +29,7 @@ export default function ProfilePage() {
             try {
                 const response = await axios.get(`${BASE_API_URL}/profile`, {
                     headers: {
-                        'Authorization': `Bearer ${sessionStorage.getItem('active-user')}`
+                        'Authorization': `Bearer ${Cookies.get('active-user')}`
                     }
                 });
                 setProfileData(response.data);

@@ -16,12 +16,14 @@ import "react-toastify/dist/ReactToastify.css";
 import {showSuccessToast, showErrorToast} from "../ToastNotifications/ToastNotifications";
 import {BASE_API_URL} from "../../api/config";
 import axios from "axios";
+import {useForm} from "react-hook-form";
 
 /**
  * The `Register` component renders a user registration form.
  * On successful registration, the user is redirected to the login page.
  */
 function Register() {
+
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +33,10 @@ function Register() {
     const [zip, setZip] = useState('');
     const [phone, setPhone] = useState('');
     const [error, setError] = useState('');
+    const {
+        register,
+        handleSubmit, formState: {errors}
+    } = useForm();
 
     /**
      * Validates the form fields to ensure that all required fields are filled.
@@ -38,14 +44,6 @@ function Register() {
      * @returns {boolean} - Returns `true` if all required fields are filled; otherwise, returns `false`.
      *                      If any required field is missing, an error toast is shown and the function returns `false`.
      */
-    const validateForm = () => {
-        if (!username || !password || !email || !street || !city || !zip || !phone) {
-            showErrorToast('Username and password are required');
-            return false;
-        }
-        setError('');
-        return true;
-    };
 
     /**
      * Handles form submission by sending a POST request to the registration endpoint.
@@ -53,18 +51,16 @@ function Register() {
      * @param {React.FormEvent} e - The form submit event.
      * @returns {void}
      */
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateForm()) return;
+    const onSubmit = async (data) => {
         const payload = {
-            username,
-            password,
-            email,
-            phone,
+            username: data.username,
+            password: data.password,
+            email: data.email,
+            phone: data.phone,
             address: {
-                street,
-                city,
-                zip
+                street: data.street,
+                city: data.city,
+                zip: data.zip
             }
         };
 
@@ -79,73 +75,112 @@ function Register() {
                 }
             );
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                showErrorToast(errorData.detail || 'Register failed');
+            if (response.status !== 200) {
+                showErrorToast('An unexpected error occurred. Please try again later.');
+                return;
             }
 
-            const data = await response.json();
-            showSuccessToast(data.message || 'Register successful');
+            showSuccessToast('Register successful');
             setTimeout(() => {
                 window.location.href = "/login";
             }, 1000);
         } catch (error) {
-            console.error('Error:', error);
-            setError('An unexpected error occurred. Please try again later.');
+            toast.error('An unexpected error occurred. Please try again later.');
         }
     };
 
-    return (
+return (
         <MDBContainer className='overflow-hidden my-5'>
             <MDBCol className='mb-5 p-5 justify-content-center align-items-center'>
                 <MDBCardBody className='d-flex flex-column text-center justify-content-center align-items-center'>
-
                     <h2 className="fw-bold mb-5">Sign up now!</h2>
-                    <MDBRow className='mb-4'>
-                        <MDBCol md='6'>
-                            <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' value={username}
-                                      onChange={(e) => setUsername(e.target.value)}/>
-                            <MDBInput wrapperClass='mb-4' label='Email' id='form2' type='email' value={email}
-                                      onChange={(e) => setEmail(e.target.value)}/>
-                            <MDBInput wrapperClass='mb-4' label='Password' id='form3' type='password' value={password}
-                                      onChange={(e) => setPassword(e.target.value)}/>
-                        </MDBCol>
-                        <MDBCol md='6'>
-                            <MDBInput wrapperClass='mb-4' label='Street' id='form4' type='text' value={street}
-                                      onChange={(e) => setStreet(e.target.value)}/>
-                            <MDBInput wrapperClass='mb-4' label='City' id='form5' type='text' value={city}
-                                      onChange={(e) => setCity(e.target.value)}/>
-                            <MDBInput wrapperClass='mb-4' label='Zip' id='form6' type='text' value={zip}
-                                      onChange={(e) => setZip(e.target.value)}/>
-                            <MDBInput wrapperClass='mb-4' label='Phone' id='form6' type='text' value={phone}
-                                      onChange={(e) => setPhone(e.target.value)}/>
-                        </MDBCol>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <MDBRow className='mb-4'>
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Username'
+                                    id='username'
+                                    type='text'
+                                    {...register('username', { required: 'Username is required' })}
+                                />
+                                {errors.username && <p className="text-danger">{errors.username.message}</p>}
+
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Email'
+                                    id='email'
+                                    type='email'
+                                    {...register('email', { required: 'Email is required' })}
+                                />
+                                {errors.email && <p className="text-danger">{errors.email.message}</p>}
+
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Password'
+                                    id='password'
+                                    type='password'
+                                    {...register('password', { required: 'Password is required' })}
+                                />
+                                {errors.password && <p className="text-danger">{errors.password.message}</p>}
+                            </MDBCol>
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Street'
+                                    id='street'
+                                    type='text'
+                                    {...register('street', { required: 'Street is required' })}
+                                />
+                                {errors.street && <p className="text-danger">{errors.street.message}</p>}
+
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='City'
+                                    id='city'
+                                    type='text'
+                                    {...register('city', { required: 'City is required' })}
+                                />
+                                {errors.city && <p className="text-danger">{errors.city.message}</p>}
+
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Zip'
+                                    id='zip'
+                                    type='text'
+                                    {...register('zip', { required: 'Zip is required' })}
+                                />
+                                {errors.zip && <p className="text-danger">{errors.zip.message}</p>}
+
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Phone'
+                                    id='phone'
+                                    type='text'
+                                    {...register('phone', { required: 'Phone is required' })}
+                                />
+                                {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
+                            </MDBCol>
+                        </MDBRow>
                         <div className="d-flex justify-content-center">
-                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' onClick={handleSubmit}>Sign up</MDBBtn>
+                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit">Sign up</MDBBtn>
                         </div>
-                    </MDBRow>
-                    <div className="text-center">
-
+                    </form>
+                    <div className="text-center mt-3">
                         <p>or sign up with:</p>
-
                         <MDBBtn tag='a' color='none' className='mx-3'>
                             <MDBIcon fab icon='facebook-f' size="sm"/>
                         </MDBBtn>
-
                         <MDBBtn tag='a' color='none' className='mx-3'>
                             <MDBIcon fab icon='twitter' size="sm"/>
                         </MDBBtn>
-
                         <MDBBtn tag='a' color='none' className='mx-3'>
                             <MDBIcon fab icon='google' size="sm"/>
                         </MDBBtn>
-
                         <MDBBtn tag='a' color='none' className='mx-3'>
                             <MDBIcon fab icon='github' size="sm"/>
                         </MDBBtn>
-
                     </div>
-
                 </MDBCardBody>
             </MDBCol>
             <ToastContainer/>
