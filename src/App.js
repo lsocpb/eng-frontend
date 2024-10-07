@@ -13,6 +13,7 @@ import CategoryPage from "./Components/Category/CategoryProduct";
 import AdminPage from "./Components/AdminPage/AdminPage";
 import { UserProvider } from './Components/UserContext/UserContext';
 import ContactForm from './Components/ContactForm/ContactForm';
+import PaymentPage from "./Components/PaymentPage/PaymentPage";
 function App() {
     return (
         <Router>
@@ -30,6 +31,7 @@ function App() {
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
                         <Route path="/product/add" element={<AddProductForm />} />
                         <Route path="/contact" element={<ContactForm />} />
+                        <Route path="/payment/:paymentId" element={<PaymentPage />} />
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
                         <Route path="/admin" element={<AdminPage />} />

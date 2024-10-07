@@ -22,7 +22,8 @@ import axios from 'axios';
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
-import BidModal from "../BidModal/BidModal";
+import BidModal from "../Modals/BidModal";
+import BuyModal from "../Modals/BuyModal";
 
 /**
  * Component that displays detailed information about a product.
@@ -38,6 +39,7 @@ const ProductPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showBidModal, setShowBidModal] = useState(false);
+    const [showBuyModal, setShowBuyModal] = useState(false);
     const [isAuctionEnded, setIsAuctionEnded] = useState(false);
 
     useEffect(() => {
@@ -47,9 +49,9 @@ const ProductPage = () => {
                 const response = await axios.get(`${BASE_API_URL}/product/get?product_id=${productId}`);
                 setProduct(response.data.product);
                 checkAuctionStatus(response.data.product.end_date);
-                setLoading(false);
             } catch (err) {
                 setError(`Failed to fetch product data: ${err.message}`);
+            } finally {
                 setLoading(false);
             }
         };
@@ -85,6 +87,10 @@ const ProductPage = () => {
     const toggleBidModal = () => {
         setShowBidModal(!showBidModal);
     };
+
+    const toggleBuyModal = () => {
+        setShowBuyModal(!showBuyModal);
+    }
 
     return (
         <MDBContainer fluid className="my-5 px-5">
@@ -125,17 +131,31 @@ const ProductPage = () => {
                                 </small>
                             </MDBCardText>
                             <div className="mt-4 d-flex flex-column">
-                                <MDBBtn
-                                    rounded
-                                    pill
-                                    color={isAuctionEnded ? 'secondary' : 'danger'}
-                                    className='mb-2 w-auto'
-                                    onClick={toggleBidModal}
-                                    disabled={isAuctionEnded}
-                                >
-                                    <MDBIcon fas icon="gavel" className="me-2"/>
-                                    {isAuctionEnded ? 'AUCTION ENDED' : 'PLACE A BID!'}
-                                </MDBBtn>
+                                {product.isBid ? (
+                                    <MDBBtn
+                                        rounded
+                                        pill
+                                        color={'danger'}
+                                        className='mb-2 w-auto'
+                                        onClick={toggleBidModal}
+                                        disabled={isAuctionEnded}
+                                    >
+                                        <MDBIcon fas icon="gavel" className="me-2"/>
+                                        {isAuctionEnded ? 'AUCTION ENDED' : 'PLACE A BID!'}
+                                    </MDBBtn>
+                                ) : (
+                                    <MDBBtn
+                                        rounded
+                                        pill
+                                        color={'danger'}
+                                        className='mb-2 w-auto'
+                                        onClick={toggleBuyModal}
+                                        disabled={isAuctionEnded}
+                                    >
+                                        <MDBIcon fas icon="shopping-cart" className="me-2"/>
+                                        {isAuctionEnded ? 'AUCTION ENDED' : 'BUY NOW!'}
+                                    </MDBBtn>
+                                )}
                                 <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'>
                                     <MDBIcon fas icon="heart" className="me-2"/> SHARE ON SOCIALS!
                                 </MDBBtn>
@@ -185,6 +205,12 @@ const ProductPage = () => {
                 toggle={toggleBidModal}
                 productName={product.name}
                 currentPrice={parseFloat(product.price).toFixed(2)}
+            />
+            <BuyModal
+                isOpen={showBuyModal}
+                toggle={toggleBuyModal}
+                productName={product.name}
+                productPrice={parseFloat(product.price).toFixed(2)}
             />
         </MDBContainer>
     );
