@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ProductCard from "../ProductComponent/ProductCard";
 import Slider from "react-slick";
 import {
@@ -17,6 +17,8 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {settings} from "../Utils/homePageSliderSettings";
 import useCategories from "../../hooks/useCategories";
 import useFetchProducts from "../../hooks/useFetchProducts";
+import {useScreenSize} from "../../hooks/useScreenSize";
+import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
 
 /**
  * HomePage component displays the main content of the home page, including:
@@ -30,6 +32,7 @@ import useFetchProducts from "../../hooks/useFetchProducts";
 export default function HomePage() {
     const [allCategories, loadingCategories] = useCategories();
     const [products, loadingProducts] = useFetchProducts();
+    const {screenWidth} = useScreenSize();
 
     const navigate = useNavigate()
 
@@ -60,7 +63,7 @@ export default function HomePage() {
                         <CategoryList allCategories={allCategories} />
                     </MDBCol>
                     <MDBCol md="6">
-                        <MDBCard className="h-100 shadow-5-strong">
+                        <MDBCard className={screenWidth > WidthBreakpoints.md ? "h-100 shadow-5-strong" : "mt-2 mb-2 h-100 shadow-5-strong"}>
                             <MDBCardBody>
                                 <div className="bg-white text-black py-5 px-4 text-center">
                                     <h1 className="text-danger display-4 font-weight-bold mb-4">Join Us in Making a
@@ -109,7 +112,7 @@ export default function HomePage() {
                     <MDBCol md="3">
                         <MDBRow>
                             <MDBCol md="12" className="mb-4">
-                                <MDBCard className="shadow-5-strong h-100">
+                                <MDBCard className={screenWidth > WidthBreakpoints.md ? "h-100 shadow-5-strong" : "mt-4 h-100 shadow-5-strong"}>
                                     <MDBCardBody className="text-center">
                                         <MDBIcon fas icon="heart" size="3x" className="text-danger mb-3"/>
                                         <h4 className="mb-4 font-weight-bold">Welcome to Our Charity Auction!</h4>
@@ -141,7 +144,7 @@ export default function HomePage() {
                                 </MDBCard>
                             </MDBCol>
                             <MDBCol md="12">
-                                <MDBCard className="shadow-5-strong h-100">
+                                <MDBCard className={screenWidth > WidthBreakpoints.md ? "h-100 shadow-5-strong" : "mt-4 h-100 shadow-5-strong"}>
                                     <MDBCardBody className="text-center">
                                         <MDBIcon fas icon="handshake" size="3x" className="text-danger mb-3"/>
                                         <h4 className="mb-4 font-weight-bold">Become Our Partner</h4>
