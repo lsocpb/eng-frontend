@@ -19,6 +19,7 @@ import useCategories from "../../hooks/useCategories";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
+import MobileCategorySidebar from "../Category/MobileCategoryList";
 
 /**
  * HomePage component displays the main content of the home page, including:
@@ -57,11 +58,16 @@ export default function HomePage() {
 
     return (
         <MDBContainer>
+            {screenWidth <= WidthBreakpoints.md && (
+                <MobileCategorySidebar allCategories={allCategories} />
+            )}
             <MDBContainer fluid className="py-5">
                 <MDBRow>
-                    <MDBCol md="3">
-                        <CategoryList allCategories={allCategories} />
-                    </MDBCol>
+                    {screenWidth > WidthBreakpoints.md && (
+                        <MDBCol md="3">
+                            <CategoryList allCategories={allCategories} />
+                        </MDBCol>
+                    )}
                     <MDBCol md="6">
                         <MDBCard className={screenWidth > WidthBreakpoints.md ? "h-100 shadow-5-strong" : "mt-2 mb-2 h-100 shadow-5-strong"}>
                             <MDBCardBody>

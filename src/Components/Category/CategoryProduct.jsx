@@ -14,6 +14,9 @@ import useCategories from "../../hooks/useCategories";
 import ProductCardCategoryView from "../ProductComponent/ProductCardCategoryView";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import {BASE_API_URL} from "../../api/config";
+import {useScreenSize} from "../../hooks/useScreenSize";
+import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
+import MobileCategorySidebar from "./MobileCategoryList";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
@@ -31,6 +34,7 @@ export default function CategoryPage() {
             inactive: false
         }
     });
+    const {screenWidth} = useScreenSize();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -94,6 +98,9 @@ export default function CategoryPage() {
 
     return (
         <MDBContainer className="py-5">
+            {screenWidth <= WidthBreakpoints.md && (
+                <MobileCategorySidebar allCategories={allCategories}/>
+            )}
             <MDBRow className="mb-4">
                 <MDBCol>
                     <h4 className="text-start text-muted font-monospace">
@@ -103,10 +110,12 @@ export default function CategoryPage() {
             </MDBRow>
             <MDBRow>
                 <MDBCol md="3">
-                    <CategoryList allCategories={allCategories}/>
+                    {screenWidth > WidthBreakpoints.md && (
+                        <CategoryList allCategories={allCategories}/>
+                    )}
                 </MDBCol>
                 <MDBCol md="7">
-                    <MDBCard className="shadow-5-strong">
+                    <MDBCard className={screenWidth > WidthBreakpoints.md ? "shadow-5-strong" : "mt-4 shadow-5-strong"}>
                         <MDBCardBody>
                             {error ? (
                                 <p className="text-center">No products found in this category.</p>

@@ -10,9 +10,9 @@ import {
   MDBRange
 } from 'mdb-react-ui-kit';
 
-function FilterSidebar({ onFilterChange }) {
+function FilterSidebar({ onFilterChange, margin }) {
   return (
-    <MDBCard className="h-auto shadow-5-strong">
+    <MDBCard className={`h-auto shadow-5-strong ${margin}`}>
       <MDBCardBody>
         <MDBCardTitle className="text-center mb-4">Filters</MDBCardTitle>
 
