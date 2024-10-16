@@ -48,7 +48,8 @@ function Login() {
                 },
                 body: formDetails,
             });
-
+            console.log(response);
+            console.log(`${BASE_API_URL}/auth/token`);
             setLoading(false);
 
             if (response.ok) {
