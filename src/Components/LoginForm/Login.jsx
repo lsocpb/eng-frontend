@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNotifications';
 import Cookies from 'js-cookie';
+import {BASE_API_URL} from "../../api/config";
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -40,7 +41,7 @@ function Login() {
         formDetails.append('password', password);
 
         try {
-            const response = await fetch('http://localhost:8000/auth/token', {
+            const response = await fetch(`${BASE_API_URL}/auth/token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

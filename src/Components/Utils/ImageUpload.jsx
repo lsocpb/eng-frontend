@@ -3,6 +3,7 @@ import axios from 'axios';
 import { MDBInput, MDBSpinner } from "mdb-react-ui-kit";
 import { AllowedImageExtensions, MaxImageSize } from '../../constans/fileValidationConstans'
 import Cookies from "js-cookie";
+import {BASE_API_URL} from "../../api/config";
 /**
  * Component for handling image uploads with validation and feedback.
  *
@@ -58,7 +59,7 @@ const ImageUpload = ({ onUploadSuccess }) => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:8000/upload_profile_image', formData, {
+            const response = await axios.post(`${BASE_API_URL}/upload_profile_image`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${Cookies.get('active-user')}`

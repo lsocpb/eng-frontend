@@ -156,7 +156,7 @@ const AddProductForm = () => {
         try {
             setLoading(true);
             const response = await axios.post(
-                "http://localhost:8000/product/add",
+                `${BASE_API_URL}/product/add`,
                 formData,
                 {
                     headers: {
