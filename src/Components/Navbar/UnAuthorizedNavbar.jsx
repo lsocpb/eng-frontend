@@ -19,8 +19,8 @@ export default function UnAuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
 
     return (
-        <MDBNavbar expand='lg' light bgColor='light'>
-            <MDBContainer fluid>
+        <MDBNavbar sticky expand='lg' light bgColor='light'>
+            <MDBContainer>
                 <MDBNavbarBrand href='/home' className="d-flex mx-2">
                     <img src={process.env.PUBLIC_URL + '/chairfair.png'} style={{width: '150px', height: '60px'}}
                          alt="CharFair logo"/>
