@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import './Login.css';
 import {
     MDBInput,
@@ -31,6 +31,11 @@ function Login() {
         return true;
     };
 
+    useEffect(() => {
+        console.log('Login page loaded')
+        console.log('BASE_API_URL:', BASE_API_URL)
+    }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!validateForm()) return;
@@ -48,8 +53,6 @@ function Login() {
                 },
                 body: formDetails,
             });
-            console.log(response);
-            console.log(`${BASE_API_URL}/auth/token`);
             setLoading(false);
 
             if (response.ok) {
