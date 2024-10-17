@@ -34,8 +34,8 @@ const ProductCardCategoryView = ({ product, onClick }) => {
           <MDBCol xs="12" md="4" className="d-flex align-items-stretch">
             <div className="w-100 position-relative" style={{minHeight: '200px'}}>
               <img
-                src={product.image_url_1}
-                alt={`Product image for ${product.name}`}
+                src={product.product.image_url_1}
+                alt={product.product.name}
                 className="img-fluid rounded-start"
                 style={{
                   position: 'absolute',
@@ -50,7 +50,7 @@ const ProductCardCategoryView = ({ product, onClick }) => {
           </MDBCol>
           <MDBCol md="8">
             <MDBCardBody>
-              <MDBCardTitle>{product.name}</MDBCardTitle>
+              <MDBCardTitle>{product.product.name}</MDBCardTitle>
               <MDBCardText>
                 <small className="text-muted">Quantity: {product.quantity}</small>
               </MDBCardText>

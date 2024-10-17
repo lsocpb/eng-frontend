@@ -24,6 +24,7 @@ import {BASE_API_URL} from "../../api/config";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import BidModal from "../Modals/BidModal";
 import BuyModal from "../Modals/BuyModal";
+import { set } from 'react-hook-form';
 
 /**
  * Component that displays detailed information about a product.
@@ -35,19 +36,26 @@ import BuyModal from "../Modals/BuyModal";
  */
 const ProductPage = () => {
     const {productId, categoryId} = useParams();
-    const [product, setProduct] = useState(null);
+    const [auction, setAuction] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showBidModal, setShowBidModal] = useState(false);
     const [showBuyModal, setShowBuyModal] = useState(false);
     const [isAuctionEnded, setIsAuctionEnded] = useState(false);
+    const [seller, setSeller] = useState(null);
+    const [product, setProduct] = useState(null);
+    const [isBuyNow, setIsBuyNow] = useState(false);
 
     useEffect(() => {
         setLoading(true);
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`${BASE_API_URL}/product/get?product_id=${productId}`);
+                const response = await axios.get(`${BASE_API_URL}/auction/1`);
+                setIsBuyNow(response.data.auction_type === "buy_now");
+                console.log(isBuyNow);
+                setAuction(response.data);
                 setProduct(response.data.product);
+                setSeller(response.data.seller);
                 checkAuctionStatus(response.data.product.end_date);
             } catch (err) {
                 setError(`Failed to fetch product data: ${err.message}`);
@@ -73,7 +81,7 @@ const ProductPage = () => {
         return <MDBContainer className="text-center mt-5"><h2 className="text-danger">{error}</h2></MDBContainer>;
     }
 
-    if (!product) {
+    if (!auction) {
         return <MDBContainer className="text-center mt-5"><h2 className="text-warning">Product not found</h2>
         </MDBContainer>;
     }
@@ -123,15 +131,15 @@ const ProductPage = () => {
                             }}>{product.quantity}</span>
                             </MDBCardText>
                             <MDBCardText className="h2 mb-4">
-                                ${parseFloat(product.price).toFixed(2)}
+                                ${parseFloat(auction.price).toFixed(2)}
                             </MDBCardText>
                             <MDBCardText>
                                 <small className="text-muted">
-                                    Ends in: <CountdownTimer date={new Date(product.end_date)}/>
+                                    Ends in: <CountdownTimer date={new Date(auction.end_date)}/>
                                 </small>
                             </MDBCardText>
                             <div className="mt-4 d-flex flex-column">
-                                {product.isBid ? (
+                                {!isBuyNow ? (
                                     <MDBBtn
                                         rounded
                                         pill
@@ -173,13 +181,13 @@ const ProductPage = () => {
                                 <h2 className="text-center mb-3">Seller</h2>
                             </MDBCardText>
                             <MDBCardImage
-                                src={product.seller.profile_image_url}
+                                src={seller.profile_image_url}
                                 alt="Champion Profile Picture"
                                 className="rounded-circle mb-3 border border-danger"
                                 style={{width: '120px', height: '120px', objectFit: 'cover'}}
                             />
                             <MDBCardText className="text-center mb-3">
-                                <strong className="h4 text-danger">{product.seller.username}</strong>
+                                <strong className="h4 text-danger">{seller.username}</strong>
                             </MDBCardText>
                             <MDBCardText className="text-center mt-3 small">
                                 <MDBIcon fas icon="star" className="text-warning me-2"/>
@@ -203,14 +211,14 @@ const ProductPage = () => {
             <BidModal
                 isOpen={showBidModal}
                 toggle={toggleBidModal}
-                productName={product.name}
-                currentPrice={parseFloat(product.price).toFixed(2)}
+                productName={auction.name}
+                currentPrice={parseFloat(auction.price).toFixed(2)}
             />
             <BuyModal
                 isOpen={showBuyModal}
                 toggle={toggleBuyModal}
-                productName={product.name}
-                productPrice={parseFloat(product.price).toFixed(2)}
+                productName={auction.name}
+                productPrice={parseFloat(auction.price).toFixed(2)}
             />
         </MDBContainer>
     );

@@ -43,11 +43,10 @@ export default function CategoryPage() {
             try {
                 const [categoryResponse, productsResponse] = await Promise.all([
                     axios.get(`${BASE_API_URL}/category/${categoryId}`),
-                    axios.get(`${BASE_API_URL}/product/by-category/${categoryId}`)
+                    axios.get(`${BASE_API_URL}/auction/category/${categoryId}`)
                 ]);
-
                 setCategoryName(categoryResponse.data.name);
-                setProducts(productsResponse.data.products);
+                setProducts(productsResponse.data.auctions);
                 setProductId(productsResponse.data.id);
             } catch (error) {
                 console.error('Error fetching data:', error);

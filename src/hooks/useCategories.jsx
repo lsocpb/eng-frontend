@@ -30,7 +30,7 @@ const useCategories = () => {
             return JSON.parse(cachedCategories);
         }
         try {
-            const response = await axios.get(`${BASE_API_URL}/category/fetch/all`);
+            const response = await axios.get(`${BASE_API_URL}/category/all`);
             const categories = response.data;
 
             localStorage.setItem('allCategories', JSON.stringify(categories));

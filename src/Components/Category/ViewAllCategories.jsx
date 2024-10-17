@@ -18,7 +18,7 @@ const ViewAllCategories = () => {
 
     const retrieveAllCategory = useCallback(async () => {
         const response = await axios.get(
-            `${BASE_API_URL}/category/fetch/all`
+            `${BASE_API_URL}/category/all`
         );
         return response.data;
     }, []);
