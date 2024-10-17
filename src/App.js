@@ -24,7 +24,7 @@ function App() {
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/product/:productId/category/:categoryId" element={<ProductPage />} />
+                    <Route path="/auction/:auctionId" element={<ProductPage />} />
                     <Route path="/product/category/:categoryId" element={<CategoryPage />} />
                     <Route element={<ProtectedRoute requiredRoles={['user', 'admin']}/>}>
                         <Route path="/profile" element={<Profile />} />

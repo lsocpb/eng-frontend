@@ -49,8 +49,7 @@ export default function CategoryPage() {
                 setProducts(productsResponse.data.auctions);
                 setProductId(productsResponse.data.id);
             } catch (error) {
-                console.error('Error fetching data:', error);
-                setError('Failed to load data');
+                setCategoryName('');
                 setProducts([]);
             } finally {
                 setLoading(false);
@@ -64,7 +63,7 @@ export default function CategoryPage() {
     }
 
     const handleProductClick = (productId) => {
-        navigate(`/product/${productId}/category/${categoryId}`);
+        navigate(`/auction/${productId}`);
     }
 
     const handleFilterChange = (filterType, value, checked) => {

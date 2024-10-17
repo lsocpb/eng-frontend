@@ -35,7 +35,7 @@ import { set } from 'react-hook-form';
  * @returns {React.Element} - Returns the product detail page with images, descriptions, and seller information.
  */
 const ProductPage = () => {
-    const {productId, categoryId} = useParams();
+    const {auctionId} = useParams();
     const [auction, setAuction] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -50,9 +50,8 @@ const ProductPage = () => {
         setLoading(true);
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`${BASE_API_URL}/auction/1`);
+                const response = await axios.get(`${BASE_API_URL}/auction/${auctionId}`);
                 setIsBuyNow(response.data.auction_type === "buy_now");
-                console.log(isBuyNow);
                 setAuction(response.data);
                 setProduct(response.data.product);
                 setSeller(response.data.seller);
@@ -65,7 +64,7 @@ const ProductPage = () => {
         };
 
         fetchProduct();
-    }, [productId]);
+    }, [auctionId]);
 
     const checkAuctionStatus = (endDate) => {
         const now = new Date();
