@@ -31,10 +31,6 @@ function Login() {
         return true;
     };
 
-    useEffect(() => {
-        console.log('Login page loaded')
-        console.log('BASE_API_URL:', BASE_API_URL)
-    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

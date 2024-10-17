@@ -8,12 +8,6 @@ import {BASE_API_URL} from "../../api/config";
  * Component for handling image uploads with validation and feedback.
  *
  * @component
- * @example
- * const handleUploadSuccess = (imageUrl) => {
- *   console.log("Uploaded image URL:", imageUrl);
- * };
- * return <ImageUpload onUploadSuccess={handleUploadSuccess} />;
- *
  * @param {Object} props - The component props.
  * @param {function} props.onUploadSuccess - Callback function to handle successful image upload. Receives the URL of the uploaded image as an argument.
  *

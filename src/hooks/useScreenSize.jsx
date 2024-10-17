@@ -24,12 +24,5 @@ export const useScreenSize = () => {
     const isXl = screenWidth >= WidthBreakpoints.xl && screenWidth < WidthBreakpoints.xxl;
     const isXxl = screenWidth >= WidthBreakpoints.xxl;
 
-    useEffect(() => {
-        console.log('Current screen width:', screenWidth);
-        console.log('isMd:', isMd);
-        console.log('WidthBreakpoints.md:', WidthBreakpoints.md);
-        console.log('WidthBreakpoints.lg:', WidthBreakpoints.lg);
-    }, [screenWidth, isMd]);
-
     return { screenWidth, isXs, isSm, isMd, isLg, isXl, isXxl };
 };
