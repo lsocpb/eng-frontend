@@ -53,7 +53,7 @@ const ImageUpload = ({ onUploadSuccess }) => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post(`${BASE_API_URL}/upload_profile_image`, formData, {
+            const response = await axios.post(`${BASE_API_URL}/user/upload_profile_image`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${Cookies.get('active-user')}`
