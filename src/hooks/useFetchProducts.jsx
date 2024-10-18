@@ -16,7 +16,7 @@ const useFetchProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`${BASE_API_URL}/product/fetch/last`);
+                const response = await axios.get(`${BASE_API_URL}/auction/last`);
                 setProducts(response.data.products);
             } catch (err) {
                 console.error('Error fetching products:', err);

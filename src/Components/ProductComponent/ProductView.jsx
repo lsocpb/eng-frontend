@@ -50,7 +50,7 @@ const ProductPage = () => {
         setLoading(true);
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`${BASE_API_URL}/auction/${auctionId}`);
+                const response = await axios.get(`${BASE_API_URL}/auction/id/${auctionId}`);
                 setIsBuyNow(response.data.auction_type === "buy_now");
                 setAuction(response.data);
                 setProduct(response.data.product);
