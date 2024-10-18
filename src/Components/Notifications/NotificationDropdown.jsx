@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   MDBNavbarItem,
   MDBNavbarLink,
@@ -12,6 +12,8 @@ import {
 } from 'mdb-react-ui-kit';
 import "./Notifications.css";
 import NotificationItem from './NotificationItem';
+import { socketService} from "../../services/socketService";
+import Cookies from "js-cookie";
 
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState([
@@ -52,6 +54,32 @@ const NotificationDropdown = () => {
         iconColor: "text-info"
       }
   ]);
+
+  useEffect(() => {
+    socketService.connect(Cookies.get("token"));
+    socketService.addListener("notification", (data) => {
+      setNotifications([
+        {
+          id: notifications.length + 1,
+          title: data.title,
+          message: data.message,
+          time: "Now",
+          isRead: false,
+          icon: data.icon,
+          iconColor: "text-primary"
+        },
+        ...notifications
+      ]);
+      return () => {
+        socketService.removeListener("notification");
+        socketService.disconnect();
+      }
+    });
+
+    return () => {
+      socketService.disconnect();
+    };
+  } , []);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 

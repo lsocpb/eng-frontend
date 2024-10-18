@@ -24,7 +24,9 @@ import {BASE_API_URL} from "../../api/config";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import BidModal from "../Modals/BidModal";
 import BuyModal from "../Modals/BuyModal";
-import { set } from 'react-hook-form';
+import {set} from 'react-hook-form';
+import {socketService} from "../../services/socketService";
+import Cookies from "js-cookie";
 
 /**
  * Component that displays detailed information about a product.
@@ -46,6 +48,21 @@ const ProductPage = () => {
     const [product, setProduct] = useState(null);
     const [isBuyNow, setIsBuyNow] = useState(false);
     const [finished, setFinished] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    useEffect(() => {
+        socketService.connect(Cookies.get('active-user'));
+        socketService.addListener('notification', (data) => {
+            if (data.type === 'follow') {
+                setIsFollowing(true);
+            }
+        });
+
+        return () => {
+            socketService.removeListener('notification');
+            socketService.disconnect();
+        };
+    }, []);
 
     useEffect(() => {
         setLoading(true);
@@ -101,6 +118,10 @@ const ProductPage = () => {
         setShowBuyModal(!showBuyModal);
     }
 
+    const handleFollowClick = () => {
+        socketService.followAuction(auction.id);
+    };
+
     return (
         <MDBContainer fluid className="my-5 px-5">
             <MDBRow>
@@ -125,10 +146,16 @@ const ProductPage = () => {
                             <MDBCardText className="h2 mb-4">
                                 ${parseFloat(auction.price).toFixed(2)}
                             </MDBCardText>
+                            <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'
+                                    onClick={handleFollowClick}
+                            >
+                                <MDBIcon fas icon="heart" className="me-2"/> FOLLOW
+                            </MDBBtn>
                             <MDBCardText>
-                                {finished ? ( <MDBBadge color='danger'>Auction Ended</MDBBadge> ) : (<small className="text-muted">
-                                    Ends in: <CountdownTimer date={new Date(auction.end_date)}/>
-                                </small>)}
+                                {finished ? (<MDBBadge color='danger'>Auction Ended</MDBBadge>) : (
+                                    <small className="text-muted">
+                                        Ends in: <CountdownTimer date={new Date(auction.end_date)}/>
+                                    </small>)}
                             </MDBCardText>
                             <div className="mt-4 d-flex flex-column">
                                 {!isBuyNow ? (

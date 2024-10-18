@@ -69,7 +69,7 @@ const MobileCategorySidebar = ({ allCategories }) => {
           style={{
             zIndex: 1050,
             marginTop: "200px",
-            marginLeft: isOpen ? "240px" : "0px",
+            marginLeft: isOpen ? "190px" : "0px",
             transition: "all 0.5s ease-out",
           }}
           aria-label="Toggle category menu"
