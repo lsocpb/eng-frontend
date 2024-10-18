@@ -31,7 +31,7 @@ function App() {
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
                         <Route path="/product/add" element={<AddProductForm />} />
                         <Route path="/contact" element={<ContactForm />} />
-                        <Route path="/payment/:paymentId" element={<PaymentPage />} />
+                        <Route path="/wallet/add-funds" element={<PaymentPage />} />
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
                         <Route path="/admin" element={<AdminPage />} />
