@@ -89,6 +89,14 @@ const BuyModal = ({ isOpen, toggle, productName, productPrice, auctionId }) => {
                 Are you sure you want to purchase {productName} for $
                 {productPrice}?
               </p>
+              <p className="text-danger">
+                  Please note that this action is irreversible, make sure you
+                  want to buy this item!
+              </p>
+              <p>
+                We will inform the seller and he will contact you soon after purchase
+                to arrange details about the auction.
+              </p>
             </MDBModalBody>
           )}
           <MDBModalFooter>
