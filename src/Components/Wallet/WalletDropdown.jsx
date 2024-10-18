@@ -9,6 +9,7 @@ import {
   MDBDropdownItem,
   MDBBtn,
 } from 'mdb-react-ui-kit';
+import "./Wallet.css";
 
 const WalletDropdown = ({ balance = 1250.00 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,10 +19,10 @@ const WalletDropdown = ({ balance = 1250.00 }) => {
       <MDBDropdown>
         <MDBDropdownToggle 
           tag='a' 
-          className='nav-link text-dark' 
+          className='nav-link text-dark no-caret' 
           onClick={() => setIsOpen(!isOpen)}
         >
-          <MDBIcon fas icon="wallet" size="lg" className="me-2 mx-4"/>
+          <MDBIcon fas icon="wallet" size="lg" className="me-2 mx-2"/>
         </MDBDropdownToggle>
         
         <MDBDropdownMenu className="p-4 shadow-lg" style={{ minWidth: '300px' }}>

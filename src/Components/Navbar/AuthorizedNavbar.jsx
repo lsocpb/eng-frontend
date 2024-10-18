@@ -14,6 +14,7 @@ import {
 } from 'mdb-react-ui-kit';
 import {useUser} from "../UserContext/UserContext";
 import WalletDropdown from '../Wallet/WalletDropdown';
+import NotificationDropdown from '../Notifications/NotificationDropdown';
 /**
  * AuthorizedNavbar component displays a responsive navigation bar for authenticated users.
  */
@@ -65,19 +66,15 @@ export default function AuthorizedNavbar() {
                                 </MDBNavbarItem>
                                 <MDBNavbarItem>
                                     <MDBNavbarLink active aria-current='page' href='/home' className='text-dark'>
-                                        <MDBIcon fas icon="home" size={"lg"} className="me-2 mx-4"/>
+                                        <MDBIcon fas icon="home" size={"lg"} className="me-2 mx-2"/>
                                     </MDBNavbarLink>
                                 </MDBNavbarItem>
                                 <MDBNavbarItem>
                                     <MDBNavbarLink active aria-current='page' href='/profile' className='text-dark'>
-                                        <MDBIcon fas icon="user" size={"lg"} className="me-2 mx-4"/>
+                                        <MDBIcon fas icon="user" size={"lg"} className="me-2 mx-2"/>
                                     </MDBNavbarLink>
                                 </MDBNavbarItem>
-                                <MDBNavbarItem>
-                                    <MDBNavbarLink active aria-current='page' className='text-dark'>
-                                        <MDBIcon fas icon="bell" size={"lg"} className="me-2 mx-4"/>
-                                    </MDBNavbarLink>
-                                </MDBNavbarItem>
+                                <NotificationDropdown/>
                                 <WalletDropdown/>
                                 {user.role === 'admin' &&
                                 <MDBNavbarItem>
