@@ -55,9 +55,9 @@ const ProductCardCategoryView = ({ product, onClick }) => {
                 <small className="text-muted">Quantity: {product.quantity}</small>
               </MDBCardText>
               <MDBCardText>
-                <small className="text-muted">
-                  Ends in: <CountdownTimer date={new Date(product.end_date)} />
-                </small>
+              {product.is_auction_finished ? ( <MDBBadge color='danger'>Auction Ended</MDBBadge> ) : (<small className="text-muted">
+                                    Ends in: <CountdownTimer date={new Date(product.end_date)}/>
+                                </small>)}
               </MDBCardText>
               <MDBCardText>
                 <h2 className="text-dark">${parseFloat(product.price).toFixed(2)}</h2>

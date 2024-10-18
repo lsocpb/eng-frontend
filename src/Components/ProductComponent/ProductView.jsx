@@ -45,6 +45,7 @@ const ProductPage = () => {
     const [seller, setSeller] = useState(null);
     const [product, setProduct] = useState(null);
     const [isBuyNow, setIsBuyNow] = useState(false);
+    const [finished, setFinished] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -53,6 +54,7 @@ const ProductPage = () => {
                 const response = await axios.get(`${BASE_API_URL}/auction/id/${auctionId}`);
                 setIsBuyNow(response.data.auction_type === "buy_now");
                 setAuction(response.data);
+                setFinished(response.data.is_auction_finished);
                 setProduct(response.data.product);
                 setSeller(response.data.seller);
                 checkAuctionStatus(response.data.product.end_date);
@@ -120,22 +122,13 @@ const ProductPage = () => {
                     <MDBCard className="shadow-6-strong mb-4">
                         <MDBCardBody>
                             <MDBCardTitle className="h2 mb-3">{product.name}</MDBCardTitle>
-                            <MDBCardText className="h5 mb-4">
-                                Quantity: <span style={{
-                                backgroundColor: '#f8f9fa',
-                                padding: '0.25rem 0.5rem',
-                                borderRadius: '0.5rem',
-                                color: '#495057',
-                                fontWeight: 'bold'
-                            }}>{product.quantity}</span>
-                            </MDBCardText>
                             <MDBCardText className="h2 mb-4">
                                 ${parseFloat(auction.price).toFixed(2)}
                             </MDBCardText>
                             <MDBCardText>
-                                <small className="text-muted">
+                                {finished ? ( <MDBBadge color='danger'>Auction Ended</MDBBadge> ) : (<small className="text-muted">
                                     Ends in: <CountdownTimer date={new Date(auction.end_date)}/>
-                                </small>
+                                </small>)}
                             </MDBCardText>
                             <div className="mt-4 d-flex flex-column">
                                 {!isBuyNow ? (
@@ -148,7 +141,7 @@ const ProductPage = () => {
                                         disabled={isAuctionEnded}
                                     >
                                         <MDBIcon fas icon="gavel" className="me-2"/>
-                                        {isAuctionEnded ? 'AUCTION ENDED' : 'PLACE A BID!'}
+                                        {isAuctionEnded || finished ? 'AUCTION ENDED' : 'PLACE A BID!'}
                                     </MDBBtn>
                                 ) : (
                                     <MDBBtn
@@ -157,10 +150,10 @@ const ProductPage = () => {
                                         color={'danger'}
                                         className='mb-2 w-auto'
                                         onClick={toggleBuyModal}
-                                        disabled={isAuctionEnded}
+                                        disabled={isAuctionEnded || finished}
                                     >
                                         <MDBIcon fas icon="shopping-cart" className="me-2"/>
-                                        {isAuctionEnded ? 'AUCTION ENDED' : 'BUY NOW!'}
+                                        {isAuctionEnded || finished ? 'AUCTION ENDED' : 'BUY NOW!'}
                                     </MDBBtn>
                                 )}
                                 <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'>
@@ -216,8 +209,9 @@ const ProductPage = () => {
             <BuyModal
                 isOpen={showBuyModal}
                 toggle={toggleBuyModal}
-                productName={auction.name}
+                productName={auction.product.name}
                 productPrice={parseFloat(auction.price).toFixed(2)}
+                auctionId={auction.id}
             />
         </MDBContainer>
     );
