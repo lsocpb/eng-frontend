@@ -1,191 +1,110 @@
-import React, {useState} from 'react';
+// RegisterChoice.js
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     MDBBtn,
     MDBContainer,
-    MDBCardBody,
-    MDBCol,
     MDBRow,
-    MDBInput,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBCardTitle,
+    MDBCardText,
     MDBIcon
-}
-    from 'mdb-react-ui-kit';
-import './Register.css'
-import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
-import {ToastContainer, toast} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import {showSuccessToast, showErrorToast} from "../ToastNotifications/ToastNotifications";
-import {BASE_API_URL} from "../../api/config";
-import axios from "axios";
-import {useForm} from "react-hook-form";
+} from 'mdb-react-ui-kit';
 
-/**
- * The `Register` component renders a user registration form.
- * On successful registration, the user is redirected to the login page.
- */
-function Register() {
+function RegisterChoice() {
+    const navigate = useNavigate();
 
+    return (
+        <MDBContainer className="my-5">
+            <div className="text-center mb-5">
+                <h1 className="fw-bold">Choose Registration Type</h1>
+                <p className="text-muted">Select the type of account that best suits your needs</p>
+            </div>
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [street, setStreet] = useState('');
-    const [city, setCity] = useState('');
-    const [zip, setZip] = useState('');
-    const [phone, setPhone] = useState('');
-    const [error, setError] = useState('');
-    const {
-        register,
-        handleSubmit, formState: {errors}
-    } = useForm();
+            <MDBRow className="justify-content-center">
+                <MDBCol md="5">
+                    <MDBCard className="h-100 shadow-lg">
+                        <MDBCardBody className="d-flex flex-column">
+                            <div className="text-center mb-4">
+                                <MDBIcon color="danger" fas icon="user-circle" size="3x" className="text-primary mb-3" />
+                                <MDBCardTitle tag="h3">Personal Account</MDBCardTitle>
+                            </div>
 
-    /**
-     * Validates the form fields to ensure that all required fields are filled.
-     *
-     * @returns {boolean} - Returns `true` if all required fields are filled; otherwise, returns `false`.
-     *                      If any required field is missing, an error toast is shown and the function returns `false`.
-     */
+                            <MDBCardText>
+                                Perfect for individual users who want to:
+                                <ul className="mt-3">
+                                    <li>Browse and purchase products</li>
+                                    <li>Track orders and history</li>
+                                    <li>Save favorites</li>
+                                    <li>Receive personal recommendations</li>
+                                </ul>
+                            </MDBCardText>
 
-    /**
-     * Handles form submission by sending a POST request to the registration endpoint.
-     *
-     * @param {React.FormEvent} e - The form submit event.
-     * @returns {void}
-     */
-    const onSubmit = async (data) => {
-        const payload = {
-            username: data.username,
-            password: data.password,
-            email: data.email,
-            phone: data.phone,
-            address: {
-                street: data.street,
-                city: data.city,
-                zip: data.zip
-            }
-        };
+                            <div className="mt-auto">
+                                <div className="text-center mb-3">
+                                    <small className="text-muted">Quick registration with basic information</small>
+                                </div>
+                                <MDBBtn
+                                    color="danger"
+                                    className="w-100"
+                                    onClick={() => navigate('/register/user')}
+                                >
+                                    Register Personal Account
+                                </MDBBtn>
+                            </div>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol>
 
-        try {
-            const response = await axios.post(
-                `${BASE_API_URL}/auth/register`,
-                payload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
-            );
+                <MDBCol md="5">
+                    <MDBCard className="h-100 shadow-lg">
+                        <MDBCardBody className="d-flex flex-column">
+                            <div className="text-center mb-4">
+                                <MDBIcon fas icon="building" size="3x" className="mb-3" style={{
+                                    color: '#FFC0CB'
+                                }} />
+                                <MDBCardTitle tag="h3">Business Account</MDBCardTitle>
+                            </div>
 
-            if (response.status !== 200) {
-                showErrorToast('An unexpected error occurred. Please try again later.');
-                return;
-            }
+                            <MDBCardText>
+                                Designed for companies that want to:
+                                <ul className="mt-3">
+                                    <li>Donate their unique items</li>
+                                    <li>Support many charities</li>
+                                    <li>Get detailed statistic about their auctions</li>
+                                    <li>Get priority support</li>
+                                </ul>
+                            </MDBCardText>
 
-            showSuccessToast('Register successful');
-            setTimeout(() => {
-                window.location.href = "/login";
-            }, 1000);
-        } catch (error) {
-            toast.error('An unexpected error occurred. Please try again later.');
-        }
-    };
+                            <div className="mt-auto">
+                                <div className="text-center mb-3">
+                                    <small className="text-muted">Requires company and contact details</small>
+                                </div>
+                                <MDBBtn
+                                    color="outline-danger"
+                                    className="w-100"
+                                    onClick={() => navigate('/register/company')}
+                                >
+                                    Register Business Account
+                                </MDBBtn>
+                            </div>
+                        </MDBCardBody>
+                    </MDBCard>
+                </MDBCol>
+            </MDBRow>
 
-return (
-        <MDBContainer className='overflow-hidden my-5'>
-            <MDBCol className='mb-5 p-5 justify-content-center align-items-center'>
-                <MDBCardBody className='d-flex flex-column text-center justify-content-center align-items-center'>
-                    <h2 className="fw-bold mb-5">Sign up now!</h2>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <MDBRow className='mb-4'>
-                            <MDBCol md='6'>
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Username'
-                                    id='username'
-                                    type='text'
-                                    {...register('username', { required: 'Username is required' })}
-                                />
-                                {errors.username && <p className="text-danger">{errors.username.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Email'
-                                    id='email'
-                                    type='email'
-                                    {...register('email', { required: 'Email is required' })}
-                                />
-                                {errors.email && <p className="text-danger">{errors.email.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Password'
-                                    id='password'
-                                    type='password'
-                                    {...register('password', { required: 'Password is required' })}
-                                />
-                                {errors.password && <p className="text-danger">{errors.password.message}</p>}
-                            </MDBCol>
-                            <MDBCol md='6'>
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Street'
-                                    id='street'
-                                    type='text'
-                                    {...register('street', { required: 'Street is required' })}
-                                />
-                                {errors.street && <p className="text-danger">{errors.street.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='City'
-                                    id='city'
-                                    type='text'
-                                    {...register('city', { required: 'City is required' })}
-                                />
-                                {errors.city && <p className="text-danger">{errors.city.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Zip'
-                                    id='zip'
-                                    type='text'
-                                    {...register('zip', { required: 'Zip is required' })}
-                                />
-                                {errors.zip && <p className="text-danger">{errors.zip.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Phone'
-                                    id='phone'
-                                    type='text'
-                                    {...register('phone', { required: 'Phone is required' })}
-                                />
-                                {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
-                            </MDBCol>
-                        </MDBRow>
-                        <div className="d-flex justify-content-center">
-                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit">Sign up</MDBBtn>
-                        </div>
-                    </form>
-                    <div className="text-center mt-3">
-                        <p>or sign up with:</p>
-                        <MDBBtn tag='a' color='none' className='mx-3'>
-                            <MDBIcon fab icon='facebook-f' size="sm"/>
-                        </MDBBtn>
-                        <MDBBtn tag='a' color='none' className='mx-3'>
-                            <MDBIcon fab icon='twitter' size="sm"/>
-                        </MDBBtn>
-                        <MDBBtn tag='a' color='none' className='mx-3'>
-                            <MDBIcon fab icon='google' size="sm"/>
-                        </MDBBtn>
-                        <MDBBtn tag='a' color='none' className='mx-3'>
-                            <MDBIcon fab icon='github' size="sm"/>
-                        </MDBBtn>
-                    </div>
-                </MDBCardBody>
-            </MDBCol>
-            <ToastContainer/>
+            <div className="text-center mt-4">
+                <p className="text-muted">
+                    Already have an account? {' '}
+                    <a href="/login" className="text-danger">
+                        Log in here
+                    </a>
+                </p>
+            </div>
         </MDBContainer>
     );
 }
 
-export default withAuthRedirect(Register);
+export default RegisterChoice;

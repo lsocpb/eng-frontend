@@ -26,7 +26,7 @@ export const settings = {
     dots: false,
     infinite: true,
     speed: 700,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 1,
     initialSlide: 0,
     nextArrow: <SampleNextArrow/>,

@@ -31,8 +31,8 @@ const WalletDropdown = ({ balance = 1250.00 }) => {
               fas 
               icon="wallet" 
               size="3x"
-              color='success'
-              className="text-primary mb-3"
+              style={{ color: "#FFC0CB" }}
+              className="mb-3"
             />
             <h4 className="mb-2">Your Balance</h4>
             <h2 className="text-muted mb-3">${balance.toFixed(2)}</h2>

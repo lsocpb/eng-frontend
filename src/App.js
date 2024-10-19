@@ -15,6 +15,8 @@ import { UserProvider } from './Components/UserContext/UserContext';
 import ContactForm from './Components/ContactForm/ContactForm';
 import PaymentPage from "./Components/PaymentPage/PaymentPage";
 import SuccessPayment from "./Components/SuccessPayment/SuccessPayment";
+import UserRegister from "./Components/Register/UserRegister";
+import CompanyRegister from "./Components/Register/CompanyRegister";
 function App() {
     return (
         <Router>
@@ -24,6 +26,8 @@ function App() {
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/register/user" element={<UserRegister/>} />
+                    <Route path="/register/company" element={<CompanyRegister/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/auction/:auctionId" element={<ProductPage />} />
                     <Route path="/product/category/:categoryId" element={<CategoryPage />} />

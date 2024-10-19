@@ -11,7 +11,7 @@ import {
 } from "mdb-react-ui-kit";
 import {Line, Doughnut, Bar} from 'react-chartjs-2';
 import TopUsers from "./TopUsers";
-import StatCard from "./StatCard";
+import StatCard from "../StatCard/StatCard";
 import 'chart.js/auto';
 
 function AdminPage() {

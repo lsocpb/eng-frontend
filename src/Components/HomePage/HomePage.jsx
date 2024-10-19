@@ -208,10 +208,10 @@ export default function HomePage() {
                                 <p className="text-center text-muted mb-4">
                                     Bid on unique items and experiences to support wonderful causes!
                                 </p>
-                                <div className="slider-container mb-4">
+                                <div className="slider-container mb-4 w-100">
                                     <Slider {...settings}>
                                         {products.map((product, index) => (
-                                            <div key={index} className="px-3 py-1">
+                                            <div key={index} className="px-1 py-1">
                                                 <ProductCard item={product}/>
                                             </div>
                                         ))}
