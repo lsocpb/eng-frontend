@@ -14,6 +14,7 @@ import AdminPage from "./Components/AdminPage/AdminPage";
 import { UserProvider } from './Components/UserContext/UserContext';
 import ContactForm from './Components/ContactForm/ContactForm';
 import PaymentPage from "./Components/PaymentPage/PaymentPage";
+import SuccessPayment from "./Components/SuccessPayment/SuccessPayment";
 function App() {
     return (
         <Router>
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/product/add" element={<AddProductForm />} />
                         <Route path="/contact" element={<ContactForm />} />
                         <Route path="/wallet/add-funds" element={<PaymentPage />} />
+                        <Route path="/wallet/payment/success" element={<SuccessPayment />} />
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
                         <Route path="/admin" element={<AdminPage />} />

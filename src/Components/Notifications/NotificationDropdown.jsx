@@ -1,93 +1,68 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBIcon,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBBadge,
-  MDBBtn,
+    MDBBadge,
+    MDBBtn,
+    MDBDropdown,
+    MDBDropdownMenu,
+    MDBDropdownToggle,
+    MDBIcon,
+    MDBNavbarItem,
 } from 'mdb-react-ui-kit';
 import "./Notifications.css";
 import NotificationItem from './NotificationItem';
-import { socketService} from "../../services/socketService";
+import {socketService} from "../../services/socketService";
 import Cookies from "js-cookie";
+import {STORAGE_KEY} from "../../constans/applicationStorageConstans";
 
 const NotificationDropdown = () => {
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "Nowa darowizna",
-      message: "Jan Kowalski przekazał darowiznę w wysokości $50",
-      time: "5 min temu",
-      isRead: false,
-      icon: "heart",
-      iconColor: "text-danger"
-    },
-    {
-      id: 2,
-      title: "Status zamówienia",
-      message: "Twoja darowizna została odebrana przez potrzebującego",
-      time: "1 godz temu",
-      isRead: false,
-      icon: "check-circle",
-      iconColor: "text-success"
-    },
-    {
-      id: 3,
-      title: "Przypomnienie",
-      message: "Uzupełnij swój profil, aby lepiej pomagać innym",
-      time: "2 godz temu",
-      isRead: true,
-      icon: "user",
-      iconColor: "text-info"
-    },
-    {
-        id: 4,
-        title: "Przypomnienie",
-        message: "Uzupełnij swój profil, aby lepiej pomagać innym",
-        time: "2 godz temu",
-        isRead: true,
-        icon: "user",
-        iconColor: "text-info"
-      }
-  ]);
+  const [notifications, setNotifications] = useState(() => {
+    const savedNotifications = localStorage.getItem(STORAGE_KEY);
+    return savedNotifications ? JSON.parse(savedNotifications) : [
+    ];
+  });
 
   useEffect(() => {
-    socketService.connect(Cookies.get("token"));
-    socketService.addListener("notification", (data) => {
-      setNotifications([
-        {
-          id: notifications.length + 1,
-          title: data.title,
-          message: data.message,
-          time: "Now",
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
+  }, [notifications]);
+
+  useEffect(() => {
+    const token = Cookies.get("active-user");
+    if (!token) return;
+
+    socketService.connect(token);
+
+    const handleNewNotification = (data) => {
+      setNotifications(prev => {
+        const newNotification = {
+          id: Date.now(),
+          title: data.title || 'New Notification',
+          message: data,
+          time: new Date().toLocaleTimeString(),
           isRead: false,
-          icon: data.icon,
+          icon: data.icon || 'bell',
           iconColor: "text-primary"
-        },
-        ...notifications
-      ]);
-      return () => {
-        socketService.removeListener("notification");
-        socketService.disconnect();
-      }
-    });
+        };
+        return [newNotification, ...prev].slice(0, 50);
+      });
+    };
+
+    socketService.addListener("notification", handleNewNotification);
 
     return () => {
+      socketService.removeListener("notification", handleNewNotification);
       socketService.disconnect();
     };
-  } , []);
+  }, []);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  const handleMarkAsRead = (id) => {
-    setNotifications(notifications.map(notif => 
-      notif.id === id ? { ...notif, isRead: true } : notif
-    ));
-  };
+  const handleMarkAsRead = useCallback((id) => {
+    setNotifications(prev =>
+      prev.map(notif =>
+        notif.id === id ? { ...notif, isRead: true } : notif
+      )
+    );
+  }, []);
 
   const handleMarkAllAsRead = () => {
     setNotifications(notifications.map(notif => ({ ...notif, isRead: true })));
@@ -99,30 +74,30 @@ const NotificationDropdown = () => {
         <MDBDropdownToggle tag='a' className='nav-link text-dark position-relative no-caret'>
           <MDBIcon fas icon="bell" size="lg" className="me-2 mx-2"/>
           {unreadCount > 0 && (
-            <MDBBadge 
-              color="danger" 
-              notification 
-              pill 
+            <MDBBadge
+              color="danger"
+              notification
+              pill
               className="position-absolute translate-middle"
             >
               {unreadCount}
             </MDBBadge>
           )}
         </MDBDropdownToggle>
-        
-        <MDBDropdownMenu 
-          className="shadow-lg p-0" 
-          style={{ 
-            minWidth: '350px', 
-            maxHeight: '500px', 
-            overflowY: 'auto' 
+
+        <MDBDropdownMenu
+          className="shadow-lg p-0"
+          style={{
+            minWidth: '350px',
+            maxHeight: '500px',
+            overflowY: 'auto'
           }}
         >
           <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
             <h6 className="mb-0">Notifications</h6>
             {unreadCount > 0 && (
-              <MDBBtn 
-                color="link" 
+              <MDBBtn
+                color="link"
                 size="sm"
                 className="text-primary"
                 onClick={handleMarkAllAsRead}
@@ -135,7 +110,7 @@ const NotificationDropdown = () => {
           <div className="notifications-list">
             {notifications.length > 0 ? (
               notifications.map(notification => (
-                <NotificationItem 
+                <NotificationItem
                   key={notification.id}
                   notification={notification}
                   onMarkAsRead={handleMarkAsRead}

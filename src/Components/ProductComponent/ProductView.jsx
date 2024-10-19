@@ -59,7 +59,6 @@ const ProductPage = () => {
         });
 
         return () => {
-            socketService.removeListener('notification');
             socketService.disconnect();
         };
     }, []);
