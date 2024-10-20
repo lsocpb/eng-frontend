@@ -82,7 +82,7 @@ const MobileCategorySidebar = ({ allCategories }) => {
         </button>
         <div className="p-3">
           <h5 className="text-center mb-4">Categories</h5>
-          <MDBListGroup flush>
+          <MDBListGroup flush="true">
             {allCategories.map((category, index) => (
               <MDBListGroupItem
                 key={index}

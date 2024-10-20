@@ -17,11 +17,24 @@ import PaymentPage from "./Components/PaymentPage/PaymentPage";
 import SuccessPayment from "./Components/SuccessPayment/SuccessPayment";
 import UserRegister from "./Components/Register/UserRegister";
 import CompanyRegister from "./Components/Register/CompanyRegister";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
     return (
         <Router>
             <UserProvider>
                 <RoleNavbar />
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
                 <Routes>
                     <Route path="/" element={<Navigate to="/home" />} />
                     <Route path="/home" element={<HomePage />} />

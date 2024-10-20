@@ -4,6 +4,7 @@ class SocketService {
     constructor() {
         this.socket = null;
         this.listeners = new Map();
+        this.auctionId = null;
     }
 
     connect(token) {
@@ -16,21 +17,28 @@ class SocketService {
         });
 
         this.socket.on('connect', () => {
-            console.log('Connected to socket server');
+            if (this.auctionId) {
+                this.followAuction(this.auctionId);
+            }
         });
 
         this.socket.on('disconnect', () => {
             console.log('Disconnected from socket server');
         });
 
-        this.socket.on('msg', (data) => {
-            console.log('Received message:', data);
-            this.notifyListeners('notification', data);
+        this.socket.on('bid_price_update', (data) => {
+            this.notifyListeners('bid_price_update', data);
         });
+
+        this.socket.on('bid_winner_update', (data) => {
+            this.notifyListeners('bid_winner_update', data);
+        });
+
     }
 
     followAuction(auctionId) {
         if (!this.socket) return;
+        this.auctionId = auctionId;
         this.socket.emit('follow_auction', { auction_id: auctionId });
     }
 

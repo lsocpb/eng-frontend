@@ -234,7 +234,7 @@ export default function AuthorizedNavbar() {
                                 </MDBNavbarItem>
                             }
                             <MDBNavbarItem>
-                                <MDBBtn rounded pill aria-current='page' href='/product/add'
+                                <MDBBtn rounded pill="true" aria-current='page' href='/product/add'
                                         className='mx-2 text-white btn-danger'>
                                     <MDBIcon fas icon="hand-holding-heart" className="me-2"/> Donate
                                 </MDBBtn>

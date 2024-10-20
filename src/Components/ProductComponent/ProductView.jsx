@@ -24,9 +24,9 @@ import {BASE_API_URL} from "../../api/config";
 import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import BidModal from "../Modals/BidModal";
 import BuyModal from "../Modals/BuyModal";
-import {set} from 'react-hook-form';
-import {socketService} from "../../services/socketService";
 import Cookies from "js-cookie";
+import {socketService} from "../../services/socketService";
+import {showErrorToast} from "../ToastNotifications/ToastNotifications";
 
 /**
  * Component that displays detailed information about a product.
@@ -48,32 +48,23 @@ const ProductPage = () => {
     const [product, setProduct] = useState(null);
     const [isBuyNow, setIsBuyNow] = useState(false);
     const [finished, setFinished] = useState(false);
-    const [isFollowing, setIsFollowing] = useState(false);
+    const [isPriceUpdating, setIsPriceUpdating] = useState(false);
 
     useEffect(() => {
-        socketService.connect(Cookies.get('active-user'));
-        socketService.addListener('notification', (data) => {
-            if (data.type === 'follow') {
-                setIsFollowing(true);
-            }
-        });
-
-        return () => {
-            socketService.disconnect();
-        };
-    }, []);
-
-    useEffect(() => {
-        setLoading(true);
         const fetchProduct = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(`${BASE_API_URL}/auction/id/${auctionId}`);
-                setIsBuyNow(response.data.auction_type === "buy_now");
                 setAuction(response.data);
-                setFinished(response.data.is_auction_finished);
                 setProduct(response.data.product);
                 setSeller(response.data.seller);
                 checkAuctionStatus(response.data.product.end_date);
+
+                const token = Cookies.get('active-user');
+                if (token) {
+                    socketService.connect(token);
+                    socketService.followAuction(response.data.id);
+                }
             } catch (err) {
                 setError(`Failed to fetch product data: ${err.message}`);
             } finally {
@@ -82,6 +73,32 @@ const ProductPage = () => {
         };
 
         fetchProduct();
+
+        const handlePriceUpdate = (data) => {
+            setIsPriceUpdating(true);
+            if (data.price) {
+                setAuction(prevAuction => ({
+                    ...prevAuction,
+                    price: data.price
+                }));
+            }
+            setTimeout(() => {
+                setIsPriceUpdating(false);
+            }, 1000);
+        };
+
+        const handleWinnerUpdate = () => {
+            showErrorToast("You are no longer the highest bidder");
+        };
+
+        socketService.addListener('bid_price_update', handlePriceUpdate);
+        socketService.addListener('bid_winner_update', handleWinnerUpdate);
+
+        return () => {
+            socketService.removeListener('bid_price_update', handlePriceUpdate);
+            socketService.removeListener('bid_price_update', handleWinnerUpdate);
+            socketService.disconnect();
+        };
     }, [auctionId]);
 
     const checkAuctionStatus = (endDate) => {
@@ -117,10 +134,6 @@ const ProductPage = () => {
         setShowBuyModal(!showBuyModal);
     }
 
-    const handleFollowClick = () => {
-        socketService.followAuction(auction.id);
-    };
-
     return (
         <MDBContainer fluid className="my-5 px-5">
             <MDBRow>
@@ -142,16 +155,15 @@ const ProductPage = () => {
                     <MDBCard className="shadow-6-strong mb-4">
                         <MDBCardBody>
                             <MDBCardTitle className="h2 mb-3">{product.name}</MDBCardTitle>
-                            <MDBCardText className="h2 mb-4">
+                            <MDBCardText className={`h2 mb-4 ${isPriceUpdating ? 'text-danger' : ''}`}
+                                         style={{transition: 'color 0.3s ease-in-out'}}>
                                 ${parseFloat(auction.price).toFixed(2)}
+                                {isPriceUpdating && (
+                                    <MDBBadge color="success" className="ms-2">New!</MDBBadge>
+                                )}
                             </MDBCardText>
-                            <MDBBtn rounded pill className='mb-2 w-auto btn-outline-danger'
-                                    onClick={handleFollowClick}
-                            >
-                                <MDBIcon fas icon="heart" className="me-2"/> FOLLOW
-                            </MDBBtn>
                             <MDBCardText>
-                                {finished ? (<MDBBadge color='danger'>Auction Ended</MDBBadge>) : (
+                                {isAuctionEnded ? (<MDBBadge color='danger'>Auction Ended</MDBBadge>) : (
                                     <small className="text-muted">
                                         Ends in: <CountdownTimer date={new Date(auction.end_date)}/>
                                     </small>)}
@@ -231,6 +243,8 @@ const ProductPage = () => {
                 toggle={toggleBidModal}
                 productName={auction.name}
                 currentPrice={parseFloat(auction.price).toFixed(2)}
+                auctionId={auction.id}
+
             />
             <BuyModal
                 isOpen={showBuyModal}

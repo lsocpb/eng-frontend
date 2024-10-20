@@ -28,13 +28,16 @@ function UserRegister() {
             password: data.password,
             email: data.email,
             phone: data.phone,
-            firstName: data.firstName,
-            lastName: data.lastName
+            address: {
+                street: data.street,
+                city: data.city,
+                zip: data.zip
+            }
         };
 
         try {
             const response = await axios.post(
-                `${BASE_API_URL}/auth/register/user`,
+                `${BASE_API_URL}/auth/register`,
                 payload,
                 {
                     headers: {
@@ -121,6 +124,41 @@ function UserRegister() {
                                 {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
                             </MDBCol>
                         </MDBRow>
+
+                        {/* Address fields */}
+                        <MDBRow className='mb-4'>
+                            <MDBCol md='4'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Street'
+                                    id='street'
+                                    type='text'
+                                    {...register('street', { required: 'Street is required' })}
+                                />
+                                {errors.street && <p className="text-danger">{errors.street.message}</p>}
+                            </MDBCol>
+                            <MDBCol md='4'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='City'
+                                    id='city'
+                                    type='text'
+                                    {...register('city', { required: 'City is required' })}
+                                />
+                                {errors.city && <p className="text-danger">{errors.city.message}</p>}
+                            </MDBCol>
+                            <MDBCol md='4'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='ZIP Code'
+                                    id='zip'
+                                    type='text'
+                                    {...register('zip', { required: 'ZIP Code is required' })}
+                                />
+                                {errors.zip && <p className="text-danger">{errors.zip.message}</p>}
+                            </MDBCol>
+                        </MDBRow>
+
                         <div className="d-flex justify-content-center">
                             <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit">
                                 Register Account

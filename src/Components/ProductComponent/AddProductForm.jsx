@@ -158,7 +158,7 @@ const AddProductForm = () => {
                 }
                 
                 const auctionData = {
-                    user_id: 3,
+                    user_id: parseInt(seller_jwtToken.split('-')[0]),
                     auction_type: formData.auction_type,
                     quantity: parseInt(formData.quantity),
                     end_date: new Date(endDate).toISOString(),

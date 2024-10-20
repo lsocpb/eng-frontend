@@ -62,7 +62,7 @@ const WalletDropdown = ({ balance = 1250.00 }) => {
 
           <div className="text-center">
             <small className="text-muted">
-              Need help? <a href="/support">Contact Support</a>
+              Need help? <a href="/contact">Contact Support</a>
             </small>
           </div>
         </MDBDropdownMenu>
