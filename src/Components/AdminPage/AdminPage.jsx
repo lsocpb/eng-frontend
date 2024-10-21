@@ -14,6 +14,11 @@ import TopUsers from "../TopUsers/TopUsers";
 import StatCard from "../StatCard/StatCard";
 import 'chart.js/auto';
 
+/**
+ * AdminPage component to display the admin dashboard.
+ * @component
+ * @returns {JSX.Element} The AdminPage component
+ */
 function AdminPage() {
     const lineChartData = {
         labels: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze'],

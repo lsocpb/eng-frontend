@@ -13,7 +13,7 @@ import {
 
 /**
  * UnauthorizedNavbar component renders a navigation bar.
- *
+ * @returns {JSX.Element} - Rendered UnauthorizedNavbar component
  */
 export default function UnAuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);

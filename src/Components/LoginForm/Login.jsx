@@ -14,6 +14,11 @@ import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNot
 import Cookies from 'js-cookie';
 import {BASE_API_URL} from "../../api/config";
 
+/**
+ * Component for the login page.
+ * @component
+ * @returns {JSX.Element} - The login page
+ */
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -23,6 +28,10 @@ function Login() {
     const passwordRef = useRef(null);
     const submitRef = useRef(null);
 
+    /**
+     * Function to validate the login form
+     * @returns {boolean} - Returns true if the form is valid, false otherwise
+     */
     const validateForm = () => {
         if (!username || !password) {
             showErrorToast('Username and password are required');
@@ -31,7 +40,10 @@ function Login() {
         return true;
     };
 
-
+    /**
+     * Function to handle form submission
+     * @param {Object} event - The event object
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!validateForm()) return;
@@ -72,6 +84,11 @@ function Login() {
         }
     };
 
+    /**
+     * Function to handle key down events
+     * @param {Object} event - The event object
+     * @param {Object} nextRef - The reference to the next input field
+     */
     const handleKeyDown = (event, nextRef) => {
         if (event.key === 'Enter') {
             event.preventDefault();

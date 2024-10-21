@@ -20,19 +20,39 @@ import axios from "axios";
 import { BASE_API_URL } from "../../api/config";
 import Cookies from "js-cookie";
 
+/**
+ * BuyModal component represents a modal that allows the user to buy a product.
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isOpen - The state of the modal
+ * @param {function} props.toggle - The function to toggle the modal
+ * @param {string} props.productName - The name of the product
+ * @param {number} props.productPrice - The price of the product
+ * @param {number} props.auctionId - The ID of the auction
+ * @returns {JSX.Element} The BuyModal component
+ */
 const BuyModal = ({ isOpen, toggle, productName, productPrice, auctionId }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /**
+   * Function to handle the buy button click
+   */
   const handleBuy = () => {
     setShowConfirmation(true);
   };
 
+  /**
+   * Function to cancel the purchase
+   */
   const cancelPurchase = () => {
     setShowConfirmation(false);
   };
 
+  /**
+   * Function to confirm the purchase
+   */
   const confirmPurchase = async () => {
     const token = Cookies.get("active-user");
     if (!token) {

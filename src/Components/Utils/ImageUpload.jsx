@@ -36,6 +36,9 @@ const ImageUpload = ({ onUploadSuccess }) => {
         return null;
     };
 
+    /**
+     * Handles the file change event and uploads the selected file.
+     */
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;

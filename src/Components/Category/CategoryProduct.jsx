@@ -18,6 +18,10 @@ import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
 import MobileCategorySidebar from "../MobileCategoryList/MobileCategoryList";
 
+/**
+ * CategoryPage component displays all products in a category.
+ * @returns {JSX.Element} - The CategoryPage component
+ */
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
     const [categoryName, setCategoryName] = useState('');
@@ -37,6 +41,9 @@ export default function CategoryPage() {
     const {screenWidth} = useScreenSize();
 
     useEffect(() => {
+        /**
+         * Function to fetch category and products data from the API
+         */
         const fetchData = async () => {
             setLoading(true);
             setError(null);
@@ -62,10 +69,20 @@ export default function CategoryPage() {
         return <LoadingSpinner/>;
     }
 
+    /**
+     * Function to handle product click
+     * @param {number} productId - The ID of the product
+     */
     const handleProductClick = (productId) => {
         navigate(`/auction/${productId}`);
     }
 
+    /**
+     * Function to handle filter change
+     * @param {string} filterType - The type of filter
+     * @param {string|number} value - The value of the filter
+     * @param {boolean} checked - The checked status of the filter
+     */
     const handleFilterChange = (filterType, value, checked) => {
         setFilters(prevFilters => {
             if (filterType === 'status') {
@@ -84,6 +101,11 @@ export default function CategoryPage() {
         });
     };
 
+    /**
+     * Function to filter products based on the filters
+     * @type {Array} - The filtered products
+     * @returns {Array} - The filtered products
+     */
     const filteredProducts = products.filter(product => {
         return (
             parseFloat(product.price) <= parseFloat(filters.price) &&

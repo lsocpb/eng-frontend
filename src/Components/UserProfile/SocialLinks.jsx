@@ -4,9 +4,6 @@ import {MDBCard, MDBCardBody, MDBCardText, MDBIcon, MDBListGroup, MDBListGroupIt
  * Component to display a list of social media links with icons in a card layout.
  *
  * @component
- * @example
- * return <SocialLinks />;
- *
  * @returns {JSX.Element} A card containing a list of social media links with associated icons.
  */
 const SocialLinks = () => (

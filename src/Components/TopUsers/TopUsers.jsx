@@ -1,6 +1,11 @@
 import {MDBCard, MDBCardBody, MDBCardTitle, MDBIcon} from "mdb-react-ui-kit";
 import React from "react";
 
+/**
+ * Component to display a list of top users with their number of auctions and bids.
+ * @component
+ * @returns {JSX.Element} A card containing a list of top users with their auction and bid counts. 
+ */
 const TopUsers = () => (
         <MDBCard className="mb-4">
             <MDBCardBody>

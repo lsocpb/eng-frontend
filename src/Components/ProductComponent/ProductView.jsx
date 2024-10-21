@@ -54,6 +54,9 @@ const ProductPage = () => {
   const shareUrl = window.location.href;
 
   useEffect(() => {
+    /**
+     * Function to fetch product data from the API
+     */
     const fetchProduct = async () => {
       setLoading(true);
       try {
@@ -78,7 +81,10 @@ const ProductPage = () => {
     };
 
     fetchProduct();
-
+    /**
+     * Function to handle price updates from the socket service
+     * @param {Array} data
+     */
     const handlePriceUpdate = (data) => {
       setIsPriceUpdating(true);
       if (data.price) {
@@ -92,6 +98,9 @@ const ProductPage = () => {
       }, 1000);
     };
 
+    /**
+     * Function to handle winner updates from the socket service
+     */
     const handleWinnerUpdate = () => {
       showErrorToast("You are no longer the highest bidder");
     };
@@ -106,6 +115,9 @@ const ProductPage = () => {
     };
   }, [auctionId]);
 
+  /**
+   * Function to check if the auction has ended
+   */
   const checkAuctionStatus = (endDate) => {
     const now = new Date();
     const auctionEndDate = new Date(endDate);
@@ -138,13 +150,21 @@ const ProductPage = () => {
     objectPosition: "center",
     transition: "opacity 0.5s ease-in-out",
   };
+  /**
+   * Function to toggle the bid modal
+   */
   const toggleBidModal = () => {
     setShowBidModal(!showBidModal);
   };
-
+  /**
+   * Function to toggle the buy modal
+   */
   const toggleBuyModal = () => {
     setShowBuyModal(!showBuyModal);
   };
+  /**
+   * Function to toggle the social modal
+   */
   const toggleSocialModal = () => {
     setShowSocialModal(!showSocialModal);
   };
@@ -208,9 +228,7 @@ const ProductPage = () => {
                     disabled={isAuctionEnded}
                   >
                     <MDBIcon fas icon="gavel" className="me-2" />
-                    {isAuctionEnded || finished
-                      ? "AUCTION ENDED"
-                      : "PLACE A BID!"}
+                    {isAuctionEnded ? "AUCTION ENDED" : "PLACE A BID!"}
                   </MDBBtn>
                 ) : (
                   <MDBBtn
@@ -219,10 +237,10 @@ const ProductPage = () => {
                     color={"danger"}
                     className="mb-2 w-auto"
                     onClick={toggleBuyModal}
-                    disabled={isAuctionEnded || finished}
+                    disabled={isAuctionEnded}
                   >
                     <MDBIcon fas icon="shopping-cart" className="me-2" />
-                    {isAuctionEnded || finished ? "AUCTION ENDED" : "BUY NOW!"}
+                    {isAuctionEnded ? "AUCTION ENDED" : "BUY NOW!"}
                   </MDBBtn>
                 )}
                 <MDBBtn

@@ -3,6 +3,14 @@ import {
   MDBBtn,
 } from "mdb-react-ui-kit";
 
+/**
+ * Notification representing single item component.
+ * @component
+ * @param {Object} props - The component props
+ * @param {Object} props.notification - The notification object
+ * @param {Function} props.onMarkAsRead - The function to mark a notification as read
+ * @returns {JSX.Element} - The notification item component
+ */
 const NotificationItem = ({ notification, onMarkAsRead }) => (
   <div
     className="d-flex align-items-start p-3 border-bottom hover-shadow"

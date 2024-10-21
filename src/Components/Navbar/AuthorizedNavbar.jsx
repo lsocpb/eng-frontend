@@ -21,6 +21,7 @@ import "./AdminNavbar.css"
 
 /**
  * AuthorizedNavbar component displays a responsive navigation bar for authenticated users.
+ * @returns {JSX.Element} - Rendered AuthorizedNavbar component
  */
 export default function AuthorizedNavbar() {
     const [openNavNoTogglerSecond, setOpenNavNoTogglerSecond] = useState(false);
@@ -33,6 +34,10 @@ export default function AuthorizedNavbar() {
     const [showResults, setShowResults] = useState(false);
 
     useEffect(() => {
+        /**
+         * Function to handle clicks outside the search container
+         * @param {Event} event - The event object
+         */
         function handleClickOutside(event) {
             if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
                 setShowResults(false);
@@ -44,6 +49,10 @@ export default function AuthorizedNavbar() {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+    /**
+     * Function to search for products based on the search text
+     * @param {Event} e 
+     */
     const searchProducts = async (e) => {
         e.preventDefault();
 
@@ -72,6 +81,9 @@ export default function AuthorizedNavbar() {
             setIsLoading(false);
         }
     };
+    /**
+     * Function to clear the search results and search text 
+     */
     const clearSearch = () => {
         setSearchText('');
         setSearchResults([]);

@@ -10,8 +10,11 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 
+/**
+ * Component to display a success message after a payment has been processed.
+ * @returns {JSX.Element} A card containing a success message and options to navigate back to bidding or view transactions.
+ */
 const SuccessPayment = () => {
-
   return (
     <MDBContainer>
       <MDBRow className="justify-content-center py-3">

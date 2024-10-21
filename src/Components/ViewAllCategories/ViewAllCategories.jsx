@@ -8,6 +8,11 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
 import Cookies from "js-cookie";
 
+/**
+ * Component that displays all categories in a table.
+ * @returns {JSX.Element} - Returns the view all categories page with a table of all categories.
+ */
+
 const ViewAllCategories = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,6 +21,10 @@ const ViewAllCategories = () => {
 
     let navigate = useNavigate();
 
+    /**
+     * Function to retrieve all categories from the API.
+     * @returns {Promise<*>} - Returns the response data from the API.
+     */
     const retrieveAllCategory = useCallback(async () => {
         const response = await axios.get(
             `${BASE_API_URL}/category/all`
@@ -50,6 +59,11 @@ const ViewAllCategories = () => {
         <LoadingSpinner/>
     }
 
+    /**
+     * Function to delete a category by its ID.
+     * @param {*} categoryId - The ID of the category to be deleted. 
+     * @param {*} e - The event object.
+     */
     const deleteCategory = (categoryId, e) => {
         fetch(
             `${BASE_API_URL}/category/delete?category_id=` + categoryId,

@@ -11,6 +11,15 @@ import {
 } from 'mdb-react-ui-kit';
 import "./Wallet.css";
 
+/**
+ * WalletDropdown component displays the user's wallet balance and provides 
+ * links to add funds and view transaction history. 
+ * 
+ * @component
+ * @param {number} balance - The user's wallet balance
+ * @returns {JSX.Element} - Rendered WalletDropdown component
+ */
+
 const WalletDropdown = ({ balance = 1250.00 }) => {
   const [isOpen, setIsOpen] = useState(false);
 

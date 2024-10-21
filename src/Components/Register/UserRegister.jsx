@@ -15,6 +15,10 @@ import { BASE_API_URL } from "../../api/config";
 import axios from "axios";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 
+/**
+ * Functional component for user registration
+ * @returns {JSX.Element} User registration form
+ */
 function UserRegister() {
     const {
         register,
@@ -22,6 +26,10 @@ function UserRegister() {
         formState: { errors }
     } = useForm();
 
+    /**
+     * Function to handle form submission
+     * @param {Object} data - Form data
+     */
     const onSubmit = async (data) => {
         const payload = {
             username: data.username,

@@ -17,13 +17,15 @@ const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
   const timeLeft = new Date(product.end_date) - new Date();
   const isEnding = timeLeft <= 24 * 60 * 60 * 1000;
   
+  /**
+   * Handles the keydown event for the card
+   * @param {event} event 
+   */
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       onClick(product.id);
     }
   };
-
-    
 
   return (
     <MDBCol size="12" className="mb-4">

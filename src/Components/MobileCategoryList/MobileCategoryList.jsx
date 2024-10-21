@@ -8,6 +8,13 @@ import {
 } from "mdb-react-ui-kit";
 import { IconColors } from "../../constans/iconColorsConstans";
 
+/**
+ * MobileCategorySidebar component represents a sidebar that displays all categories on mobile devices.
+ * @component
+ * @param {Object} props
+ * @param {Array} props.allCategories - The list of all categories
+ * @returns {JSX.Element} The MobileCategorySidebar component
+ */
 const MobileCategorySidebar = ({ allCategories }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -16,17 +23,27 @@ const MobileCategorySidebar = ({ allCategories }) => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
+  /**
+   * Handler for category click
+   */
   const handleCategoryClick = (categoryId) => {
     navigate(`/product/category/${categoryId}`);
     setIsOpen(false);
   };
 
+  /**
+   * Function to get the color of the icon based on the index
+   */
   const getIconColor = (index) => {
     const colorKeys = Object.keys(IconColors);
     return IconColors[colorKeys[index % colorKeys.length]];
   };
 
   useEffect(() => {
+    /**
+     * Function to handle click outside the sidebar
+     * @param {Event} event - The event object
+     */
     const handleClickOutside = (event) => {
       if (
         sidebarRef.current &&

@@ -10,6 +10,13 @@ import {
 } from 'mdb-react-ui-kit';
 import { IconColors } from "../../constans/iconColorsConstans";
 
+/**
+ * CategoryList component to display a list of categories.
+ * @component
+ * @param {Object} props
+ * @param {Array} props.allCategories - The list of all categories
+ * @returns {JSX.Element} The CategoryList component
+ */
 const CategoryList = ({ allCategories }) => {
     const navigate = useNavigate();
     const listItemRefs = useRef([]);

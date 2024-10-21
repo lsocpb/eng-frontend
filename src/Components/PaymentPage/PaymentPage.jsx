@@ -14,6 +14,11 @@ import axios from "axios";
 import { BASE_API_URL } from "../../api/config";
 import Cookies from "js-cookie";
 
+/**
+ * Component for the payment page.
+ * @component
+ * @returns {JSX.Element} - The PaymentPage component
+ */
 const PaymentPage = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,11 +31,19 @@ const PaymentPage = () => {
     { value: 500, label: "500 PLN" },
   ];
 
+  /**
+   * Function to handle predefined amount selection
+   * @param {number} value - The predefined amount value 
+   */
   const handlePredefinedAmount = (value) => {
     setAmount(value.toString());
     setError("");
   };
 
+  /**
+   * Function to handle custom amount input
+   * @param {Object} e - The event object
+   */
   const handleCustomAmount = (e) => {
     const value = e.target.value;
     if (
@@ -42,6 +55,9 @@ const PaymentPage = () => {
     }
   };
 
+  /**
+   * Function to handle form submission
+   */
   const handleSubmit = async () => {
     if (!amount || parseFloat(amount) < 10) {
       setError("Minimal amount to top up is 10 PLN");

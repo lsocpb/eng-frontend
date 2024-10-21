@@ -2,6 +2,9 @@ import {MDBCard, MDBCardBody, MDBCardText, MDBCardTitle, MDBCol, MDBIcon} from "
 import {Line} from "react-chartjs-2";
 import React from "react";
 
+/**
+ * Options for the chart displayed in the stat card.
+ */
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -19,7 +22,16 @@ const chartOptions = {
         },
     },
 };
-
+/**
+ * Component to display a stat card with a chart.
+ * @param {title} props - The title of the stat card.
+ * @param {value} props - The value to display in the stat card.
+ * @param {change} props - The change in value to display in the stat card.
+ * @param {icon} props - The icon to display in the stat card.
+ * @param {color} props - The color of the icon and chart in the stat card.
+ * @param {chartData} props - The data for the chart in the stat card.
+ * @returns {JSX.Element} A card displaying a stat with a chart.
+ */
 const StatCard = ({title, value, change, icon, color, chartData}) => (
     <MDBCol lg={3} md={6} className="mb-4">
         <MDBCard className="h-100">

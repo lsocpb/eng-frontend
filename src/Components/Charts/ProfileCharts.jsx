@@ -3,6 +3,11 @@ import { MDBCol, MDBRow } from 'mdb-react-ui-kit';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 
+/**
+ * Charts component to display sales and bids charts.
+ * @component
+ * @returns {JSX.Element} The Charts component
+ */
 const Charts = () => {
   const commonOptions = {
     maintainAspectRatio: false,

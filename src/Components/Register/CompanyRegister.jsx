@@ -13,7 +13,10 @@ import { showSuccessToast, showErrorToast } from "../ToastNotifications/ToastNot
 import { BASE_API_URL } from "../../api/config";
 import axios from "axios";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
-
+/**
+ * Functional component for company registration
+ * @returns {JSX.Element} Company registration form
+ */
 function CompanyRegister() {
     const {
         register,

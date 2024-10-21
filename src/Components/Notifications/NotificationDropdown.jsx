@@ -14,6 +14,11 @@ import {socketService} from "../../services/socketService";
 import Cookies from "js-cookie";
 import {STORAGE_KEY} from "../../constans/applicationStorageConstans";
 
+/**
+ * Component that displays a dropdown with notifications.
+ * @component
+ * @returns {JSX.Element} - Rendered NotificationDropdown component
+ */
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState(() => {
     const savedNotifications = localStorage.getItem(STORAGE_KEY);
@@ -31,6 +36,10 @@ const NotificationDropdown = () => {
 
     socketService.connect(token);
 
+    /**
+     * Function to handle new notifications received from the socket
+     * @param {Array} data 
+     */
     const handleNewNotification = (data) => {
       setNotifications(prev => {
         const newNotification = {
@@ -56,6 +65,9 @@ const NotificationDropdown = () => {
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
+  /**
+   * Function to mark a notification as read
+   */
   const handleMarkAsRead = useCallback((id) => {
     setNotifications(prev =>
       prev.map(notif =>
@@ -64,6 +76,9 @@ const NotificationDropdown = () => {
     );
   }, []);
 
+  /**
+   * Function to mark all notifications as read
+   */
   const handleMarkAllAsRead = () => {
     setNotifications(notifications.map(notif => ({ ...notif, isRead: true })));
   };

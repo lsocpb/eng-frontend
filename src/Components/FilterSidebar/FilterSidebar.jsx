@@ -10,6 +10,14 @@ import {
   MDBRange
 } from 'mdb-react-ui-kit';
 
+/**
+ * FilterSidebar component represents a sidebar with filters for the product list.
+ * @component
+ * @param {Object} props
+ * @param {function} props.onFilterChange - The function to handle filter changes
+ * @param {string} props.margin - The margin of the sidebar
+ * @returns {JSX.Element} The FilterSidebar component
+ */
 function FilterSidebar({ onFilterChange, margin }) {
   return (
     <MDBCard className={`h-auto shadow-5-strong ${margin}`}>
