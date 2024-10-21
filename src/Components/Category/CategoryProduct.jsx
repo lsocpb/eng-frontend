@@ -88,8 +88,8 @@ export default function CategoryPage() {
         return (
             parseFloat(product.price) <= parseFloat(filters.price) &&
             ((!filters.status.active && !filters.status.inactive) ||
-                (filters.status.active && product.status === 'active') ||
-                (filters.status.inactive && product.status === 'inactive'))
+                (filters.status.active && product.is_auction_finished === 'true') ||
+                (filters.status.inactive && product.is_auction_finished === 'false'))
         );
     });
 

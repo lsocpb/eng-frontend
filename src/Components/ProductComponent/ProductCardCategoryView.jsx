@@ -51,12 +51,10 @@ const ProductCardCategoryView = ({ product, onClick }) => {
           <MDBCol md="8">
             <MDBCardBody>
               <MDBCardTitle>{product.product.name}</MDBCardTitle>
-              <MDBCardText>
-                <small className="text-muted">Quantity: {product.quantity}</small>
-              </MDBCardText>
+
               <MDBCardText>
               {product.is_auction_finished ? ( <MDBBadge color='danger'>Auction Ended</MDBBadge> ) : (<small className="text-muted">
-                                    Ends in: <CountdownTimer date={new Date(product.end_date)}/>
+                                    <CountdownTimer date={new Date(product.end_date)}/>
                                 </small>)}
               </MDBCardText>
               <MDBCardText>

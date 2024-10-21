@@ -42,7 +42,7 @@ function FilterSidebar({ onFilterChange, margin }) {
             <MDBCheckbox
               name='statusInactive'
               id='statusInactive'
-              label='Inactive'
+              label='Ended'
               className="text-danger"
               onChange={(e) => onFilterChange('status', 'inactive', e.target.checked)}
             />
