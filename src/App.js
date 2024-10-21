@@ -6,7 +6,7 @@ import Register from "./Components/Register/Register";
 import HomePage from "./Components/HomePage/HomePage";
 import Profile from "./Components/UserProfile/Profile";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import ViewAllCategories from "./Components/Category/ViewAllCategories";
+import ViewAllCategories from "./Components/ViewAllCategories/ViewAllCategories";
 import AddProductForm from "./Components/ProductComponent/AddProductForm";
 import ProductPage from "./Components/ProductComponent/ProductView";
 import CategoryPage from "./Components/Category/CategoryProduct";

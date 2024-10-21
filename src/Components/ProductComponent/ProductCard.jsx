@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import CategoryNavigator from "../Category/CategoryNavigator";
+import CategoryNavigator from "../CategoryNavigator/CategoryNavigator";
 import { MDBCard, MDBCardBody, MDBCardFooter, MDBIcon, MDBBadge, MDBTooltip } from "mdb-react-ui-kit";
 
 /**

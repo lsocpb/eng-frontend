@@ -46,7 +46,6 @@ function AdminPage() {
     };
 
     const generateChartData = (data) => ({
-        labels: ['', '', '', '', '', '', ''],
         datasets: [{
             data: data,
             borderColor: 'rgba(75, 192, 192, 1)',

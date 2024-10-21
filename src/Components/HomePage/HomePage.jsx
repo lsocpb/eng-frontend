@@ -12,14 +12,14 @@ import {
     MDBRow,
 } from "mdb-react-ui-kit";
 import {useNavigate} from "react-router-dom";
-import CategoryList from "../Category/CategoryList";
+import CategoryList from "../CategoryList/CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {settings} from "../Utils/homePageSliderSettings";
 import useCategories from "../../hooks/useCategories";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
-import MobileCategorySidebar from "../Category/MobileCategoryList";
+import MobileCategorySidebar from "../MobileCategoryList/MobileCategoryList";
 
 /**
  * HomePage component displays the main content of the home page, including:

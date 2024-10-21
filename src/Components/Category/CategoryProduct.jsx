@@ -7,8 +7,8 @@ import {
     MDBCardBody,
     MDBRow, MDBCol
 } from 'mdb-react-ui-kit';
-import FilterSidebar from "./FilterSidebar";
-import CategoryList from "./CategoryList";
+import FilterSidebar from "../FilterSidebar/FilterSidebar";
+import CategoryList from "../CategoryList/CategoryList";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import useCategories from "../../hooks/useCategories";
 import ProductCardCategoryView from "../ProductComponent/ProductCardCategoryView";
@@ -16,7 +16,7 @@ import CountdownTimer from "../CountdownTimer/CountdownTimer";
 import {BASE_API_URL} from "../../api/config";
 import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
-import MobileCategorySidebar from "./MobileCategoryList";
+import MobileCategorySidebar from "../MobileCategoryList/MobileCategoryList";
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
