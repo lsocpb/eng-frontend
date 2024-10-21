@@ -29,7 +29,7 @@ function FilterSidebar({ onFilterChange, margin }) {
         />
 
         <h6 className="mt-4 mb-3">Status</h6>
-        <MDBListGroup flush>
+        <MDBListGroup flush="true">
           <MDBListGroupItem>
             <MDBCheckbox
               name='statusActive'

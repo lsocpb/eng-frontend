@@ -37,7 +37,7 @@ const ProductCard = ({item}) => {
     };
 
     return (
-        <MDBCard className="py-1 h-100 shadow-5-strong" style={{ width: '400px' }}>
+        <MDBCard className="py-1 h-100 shadow-5-strong">
             <div className="position-relative" style={{ height: '300px' }}>
                 <img
                     src={item.product.image_url_1}

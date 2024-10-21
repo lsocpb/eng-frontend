@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     MDBBtn,
     MDBModal,
@@ -11,14 +11,48 @@ import {
     MDBInput,
     MDBIcon
 } from 'mdb-react-ui-kit';
+import Cookies from "js-cookie";
+import {showErrorToast, showSuccessToast} from "../ToastNotifications/ToastNotifications";
+import axios from "axios";
+import {BASE_API_URL} from "../../api/config";
+import {useNavigate} from "react-router-dom";
+import {socketService} from "../../services/socketService";
 
-const BidModal = ({ isOpen, toggle, productName, currentPrice }) => {
+const BidModal = ({isOpen, toggle, productName, currentPrice, auctionId}) => {
     const [bidAmount, setBidAmount] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setShowConfirmation(true);
+        const token = Cookies.get("active-user");
+        setIsSubmitting(true);
+        try {
+            const response = await axios.post(
+                `${BASE_API_URL}/auction/bid`,
+                {
+                    auction_id: parseInt(auctionId),
+                    bid_value: parseFloat(bidAmount),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            confirmBid();
+            showSuccessToast(response.data.message || "Bid placed successfully");
+        } catch (error) {
+            const errorMessage = error.response?.data?.detail || "An error occurred while placing your bid.";
+            showErrorToast(errorMessage);
+            setTimeout(() => {
+                confirmBid();
+            }, 500);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const confirmBid = () => {
@@ -50,7 +84,6 @@ const BidModal = ({ isOpen, toggle, productName, currentPrice }) => {
                                     value={bidAmount}
                                     onChange={(e) => setBidAmount(e.target.value)}
                                     required
-                                    min={currentPrice}
                                     step="0.01"
                                 />
                             </MDBModalBody>
@@ -58,8 +91,9 @@ const BidModal = ({ isOpen, toggle, productName, currentPrice }) => {
                                 <MDBBtn className="btn-outline-danger" onClick={toggle}>
                                     Cancel
                                 </MDBBtn>
-                                <MDBBtn type='submit' color='danger'>
-                                    <MDBIcon fas icon="gavel" className="me-2"/> Place a bid
+                                <MDBBtn type='submit' color='danger' disabled={isSubmitting}>
+                                    <MDBIcon fas icon="gavel" className="me-2"/>
+                                    {isSubmitting ? 'Submitting...' : 'Place a bid'}
                                 </MDBBtn>
                             </MDBModalFooter>
                         </form>

@@ -122,7 +122,7 @@ export default function HomePage() {
                                     <MDBCardBody className="text-center">
                                         <MDBIcon fas icon="heart" size="3x" className="text-danger mb-3"/>
                                         <h4 className="mb-4 font-weight-bold">Welcome to Our Charity Auction!</h4>
-                                        <MDBListGroup flush>
+                                        <MDBListGroup flush="true">
                                             <MDBListGroupItem className="border-0 d-flex align-items-center">
                                                 <MDBIcon fas icon="hand-holding-heart" className="text-primary me-3"/>
                                                 <div className="text-start">
@@ -154,7 +154,7 @@ export default function HomePage() {
                                     <MDBCardBody className="text-center">
                                         <MDBIcon fas icon="handshake" size="3x" className="text-danger mb-3"/>
                                         <h4 className="mb-4 font-weight-bold">Become Our Partner</h4>
-                                        <MDBListGroup flush>
+                                        <MDBListGroup flush="true">
                                             <MDBListGroupItem className="border-0 d-flex align-items-center">
                                                 <MDBIcon fas icon="users" className="text-success me-3"/>
                                                 <div className="text-start">
@@ -208,10 +208,10 @@ export default function HomePage() {
                                 <p className="text-center text-muted mb-4">
                                     Bid on unique items and experiences to support wonderful causes!
                                 </p>
-                                <div className="slider-container mb-4">
+                                <div className="slider-container mb-4 w-100">
                                     <Slider {...settings}>
                                         {products.map((product, index) => (
-                                            <div key={index} className="px-3 py-1">
+                                            <div key={index} className="px-1 py-1">
                                                 <ProductCard item={product}/>
                                             </div>
                                         ))}

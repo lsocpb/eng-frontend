@@ -69,7 +69,7 @@ const MobileCategorySidebar = ({ allCategories }) => {
           style={{
             zIndex: 1050,
             marginTop: "200px",
-            marginLeft: isOpen ? "240px" : "0px",
+            marginLeft: isOpen ? "190px" : "0px",
             transition: "all 0.5s ease-out",
           }}
           aria-label="Toggle category menu"
@@ -82,7 +82,7 @@ const MobileCategorySidebar = ({ allCategories }) => {
         </button>
         <div className="p-3">
           <h5 className="text-center mb-4">Categories</h5>
-          <MDBListGroup flush>
+          <MDBListGroup flush="true">
             {allCategories.map((category, index) => (
               <MDBListGroupItem
                 key={index}

@@ -43,7 +43,7 @@ const CategoryList = ({ allCategories }) => {
         <MDBCard className="h-auto shadow-5-strong">
             <MDBCardBody>
                 <MDBCardTitle className="text-center mb-4">Looking for a product?</MDBCardTitle>
-                <MDBListGroup flush>
+                <MDBListGroup flush="true">
                     {allCategories.map((category, index) => (
                         <MDBListGroupItem
                             key={index}
