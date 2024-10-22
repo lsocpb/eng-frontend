@@ -20,6 +20,7 @@ export default function ProfilePage() {
     const [profileData, setProfileData] = useState(null);
     const navigate = useNavigate();
     const { logout } = useUser();
+    const [billingData, setBillingData] = useState(null);
 
     /**
      * Effect hook to fetch profile data on component mount
@@ -33,6 +34,7 @@ export default function ProfilePage() {
                     }
                 });
                 setProfileData(response.data);
+                setBillingData(response.data.billing);
             } catch (error) {
                 console.error('Error fetching profile data:', error);
             }
@@ -64,7 +66,7 @@ export default function ProfilePage() {
                         <ProfileImage
                             imageUrl={profileData.profile_image_url}
                             username={profileData.username}
-                            city={profileData.address.city}
+                            city={billingData.city}
                             role={profileData.role}
                             onUploadSuccess={handleUploadSuccess}
                             onLogout={logout}
@@ -76,7 +78,9 @@ export default function ProfilePage() {
                         <ProfileDetails
                             username={profileData.username}
                             email={profileData.email}
-                            address={profileData.address}
+                            address={billingData.address}
+                            city={billingData.city}
+                            postalCode={billingData.postal_code}
                         />
                         <MDBRow>
                             <ProfileCharts />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -27,9 +27,6 @@ export default function CategoryPage() {
     const [categoryName, setCategoryName] = useState('');
     const [productId, setProductId] = useState(0);
     const [loading, setLoading] = useState(true);
-    const {categoryId} = useParams();
-    const [allCategories, loadingCategory] = useCategories();
-    const navigate = useNavigate();
     const [error, setError] = useState(null);
     const [filters, setFilters] = useState({
         price: 5000,
@@ -38,52 +35,75 @@ export default function CategoryPage() {
             inactive: false
         }
     });
+
+    const {categoryId} = useParams();
+    const [allCategories, loadingCategory] = useCategories();
+    const navigate = useNavigate();
     const {screenWidth} = useScreenSize();
 
+    const fetchCategory = async () => {
+        try {
+            const response = await axios.get(`${BASE_API_URL}/category/id/${categoryId}`);
+            setCategoryName(response.data.name);
+        } catch (error) {
+            setCategoryName('');
+            setError('Failed to fetch category');
+        }
+    };
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get(`${BASE_API_URL}/auction/category/${categoryId}`);
+            setProducts(response.data.auctions);
+            setProductId(response.data.id);
+        } catch (error) {
+            setProducts([]);
+            setError('No products found in this category');
+        }
+    };
+
     useEffect(() => {
-        /**
-         * Function to fetch category and products data from the API
-         */
         const fetchData = async () => {
             setLoading(true);
             setError(null);
             try {
-                const [categoryResponse, productsResponse] = await Promise.all([
-                    axios.get(`${BASE_API_URL}/category/${categoryId}`),
-                    axios.get(`${BASE_API_URL}/auction/category/${categoryId}`)
-                ]);
-                setCategoryName(categoryResponse.data.name);
-                setProducts(productsResponse.data.auctions);
-                setProductId(productsResponse.data.id);
+                await Promise.all([fetchCategory(), fetchProducts()]);
             } catch (error) {
-                setCategoryName('');
-                setProducts([]);
+                setError('Failed to load data');
             } finally {
                 setLoading(false);
             }
         };
+
         fetchData();
     }, [categoryId]);
 
-    if (loading) {
-        return <LoadingSpinner/>;
-    }
+    useEffect(() => {
+        console.log(filteredProducts.length);
+    }, []);
 
-    /**
-     * Function to handle product click
-     * @param {number} productId - The ID of the product
-     */
-    const handleProductClick = (productId) => {
+    const filteredProducts = useMemo(() => {
+        return products.filter(product => {
+            if (product.price > filters.price) {
+                return false;
+            }
+
+            if (filters.status.active && !product.isActive) {
+                return false;
+            }
+            if (filters.status.inactive && product.isActive) {
+                return false;
+            }
+
+            return true;
+        });
+    }, [products, filters]);
+
+    const handleProductClick = useCallback((productId) => {
         navigate(`/auction/${productId}`);
-    }
+    }, [navigate]);
 
-    /**
-     * Function to handle filter change
-     * @param {string} filterType - The type of filter
-     * @param {string|number} value - The value of the filter
-     * @param {boolean} checked - The checked status of the filter
-     */
-    const handleFilterChange = (filterType, value, checked) => {
+    const handleFilterChange = useCallback((filterType, value, checked) => {
         setFilters(prevFilters => {
             if (filterType === 'status') {
                 return {
@@ -99,22 +119,11 @@ export default function CategoryPage() {
                 [filterType]: filterType === 'price' ? parseFloat(value) : value
             };
         });
-    };
+    }, []);
 
-    /**
-     * Function to filter products based on the filters
-     * @type {Array} - The filtered products
-     * @returns {Array} - The filtered products
-     */
-    const filteredProducts = products.filter(product => {
-        return (
-            parseFloat(product.price) <= parseFloat(filters.price) &&
-            ((!filters.status.active && !filters.status.inactive) ||
-                (filters.status.active && product.is_auction_finished === 'true') ||
-                (filters.status.inactive && product.is_auction_finished === 'false'))
-        );
-    });
-
+    if (loading) {
+        return <LoadingSpinner/>;
+    }
 
     return (
         <MDBContainer className="py-5">
@@ -138,10 +147,12 @@ export default function CategoryPage() {
                     <MDBCard className={screenWidth > WidthBreakpoints.md ? "shadow-5-strong" : "mt-4 shadow-5-strong"}>
                         <MDBCardBody>
                             {error ? (
+                                <p className="text-center text-danger">{error}</p>
+                            ) : products.length === 0 ? (
                                 <p className="text-center">No products found in this category.</p>
-                            ) : filteredProducts.length > 0 ? (
+                            ) : (
                                 <MDBRow>
-                                    {filteredProducts.map((product) => (
+                                    {products.map((product) => (
                                         <ProductCardCategoryView
                                             key={product.id}
                                             product={product}
@@ -150,8 +161,6 @@ export default function CategoryPage() {
                                         />
                                     ))}
                                 </MDBRow>
-                            ) : (
-                                <p className="text-center">No products found in this category.</p>
                             )}
                         </MDBCardBody>
                     </MDBCard>

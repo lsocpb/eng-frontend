@@ -64,10 +64,10 @@ const ProductPage = () => {
           `${BASE_API_URL}/auction/id/${auctionId}`
         );
         setAuction(response.data);
+        setFinished(response.data.is_auction_finished);
         setProduct(response.data.product);
         setSeller(response.data.seller);
         checkAuctionStatus(response.data.product.end_date);
-
         const token = Cookies.get("active-user");
         if (token) {
           socketService.connect(token);
@@ -81,6 +81,7 @@ const ProductPage = () => {
     };
 
     fetchProduct();
+
     /**
      * Function to handle price updates from the socket service
      * @param {Array} data
@@ -208,7 +209,7 @@ const ProductPage = () => {
                 )}
               </MDBCardText>
               <MDBCardText>
-                {isAuctionEnded ? (
+                {finished ? (
                   <MDBBadge color="danger">Auction Ended</MDBBadge>
                 ) : (
                   <small className="text-muted">
@@ -225,10 +226,10 @@ const ProductPage = () => {
                     color={"danger"}
                     className="mb-2 w-auto"
                     onClick={toggleBidModal}
-                    disabled={isAuctionEnded}
+                    disabled={finished}
                   >
                     <MDBIcon fas icon="gavel" className="me-2" />
-                    {isAuctionEnded ? "AUCTION ENDED" : "PLACE A BID!"}
+                    {finished ? "AUCTION ENDED" : "PLACE A BID!"}
                   </MDBBtn>
                 ) : (
                   <MDBBtn
@@ -237,10 +238,10 @@ const ProductPage = () => {
                     color={"danger"}
                     className="mb-2 w-auto"
                     onClick={toggleBuyModal}
-                    disabled={isAuctionEnded}
+                    disabled={finished}
                   >
                     <MDBIcon fas icon="shopping-cart" className="me-2" />
-                    {isAuctionEnded ? "AUCTION ENDED" : "BUY NOW!"}
+                    {finished ? "AUCTION ENDED" : "BUY NOW!"}
                   </MDBBtn>
                 )}
                 <MDBBtn

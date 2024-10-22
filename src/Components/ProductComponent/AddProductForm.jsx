@@ -49,7 +49,6 @@ const AddProductForm = () => {
     name: "",
     description: "",
     price: "",
-    quantity: "1",
     category_id: "",
     auction_type: "buy_now",
   });
@@ -195,7 +194,6 @@ const AddProductForm = () => {
         const auctionData = {
           user_id: parseInt(seller_jwtToken.split("-")[0]),
           auction_type: formData.auction_type,
-          quantity: parseInt(formData.quantity),
           end_date: new Date(endDate).toISOString(),
           price: parseFloat(formData.price),
           product: {
@@ -328,21 +326,6 @@ const AddProductForm = () => {
                         min="0.01"
                       />
                     </div>
-                  </div>
-
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="quantity" className="form-label text-muted">
-                      Quantity
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="quantity"
-                      onChange={handleInput}
-                      value={formData.quantity}
-                      min="1"
-                      required
-                    />
                   </div>
 
                   <div className="col-md-6 mb-3">

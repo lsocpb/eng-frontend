@@ -14,15 +14,15 @@ import {MDBCard, MDBCardBody, MDBCardText, MDBCol, MDBRow} from "mdb-react-ui-ki
  *
  * @returns {JSX.Element} A card displaying the user's profile details.
  */
-const ProfileDetails = ({ username, email, address }) => (
+const ProfileDetails = ({ username, email, city, address, postalCode }) => (
   <MDBCard className="mb-4" style={{backgroundColor: '#FBF4F5'}}>
     <MDBCardBody>
       {[
         { label: "Full Name", value: username },
         { label: "Email", value: email },
-        { label: "City", value: address.city },
-        { label: "Address", value: address.street },
-        { label: "Zip Code", value: address.zip }
+        { label: "City", value: city },
+        { label: "Address", value: address },
+        { label: "Zip Code", value: postalCode }
       ].map((item, index) => (
         <React.Fragment key={index}>
           <MDBRow>
