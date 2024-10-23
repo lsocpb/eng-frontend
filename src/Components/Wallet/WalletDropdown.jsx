@@ -43,7 +43,6 @@ const WalletDropdown = () => {
             setWalletData(response.data);
         } catch (err) {
             setError('Failed to load wallet data');
-            console.error('Error fetching wallet data:', err);
         } finally {
             setIsLoading(false);
         }
