@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useForm } from 'react-hook-form';
 import {
     MDBBtn,
@@ -8,15 +8,12 @@ import {
     MDBRow,
     MDBInput,
 } from 'mdb-react-ui-kit';
-import { ToastContainer } from "react-toastify";
-import { showSuccessToast, showErrorToast } from "../ToastNotifications/ToastNotifications";
+import { showErrorToast } from "../ToastNotifications/ToastNotifications";
 import { BASE_API_URL } from "../../api/config";
 import axios from "axios";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
-/**
- * Functional component for company registration
- * @returns {JSX.Element} Company registration form
- */
+import RegistrationConfirmation from "./RegistrationConfirmation";
+
 function CompanyRegister() {
     const {
         register,
@@ -24,23 +21,25 @@ function CompanyRegister() {
         formState: { errors }
     } = useForm();
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
     const onSubmit = async (data) => {
         const payload = {
-            companyName: data.companyName,
-            nip: data.nip,
-            regon: data.regon,
-            email: data.email,
-            password: data.password,
-            phone: data.phone,
-            address: {
-                street: data.street,
-                city: data.city,
-                zip: data.zip
+            account_details: {
+                username: data.username,
+                password: data.password,
+                email: data.email,
             },
-            contactPerson: {
-                firstName: data.contactFirstName,
-                lastName: data.contactLastName,
-                position: data.contactPosition
+            billing_details: {
+                company_name: data.companyName,
+                tax_id: data.regon,
+                address: data.street,
+                postal_code: data.zip,
+                city: data.city,
+                state: data.state,
+                country: data.country,
+                phone_number: data.phone,
+                bank_account: data.bankAccount
             }
         };
 
@@ -54,18 +53,10 @@ function CompanyRegister() {
                     }
                 }
             );
-
-            if (response.status !== 200) {
-                showErrorToast('An unexpected error occurred. Please try again later.');
-                return;
-            }
-
-            showSuccessToast('Company registration successful');
-            setTimeout(() => {
-                window.location.href = "/login";
-            }, 1000);
+            setShowConfirmation(true);
         } catch (error) {
-            showErrorToast('An unexpected error occurred. Please try again later.');
+            const message = error.response?.data?.detail || 'Registration failed. Please try again.';
+            showErrorToast(message);
         }
     };
 
@@ -77,40 +68,42 @@ function CompanyRegister() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <MDBRow className='mb-4'>
                             <MDBCol md='6'>
-                                <h4 className="text-start mb-4">Company Information</h4>
+                                <h4 className="text-start mb-4">Account Information</h4>
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Company Name'
-                                    id='companyName'
+                                    label='Username'
+                                    id='username'
                                     type='text'
-                                    {...register('companyName', { required: 'Company name is required' })}
+                                    {...register('username', {
+                                        required: 'Username is required',
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Username must be at least 3 characters'
+                                        },
+                                        maxLength: {
+                                            value: 20,
+                                            message: 'Username cannot exceed 20 characters'
+                                        }
+                                    })}
                                 />
-                                {errors.companyName && <p className="text-danger">{errors.companyName.message}</p>}
+                                {errors.username && <p className="text-danger">{errors.username.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='NIP'
-                                    id='nip'
-                                    type='text'
-                                    {...register('nip', { required: 'NIP is required' })}
-                                />
-                                {errors.nip && <p className="text-danger">{errors.nip.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='REGON'
-                                    id='regon'
-                                    type='text'
-                                    {...register('regon', { required: 'REGON is required' })}
-                                />
-                                {errors.regon && <p className="text-danger">{errors.regon.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Company Email'
+                                    label='Email'
                                     id='email'
                                     type='email'
-                                    {...register('email', { required: 'Email is required' })}
+                                    {...register('email', {
+                                        required: 'Email is required',
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: 'Invalid email address'
+                                        },
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Email cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
                                 {errors.email && <p className="text-danger">{errors.email.message}</p>}
 
@@ -119,27 +112,87 @@ function CompanyRegister() {
                                     label='Password'
                                     id='password'
                                     type='password'
-                                    {...register('password', { required: 'Password is required' })}
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message: 'Password must be at least 8 characters'
+                                        },
+                                        maxLength: {
+                                            value: 20,
+                                            message: 'Password cannot exceed 20 characters'
+                                        }
+                                    })}
                                 />
                                 {errors.password && <p className="text-danger">{errors.password.message}</p>}
+                            </MDBCol>
+
+                            <MDBCol md='6'>
+                                <h4 className="text-start mb-4">Company Information</h4>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Company Name'
+                                    id='companyName'
+                                    type='text'
+                                    {...register('companyName', {
+                                        required: 'Company name is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Company name cannot exceed 255 characters'
+                                        }
+                                    })}
+                                />
+                                {errors.companyName && <p className="text-danger">{errors.companyName.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Company Phone'
-                                    id='phone'
+                                    label='Tax ID (REGON)'
+                                    id='regon'
                                     type='text'
-                                    {...register('phone', { required: 'Phone is required' })}
+                                    {...register('regon', {
+                                        required: 'Tax ID is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Tax ID cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
-                                {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
-                            </MDBCol>
-                            <MDBCol md='6'>
-                                <h4 className="text-start mb-4">Address & Contact Person</h4>
+                                {errors.regon && <p className="text-danger">{errors.regon.message}</p>}
+
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Street'
+                                    label='Bank Account'
+                                    id='bankAccount'
+                                    type='text'
+                                    {...register('bankAccount', {
+                                        required: 'Bank account is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Bank account cannot exceed 255 characters'
+                                        }
+                                    })}
+                                />
+                                {errors.bankAccount && <p className="text-danger">{errors.bankAccount.message}</p>}
+                            </MDBCol>
+                        </MDBRow>
+
+                        <MDBRow className='mb-4'>
+                            <MDBCol md='12'>
+                                <h4 className="text-start mb-4">Address Information</h4>
+                            </MDBCol>
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Street Address'
                                     id='street'
                                     type='text'
-                                    {...register('street', { required: 'Street is required' })}
+                                    {...register('street', {
+                                        required: 'Street address is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Address cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
                                 {errors.street && <p className="text-danger">{errors.street.message}</p>}
 
@@ -148,47 +201,81 @@ function CompanyRegister() {
                                     label='City'
                                     id='city'
                                     type='text'
-                                    {...register('city', { required: 'City is required' })}
+                                    {...register('city', {
+                                        required: 'City is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'City cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
                                 {errors.city && <p className="text-danger">{errors.city.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Zip Code'
+                                    label='State/Province'
+                                    id='state'
+                                    type='text'
+                                    {...register('state', {
+                                        required: 'State is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'State cannot exceed 255 characters'
+                                        }
+                                    })}
+                                />
+                                {errors.state && <p className="text-danger">{errors.state.message}</p>}
+                            </MDBCol>
+
+                            <MDBCol md='6'>
+                                <MDBInput
+                                    wrapperClass='mb-4'
+                                    label='Postal Code'
                                     id='zip'
                                     type='text'
-                                    {...register('zip', { required: 'Zip code is required' })}
+                                    {...register('zip', {
+                                        required: 'Postal code is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Postal code cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
                                 {errors.zip && <p className="text-danger">{errors.zip.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Contact Person First Name'
-                                    id='contactFirstName'
+                                    label='Country'
+                                    id='country'
                                     type='text'
-                                    {...register('contactFirstName', { required: 'Contact person first name is required' })}
+                                    defaultValue="Poland"
+                                    {...register('country', {
+                                        required: 'Country is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Country cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
-                                {errors.contactFirstName && <p className="text-danger">{errors.contactFirstName.message}</p>}
+                                {errors.country && <p className="text-danger">{errors.country.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Contact Person Last Name'
-                                    id='contactLastName'
+                                    label='Phone Number'
+                                    id='phone'
                                     type='text'
-                                    {...register('contactLastName', { required: 'Contact person last name is required' })}
+                                    {...register('phone', {
+                                        required: 'Phone number is required',
+                                        maxLength: {
+                                            value: 255,
+                                            message: 'Phone number cannot exceed 255 characters'
+                                        }
+                                    })}
                                 />
-                                {errors.contactLastName && <p className="text-danger">{errors.contactLastName.message}</p>}
-
-                                <MDBInput
-                                    wrapperClass='mb-4'
-                                    label='Position in Company'
-                                    id='contactPosition'
-                                    type='text'
-                                    {...register('contactPosition', { required: 'Position is required' })}
-                                />
-                                {errors.contactPosition && <p className="text-danger">{errors.contactPosition.message}</p>}
+                                {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
                             </MDBCol>
                         </MDBRow>
+
                         <div className="d-flex justify-content-center">
                             <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit">
                                 Register Company
@@ -197,8 +284,13 @@ function CompanyRegister() {
                     </form>
                 </MDBCardBody>
             </MDBCol>
-            <ToastContainer/>
+            {showConfirmation && (
+                <RegistrationConfirmation
+                    onClose={() => setShowConfirmation(false)}
+                />
+            )}
         </MDBContainer>
     );
 }
+
 export default withAuthRedirect(CompanyRegister);
