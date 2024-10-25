@@ -76,7 +76,7 @@ export default function HomePage() {
                                         Difference</h1>
                                     <p className="lead mb-4">Explore unique items and experiences while supporting a
                                         great cause.</p>
-                                    <button className="btn btn-danger btn-lg rounded-pill mb-4">Start Bidding</button>
+                                    <button className="btn btn-danger btn-lg rounded-pill mb-4" onClick={handleViewAllAuctions}>Start Bidding</button>
 
                                     <MDBCarousel showControls showIndicators fade className="mb-4">
                                         <MDBCarouselItem itemId={1}>

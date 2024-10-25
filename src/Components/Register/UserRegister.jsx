@@ -32,7 +32,7 @@ function UserRegister() {
    * Function to handle form submission
    * @param {Object} data - Form data
    */
-  const onSubmit = async (data) => {
+ const onSubmit = async (data) => {
     const payload = {
       account_details: {
         username: data.username,
@@ -43,13 +43,14 @@ function UserRegister() {
         first_name: data.firstName,
         last_name: data.lastName,
         address: data.address,
-        postal_code: data.zip,
+        postal_code: data.postalCode,
         city: data.city,
         state: data.state,
         country: data.country,
         phone_number: data.phone,
       },
     };
+
 
     try {
       const response = await axios.post(
@@ -66,7 +67,8 @@ function UserRegister() {
         window.location.href = "/login";
       }, 1000);
     } catch (error) {
-      const message = error.response.detail?.msg;
+      const message =
+        error.response?.data?.detail || "Registration failed. Please try again.";
       showErrorToast(message);
     }
   };
