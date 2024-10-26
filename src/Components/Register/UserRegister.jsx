@@ -25,7 +25,7 @@ function UserRegister() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm();
 
   /**

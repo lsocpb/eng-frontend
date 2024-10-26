@@ -5,7 +5,11 @@ import {
     MDBContainer,
     MDBCard,
     MDBCardBody,
-    MDBRow, MDBCol
+    MDBRow,
+    MDBCol,
+    MDBPagination,
+    MDBPaginationItem,
+    MDBPaginationLink
 } from 'mdb-react-ui-kit';
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import CategoryList from "../CategoryList/CategoryList";
@@ -18,16 +22,15 @@ import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
 import MobileCategorySidebar from "../MobileCategoryList/MobileCategoryList";
 
-/**
- * CategoryPage component displays all products in a category.
- * @returns {JSX.Element} - The CategoryPage component
- */
+const ITEMS_PER_PAGE = 10;
+
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
     const [categoryName, setCategoryName] = useState('');
     const [productId, setProductId] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const [filters, setFilters] = useState({
         price: 5000,
         status: {
@@ -78,10 +81,6 @@ export default function CategoryPage() {
         fetchData();
     }, [categoryId]);
 
-    useEffect(() => {
-        console.log(filteredProducts.length);
-    }, []);
-
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
             if (product.price > filters.price) {
@@ -98,6 +97,21 @@ export default function CategoryPage() {
             return true;
         });
     }, [products, filters]);
+
+    const paginatedProducts = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredProducts.slice(startIndex, endIndex);
+    }, [filteredProducts, currentPage]);
+
+    const totalPages = useMemo(() => {
+        return Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    }, [filteredProducts]);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
+    };
 
     const handleProductClick = useCallback((productId) => {
         navigate(`/auction/${productId}`);
@@ -119,7 +133,36 @@ export default function CategoryPage() {
                 [filterType]: filterType === 'price' ? parseFloat(value) : value
             };
         });
+        setCurrentPage(1); // Reset to first page when filters change
     }, []);
+
+    const renderPagination = () => {
+        if (totalPages <= 1) return null;
+
+        return (
+            <MDBPagination className="mb-0 justify-content-center">
+                <MDBPaginationItem disabled={currentPage === 1}>
+                    <MDBPaginationLink onClick={() => handlePageChange(currentPage - 1)}>
+                        Previous
+                    </MDBPaginationLink>
+                </MDBPaginationItem>
+
+                {[...Array(totalPages)].map((_, index) => (
+                    <MDBPaginationItem key={index + 1} active={currentPage === index + 1}>
+                        <MDBPaginationLink onClick={() => handlePageChange(index + 1)}>
+                            {index + 1}
+                        </MDBPaginationLink>
+                    </MDBPaginationItem>
+                ))}
+
+                <MDBPaginationItem disabled={currentPage === totalPages}>
+                    <MDBPaginationLink onClick={() => handlePageChange(currentPage + 1)}>
+                        Next
+                    </MDBPaginationLink>
+                </MDBPaginationItem>
+            </MDBPagination>
+        );
+    };
 
     if (loading) {
         return <LoadingSpinner/>;
@@ -151,16 +194,19 @@ export default function CategoryPage() {
                             ) : products.length === 0 ? (
                                 <p className="text-center">No products found in this category.</p>
                             ) : (
-                                <MDBRow>
-                                    {products.map((product) => (
-                                        <ProductCardCategoryView
-                                            key={product.id}
-                                            product={product}
-                                            onClick={handleProductClick}
-                                            CountdownTimer={CountdownTimer}
-                                        />
-                                    ))}
-                                </MDBRow>
+                                <>
+                                    <MDBRow>
+                                        {paginatedProducts.map((product) => (
+                                            <ProductCardCategoryView
+                                                key={product.id}
+                                                product={product}
+                                                onClick={handleProductClick}
+                                                CountdownTimer={CountdownTimer}
+                                            />
+                                        ))}
+                                    </MDBRow>
+                                    {renderPagination()}
+                                </>
                             )}
                         </MDBCardBody>
                     </MDBCard>

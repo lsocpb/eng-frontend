@@ -18,7 +18,7 @@ function CompanyRegister() {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors, isValid }
     } = useForm();
 
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -277,7 +277,7 @@ function CompanyRegister() {
                         </MDBRow>
 
                         <div className="d-flex justify-content-center">
-                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit">
+                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit" disabled={!!isValid}>
                                 Register Company
                             </MDBBtn>
                         </div>
