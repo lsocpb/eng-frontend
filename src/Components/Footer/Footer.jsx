@@ -44,8 +44,8 @@ const Footer = () => {
 
       <section className='py-5'>
         <MDBContainer>
-          <MDBRow>
-            <MDBCol lg="3" md="6" className='mb-4 mb-lg-0'>
+          <MDBRow className="d-flex justify-content-center mx-5">
+            <MDBCol lg="3" md="6" className='mb-4 mx-5 mb-lg-0'>
               <h5 className='text-danger mb-4'>
                 <MDBIcon fas icon='heart' className='me-2' />
                 CharFair
@@ -59,57 +59,21 @@ const Footer = () => {
               <h5 className='text-danger mb-4'>Quick Links</h5>
               <ul className='list-unstyled'>
                 <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
+                  <MDBIcon fas icon='angle-right' className='me-2'/>
                   <a href='#!' className='text-muted' onClick={() => handleNavigation('/about')}>
                     About Us
                   </a>
                 </li>
                 <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/how-it-works')}>
-                    How It Works
-                  </a>
-                </li>
-                <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/faq')}>
-                    FAQs
-                  </a>
-                </li>
-                <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/contact')}>
-                    Contact Us
-                  </a>
-                </li>
-              </ul>
-            </MDBCol>
-
-            <MDBCol lg="3" md="6" className='mb-4 mb-lg-0'>
-              <h5 className='text-danger mb-4'>For Partners</h5>
-              <ul className='list-unstyled'>
-                <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/become-partner')}>
-                    Become a Partner
-                  </a>
-                </li>
-                <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/success-stories')}>
+                  <MDBIcon fas icon='angle-right' className='me-2'/>
+                  <a href='/stories' className='text-muted' onClick={() => handleNavigation('/stories')}>
                     Success Stories
                   </a>
                 </li>
                 <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/resources')}>
-                    Resources
-                  </a>
-                </li>
-                <li className='mb-2'>
-                  <MDBIcon fas icon='angle-right' className='me-2' />
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/partner-support')}>
-                    Partner Support
+                  <MDBIcon fas icon='angle-right' className='me-2'/>
+                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/faq')}>
+                    FAQs
                   </a>
                 </li>
               </ul>
@@ -119,7 +83,7 @@ const Footer = () => {
               <h5 className='text-danger mb-4'>Contact</h5>
               <ul className='list-unstyled'>
                 <li className='mb-3'>
-                  <MDBIcon fas icon='home' className='me-2' />
+                  <MDBIcon fas icon='home' className='me-2'/>
                   Wiejska 8, Bialystok, Poland
                 </li>
                 <li className='mb-3'>
@@ -129,10 +93,6 @@ const Footer = () => {
                 <li className='mb-3'>
                   <MDBIcon fas icon='phone' className='me-2' />
                   + 01 234 567 88
-                </li>
-                <li className='mb-3'>
-                  <MDBIcon fas icon='clock' className='me-2' />
-                  24/7 Online Support
                 </li>
               </ul>
             </MDBCol>
