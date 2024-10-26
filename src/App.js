@@ -21,6 +21,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./Components/Footer/Footer";
 import SuccessStories from "./Components/SuccessStories/SuccessStories";
+import AboutUs from "./Components/AboutUs/AboutUs";
 function App() {
     return (
         <Router>
@@ -47,6 +48,7 @@ function App() {
                     <Route path="/auction/:auctionId" element={<ProductPage />} />
                     <Route path="/product/category/:categoryId" element={<CategoryPage />} />
                     <Route path="/stories" element={<SuccessStories />} />
+                    <Route path="/aboutus" element={<AboutUs />} />
                     <Route element={<ProtectedRoute requiredRoles={['user', 'admin']}/>}>
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
