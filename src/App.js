@@ -19,6 +19,7 @@ import UserRegister from "./Components/Register/UserRegister";
 import CompanyRegister from "./Components/Register/CompanyRegister";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./Components/Footer/Footer";
 function App() {
     return (
         <Router>
@@ -57,6 +58,7 @@ function App() {
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
                     </Route>
                 </Routes>
+                <Footer />
             </UserProvider>
         </Router>
     );
