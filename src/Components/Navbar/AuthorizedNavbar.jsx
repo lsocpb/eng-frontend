@@ -51,7 +51,7 @@ export default function AuthorizedNavbar() {
     }, []);
     /**
      * Function to search for products based on the search text
-     * @param {Event} e 
+     * @param {Event} e
      */
     const searchProducts = async (e) => {
         e.preventDefault();
@@ -82,7 +82,7 @@ export default function AuthorizedNavbar() {
         }
     };
     /**
-     * Function to clear the search results and search text 
+     * Function to clear the search results and search text
      */
     const clearSearch = () => {
         setSearchText('');
@@ -227,13 +227,14 @@ export default function AuthorizedNavbar() {
                                 </div>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/home' className='text-dark'>
+                                <MDBNavbarLink active aria-current='page' aria-label="Home" href='/home' className='text-dark'>
                                     <MDBIcon fas icon="home" size={"lg"} className="me-2 mx-2"/>
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/profile' className='text-dark'>
-                                    <MDBIcon fas icon="user" size={"lg"} className="me-2 mx-2"/>
+                                <MDBNavbarLink active aria-current='page' href='/profile' className='text-dark'
+                                               aria-label="Profile">
+                                    <MDBIcon fas icon="user" size="lg" className="me-2 mx-2"/>
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                             <NotificationDropdown/>

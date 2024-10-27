@@ -42,7 +42,7 @@ const ProductCard = ({item}) => {
                 <img
                     src={item.product.image_url_1}
                     className="card-img-top"
-                    alt={item.name}
+                    alt="product-image"
                     style={{
                         width: '100%',
                         height: '100%',

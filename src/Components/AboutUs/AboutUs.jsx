@@ -93,11 +93,11 @@ export default function AboutUs() {
                                         ))}
                                     </div>
                                     <div className="social-overlay">
-                                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
+                                        <a href={member.linkedin} target="_blank" aria-label="linkedin" rel="noopener noreferrer"
                                            className="social-icon">
                                             <MDBIcon fab icon="linkedin" size="2x"/>
                                         </a>
-                                        <a href={member.github} target="_blank" rel="noopener noreferrer"
+                                        <a href={member.github} target="_blank" aria-label="linkedin" rel="noopener noreferrer"
                                            className="social-icon">
                                             <MDBIcon fab icon="github" size="2x"/>
                                         </a>
