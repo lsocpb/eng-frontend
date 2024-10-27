@@ -236,9 +236,6 @@ const SuccessStories = () => {
           <p className="lead mb-4">
             Join our community of changemakers and create your own success story.
           </p>
-          <button className="btn btn-light rounded-pill px-5 py-3 btn-lg">
-            Start Bidding Now
-          </button>
         </div>
       </div>
     </div>
