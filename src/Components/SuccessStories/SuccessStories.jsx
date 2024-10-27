@@ -48,9 +48,9 @@ const SuccessStories = () => {
       category: 'education',
       title: "School Building Project in Ghana",
       description: "Through our auction platform, we raised $15,000 to build a new school in Ghana, providing education access to over 300 children.",
-      impact: "300+ students now have access to education",
+      impact: "300+ students access to education",
       raised: "$150,000",
-      image: "https://lh4.googleusercontent.com/proxy/fdUhnKV8RSTrfkeOKzPLSymwBavVLoCxJjYcS1jmTUmWXcigDY70MnZ4t2HpfRqIYMmtRstcNrfNPNlXfsHtvFb_mKLn4OKFRSH6FNRwGof8sqogTkO6DA",
+      image: "https://assets.globalpartnership.org/s3fs-public/styles/hero_stories/public/2023-06/ghana-classroom.jpg?VersionId=VsSO5BcsPqTlkZAMbnZ3h18Cih0z570l&itok=dVjT-KgU",
       partner: "Education For All Foundation"
     },
     {

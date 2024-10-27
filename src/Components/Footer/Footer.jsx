@@ -72,7 +72,7 @@ const Footer = () => {
                 </li>
                 <li className='mb-2'>
                   <MDBIcon fas icon='angle-right' className='me-2'/>
-                  <a href='#!' className='text-muted' onClick={() => handleNavigation('/faq')}>
+                  <a href='/FAQ' className='text-muted' onClick={() => handleNavigation('/FAQ')}>
                     FAQs
                   </a>
                 </li>
