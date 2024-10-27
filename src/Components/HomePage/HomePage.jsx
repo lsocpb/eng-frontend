@@ -187,7 +187,7 @@ export default function HomePage() {
                                         </div>
                                         <div className="mt-3 text-muted small">
                                             <MDBIcon fas icon="envelope" className="me-2"/> Email:
-                                            partners@charfair.com
+                                            charfaircharity@gmail.com
                                         </div>
                                     </MDBCardBody>
                                 </MDBCard>

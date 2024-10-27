@@ -39,13 +39,12 @@ export default function UnAuthorizedNavbar() {
                     <MDBNavbarNav className='w-auto mb-lg-0 align-items-center'>
                         <div className="d-flex mx-3">
                             <MDBNavbarItem>
-                                <MDBBtn href='/register' className='btn btn-outline-danger rounded-pill'>
+                                <MDBBtn href='/register' className='btn btn-outline-danger rounded-pill mx-2'>
                                     Register
                                 </MDBBtn>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBBtn href='/login' className='btn btn-danger rounded-pill' tabIndex={-1}
-                                        aria-disabled='true'>
+                                <MDBBtn href='/login' className='btn btn-danger rounded-pill'>
                                     Login
                                 </MDBBtn>
                             </MDBNavbarItem>

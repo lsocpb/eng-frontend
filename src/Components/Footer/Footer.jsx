@@ -88,7 +88,7 @@ const Footer = () => {
                 </li>
                 <li className='mb-3'>
                   <MDBIcon fas icon='envelope' className='me-2' />
-                  charfair@gmail.com
+                  charfaircharity@gmail.com
                 </li>
                 <li className='mb-3'>
                   <MDBIcon fas icon='phone' className='me-2' />
