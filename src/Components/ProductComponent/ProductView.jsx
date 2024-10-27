@@ -28,6 +28,7 @@ import Cookies from "js-cookie";
 import { socketService } from "../../services/socketService";
 import { showErrorToast } from "../ToastNotifications/ToastNotifications";
 import SocialModal from "../Modals/SocialModal/SocialModal";
+import {useUser} from "../UserContext/UserContext";
 
 /**
  * Component that displays detailed information about a product.
@@ -51,6 +52,7 @@ const ProductPage = () => {
   const [finished, setFinished] = useState(false);
   const [isPriceUpdating, setIsPriceUpdating] = useState(false);
   const [showSocialModal, setShowSocialModal] = useState(false);
+  const { user } = useUser();
   const shareUrl = window.location.href;
 
   useEffect(() => {
@@ -66,6 +68,7 @@ const ProductPage = () => {
         setAuction(response.data);
         setFinished(response.data.is_auction_finished);
         setProduct(response.data.product);
+        setIsBuyNow(response.data.auction_type === "buy_now")
         setSeller(response.data.seller);
         checkAuctionStatus(response.data.product.end_date);
         const token = Cookies.get("active-user");
@@ -155,12 +158,18 @@ const ProductPage = () => {
    * Function to toggle the bid modal
    */
   const toggleBidModal = () => {
+    if (!user) {
+      showErrorToast("You need to be logged in to place a bid");
+    }
     setShowBidModal(!showBidModal);
   };
   /**
    * Function to toggle the buy modal
    */
   const toggleBuyModal = () => {
+    if (!user) {
+        showErrorToast("You need to be logged in to buy this product");
+    }
     setShowBuyModal(!showBuyModal);
   };
   /**

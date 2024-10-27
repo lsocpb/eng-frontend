@@ -32,7 +32,7 @@ const ContactForm = () => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            await axios.post(`${BASE_API_URL}/send-email`, {
+            await axios.post(`${BASE_API_URL}/user/send-email`, {
                 ...formData,
                 to: 'charfaircharity@gmail.com',
             });
