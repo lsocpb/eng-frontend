@@ -27,7 +27,6 @@ const ITEMS_PER_PAGE = 10;
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);
     const [categoryName, setCategoryName] = useState('');
-    const [productId, setProductId] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -57,8 +56,8 @@ export default function CategoryPage() {
     const fetchProducts = async () => {
         try {
             const response = await axios.get(`${BASE_API_URL}/auction/category/${categoryId}`);
-            setProducts(response.data.auctions);
-            setProductId(response.data.id);
+            // Update this line to correctly access the auctions array
+            setProducts(response.data.auctions || []);
         } catch (error) {
             setProducts([]);
             setError('No products found in this category');
@@ -87,10 +86,10 @@ export default function CategoryPage() {
                 return false;
             }
 
-            if (filters.status.active && !product.isActive) {
+            if (filters.status.active && !product.is_auction_finished) {
                 return false;
             }
-            if (filters.status.inactive && product.isActive) {
+            if (filters.status.inactive && product.is_auction_finished) {
                 return false;
             }
 
@@ -101,8 +100,8 @@ export default function CategoryPage() {
     const paginatedProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
-        return filteredProducts.slice(startIndex, endIndex);
-    }, [filteredProducts, currentPage]);
+        return products.slice(startIndex, endIndex);
+    }, [products, currentPage]);
 
     const totalPages = useMemo(() => {
         return Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -133,7 +132,7 @@ export default function CategoryPage() {
                 [filterType]: filterType === 'price' ? parseFloat(value) : value
             };
         });
-        setCurrentPage(1); // Reset to first page when filters change
+        setCurrentPage(1);
     }, []);
 
     const renderPagination = () => {
@@ -200,7 +199,7 @@ export default function CategoryPage() {
                                             <ProductCardCategoryView
                                                 key={product.id}
                                                 product={product}
-                                                onClick={handleProductClick}
+                                                onClick={() => handleProductClick(product.id)}
                                                 CountdownTimer={CountdownTimer}
                                             />
                                         ))}

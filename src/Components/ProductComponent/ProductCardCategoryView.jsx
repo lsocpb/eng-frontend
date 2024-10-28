@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   MDBCard, MDBCardBody, MDBCardTitle,
   MDBBadge, MDBCardText, MDBRow, MDBCol
 } from 'mdb-react-ui-kit';
-import CountdownTimer from '../CountdownTimer/CountdownTimer';
 
 /**
  * Renders a single product card
  * @param {Object} props - The component props.
  * @param {Object} props.product - The product data.
  * @param {Function} props.onClick - The click handler for the product card.
+ * @param {Component} props.CountdownTimer - The CountdownTimer component
  * @returns {React.ReactElement} The accessible product card component.
  */
-const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
-
+const ProductCardCategoryView = ({ product, onClick, CountdownTimer }) => {
   const timeLeft = new Date(product.end_date) - new Date();
   const isEnding = timeLeft <= 24 * 60 * 60 * 1000;
-  
+
   /**
    * Handles the keydown event for the card
-   * @param {event} event 
+   * @param {event} event
    */
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -35,7 +34,7 @@ const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
         className="hover-shadow transition-all duration-300 transform hover:-translate-y-1"
         tabIndex="0"
         role="button"
-        aria-label={`View details for ${product.name}`}
+        aria-label={`View details for ${product.product.name}`}
       >
         <MDBRow className="g-0">
           <MDBCol xs="12" md="4" className="d-flex align-items-stretch">
@@ -58,13 +57,20 @@ const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
                   <MDBBadge color='danger' className="p-3 fs-5">Auction Ended</MDBBadge>
                 </div>
               ) : isEnding ? (
-                <MDBBadge 
-                  color='warning' 
+                <MDBBadge
+                  color='warning'
                   className="position-absolute top-0 end-0 m-2 p-2"
                 >
                   Ending Soon!
                 </MDBBadge>
               ) : null}
+
+              <MDBBadge
+                color='info'
+                className="position-absolute top-0 start-0 m-2 p-2"
+              >
+                {product.auction_type === 'buy_now' ? 'Buy Now' : 'Auction'}
+              </MDBBadge>
             </div>
           </MDBCol>
           <MDBCol md="8">
@@ -75,7 +81,7 @@ const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
                   <MDBCardText className="mb-3">
                     <div className="d-flex align-items-center">
                       <i className="far fa-clock me-2"></i>
-                      <CountdownTimer 
+                      <CountdownTimer
                         date={new Date(product.end_date)}
                         className="text-primary fw-bold"
                       />
@@ -83,22 +89,39 @@ const ProductCardCategoryView = ({ product, onClick, bidCount }) => {
                   </MDBCardText>
                 )}
               </div>
-              
+
               <div className="mt-auto">
                 <MDBCardText className="mb-2">
-                  <small className="text-danger">Current Bid:</small>
+                  <small className="text-danger">
+                    {product.auction_type === 'buy_now' ? 'Price:' : 'Current Bid:'}
+                  </small>
                   <h2 className="text-danger mb-0">
-                    ${parseFloat(product.price).toFixed(2)}
+                    ${parseFloat(product.price).toLocaleString('en-US', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    })}
                   </h2>
                 </MDBCardText>
-                
+
                 <div className="d-flex justify-content-between align-items-center">
-                  <small className="text-muted">
-                    {bidCount || 0} bids
-                  </small>
-                  <button className="btn btn-danger btn-sm">
-                    View Details
-                  </button>
+                  <div>
+                    <small className="text-muted">
+                      Seller: {product.seller.username}
+                    </small>
+                    {product.is_new && (
+                      <MDBBadge color='success' className="ms-2">
+                        New
+                      </MDBBadge>
+                    )}
+                  </div>
+                  <div>
+                    <small className="text-muted me-3">
+                      {product.days_left} days left
+                    </small>
+                    <button className="btn btn-danger btn-sm">
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </div>
             </MDBCardBody>
