@@ -114,7 +114,7 @@ const WalletDropdown = () => {
                                 <MDBBtn
                                     className="btn btn-outline-danger"
                                     outline
-                                    href="/wallet/history"
+                                    href="/wallet/transaction/history"
                                 >
                                     <MDBIcon fas icon="history" className="me-2"/>
                                     Transaction History
