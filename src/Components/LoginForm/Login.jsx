@@ -85,14 +85,13 @@ function Login() {
     };
 
     /**
-     * Function to handle key down events
-     * @param {Object} event - The event object
-     * @param {Object} nextRef - The reference to the next input field
+     * Function to handle keydown event on the form
+     * @param event
      */
-    const handleKeyDown = (event, nextRef) => {
+    const handleFormKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            nextRef.current.focus();
+            handleSubmit(event);
         }
     };
 
@@ -106,7 +105,7 @@ function Login() {
                             <h4>We are The CharFair Team</h4>
                         </div>
                         <p>Please login to your account</p>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} onKeyDown={handleFormKeyDown}>
                             <MDBInput
                                 wrapperClass='mb-4 w-25 mx-auto'
                                 label='Username'
@@ -114,7 +113,6 @@ function Login() {
                                 type='text'
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                onKeyDown={(e) => handleKeyDown(e, passwordRef)}
                                 inputRef={usernameRef}
                             />
                             <MDBInput
@@ -124,7 +122,6 @@ function Login() {
                                 type='password'
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                onKeyDown={(e) => handleKeyDown(e, submitRef)}
                                 inputRef={passwordRef}
                             />
                             <div className="d-flex flex-column text-center align-items-center justify-content-center mb-5">
