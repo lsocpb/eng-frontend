@@ -24,6 +24,7 @@ import SuccessStories from "./Components/SuccessStories/SuccessStories";
 import AboutUs from "./Components/AboutUs/AboutUs";
 import FAQ from "./Components/FAQ/FAQ";
 import TransactionHistory from "./Components/WalletTransaction/TransactionHistory";
+import FaliurePayment from "./Components/FaliurePayment/FaliurePayment";
 function App() {
     return (
         <Router>
@@ -59,6 +60,7 @@ function App() {
                         <Route path="/contact" element={<ContactForm />} />
                         <Route path="/wallet/add-funds" element={<PaymentPage />} />
                         <Route path="/wallet/payment/success" element={<SuccessPayment />} />
+                        <Route path="/wallet/payment/cancel" element={<FaliurePayment />} />
                         <Route path="/wallet/transaction/history" element={<TransactionHistory />} />
                     </Route>
                     <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>

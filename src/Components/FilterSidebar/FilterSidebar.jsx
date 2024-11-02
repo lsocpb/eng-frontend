@@ -26,10 +26,10 @@ function FilterSidebar({ onFilterChange, margin }) {
 
         <h6 className="mb-3">Price Range</h6>
         <MDBRange
-          defaultValue={5000}
+          defaultValue={100000}
           min={0}
-          max={10000}
-          step={10}
+          max={100000}
+          step={100}
           id="priceRange"
           label="Price"
           onChange={(e) => onFilterChange('price', e.target.value)}

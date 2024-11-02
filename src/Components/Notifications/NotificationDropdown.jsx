@@ -56,6 +56,8 @@ const NotificationDropdown = () => {
     };
 
     socketService.addListener("notification", handleNewNotification);
+    socketService.addListener("bid_price_update", handleNewNotification);
+    socketService.addListener("bid_winner_update", handleNewNotification);
 
     return () => {
       socketService.removeListener("notification", handleNewNotification);

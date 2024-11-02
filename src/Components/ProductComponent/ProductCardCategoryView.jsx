@@ -115,9 +115,6 @@ const ProductCardCategoryView = ({ product, onClick, CountdownTimer }) => {
                     )}
                   </div>
                   <div>
-                    <small className="text-muted me-3">
-                      {product.days_left} days left
-                    </small>
                     <button className="btn btn-danger btn-sm">
                       View Details
                     </button>

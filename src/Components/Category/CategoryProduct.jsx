@@ -56,7 +56,6 @@ export default function CategoryPage() {
     const fetchProducts = async () => {
         try {
             const response = await axios.get(`${BASE_API_URL}/auction/category/${categoryId}`);
-            // Update this line to correctly access the auctions array
             setProducts(response.data.auctions || []);
         } catch (error) {
             setProducts([]);
@@ -82,14 +81,16 @@ export default function CategoryPage() {
 
     const filteredProducts = useMemo(() => {
         return products.filter(product => {
+            // Price filter
             if (product.price > filters.price) {
                 return false;
             }
 
-            if (filters.status.active && !product.is_auction_finished) {
+            // Status filter
+            if (filters.status.active && product.is_auction_finished) {
                 return false;
             }
-            if (filters.status.inactive && product.is_auction_finished) {
+            if (filters.status.inactive && !product.is_auction_finished) {
                 return false;
             }
 
@@ -100,8 +101,8 @@ export default function CategoryPage() {
     const paginatedProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
-        return products.slice(startIndex, endIndex);
-    }, [products, currentPage]);
+        return filteredProducts.slice(startIndex, endIndex);  // Now using filteredProducts
+    }, [filteredProducts, currentPage]);  // Updated dependencies
 
     const totalPages = useMemo(() => {
         return Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -132,7 +133,7 @@ export default function CategoryPage() {
                 [filterType]: filterType === 'price' ? parseFloat(value) : value
             };
         });
-        setCurrentPage(1);
+        setCurrentPage(1);  // Reset to first page when filters change
     }, []);
 
     const renderPagination = () => {
@@ -180,6 +181,11 @@ export default function CategoryPage() {
                 </MDBCol>
             </MDBRow>
             <MDBRow>
+                {screenWidth <= WidthBreakpoints.md && (
+                    <MDBCol md="2">
+                        <FilterSidebar onFilterChange={handleFilterChange}/>
+                    </MDBCol>
+                )}
                 <MDBCol md="3">
                     {screenWidth > WidthBreakpoints.md && (
                         <CategoryList allCategories={allCategories}/>
@@ -190,8 +196,8 @@ export default function CategoryPage() {
                         <MDBCardBody>
                             {error ? (
                                 <p className="text-center text-danger">{error}</p>
-                            ) : products.length === 0 ? (
-                                <p className="text-center">No products found in this category.</p>
+                            ) : filteredProducts.length === 0 ? (
+                                <p className="text-center">No products found with current filters.</p>
                             ) : (
                                 <>
                                     <MDBRow>
@@ -210,9 +216,11 @@ export default function CategoryPage() {
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
-                <MDBCol md="2">
-                    <FilterSidebar onFilterChange={handleFilterChange}/>
-                </MDBCol>
+                {screenWidth > WidthBreakpoints.md && (
+                    <MDBCol md="2">
+                        <FilterSidebar onFilterChange={handleFilterChange}/>
+                    </MDBCol>
+                )}
             </MDBRow>
         </MDBContainer>
     );
