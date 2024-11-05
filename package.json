@@ -2,6 +2,7 @@
   "name": "untitled",
   "version": "0.1.0",
   "private": true,
+  "jest": { "transformIgnorePatterns": [ "node_modules/(?!axios)" ] },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@testing-library/jest-dom": "^5.17.0",

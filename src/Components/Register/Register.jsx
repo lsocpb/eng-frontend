@@ -1,4 +1,3 @@
-// RegisterChoice.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,6 +12,10 @@ import {
     MDBIcon
 } from 'mdb-react-ui-kit';
 
+/**
+ * Component to choose between registering a personal or business account.
+ * @returns {JSX.Element} - Rendered RegisterChoice component
+ */
 function RegisterChoice() {
     const navigate = useNavigate();
 
