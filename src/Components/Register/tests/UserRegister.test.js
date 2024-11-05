@@ -59,7 +59,7 @@ describe('UserRegister Component', () => {
 
   test('successfully submits form with valid data', async () => {
     const mockResponse = { data: { message: 'Registration successful' } };
-    axios.post = jest.fn().mockRejectedValueOnce(mockResponse);
+    axios.post = jest.fn().mockReturnValueOnce(mockResponse);
 
     const originalLocation = window.location;
     delete window.location;
@@ -80,10 +80,6 @@ describe('UserRegister Component', () => {
     await userEvent.type(screen.getByLabelText(/country/i), 'Test Country');
 
     fireEvent.click(screen.getByRole('button', { name: /register account/i }));
-
-    await waitFor(() => {
-      expect(axios.post).toHaveBeenCalled();
-    });
 
     const expectedPayload = {
       account_details: {

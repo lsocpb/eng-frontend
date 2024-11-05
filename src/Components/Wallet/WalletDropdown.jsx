@@ -61,6 +61,8 @@ const WalletDropdown = () => {
             <MDBDropdown>
                 <MDBDropdownToggle
                     tag='a'
+                    role='button'
+                    aria-label="wallet"
                     className='nav-link text-dark no-caret'
                     onClick={() => setIsOpen(!isOpen)}
                 >
@@ -70,7 +72,7 @@ const WalletDropdown = () => {
                 <MDBDropdownMenu className="p-4 shadow-lg" style={{minWidth: '300px'}}>
                     {isLoading ? (
                         <div className="text-center py-4">
-                            <MDBSpinner size="sm"/>
+                            <MDBSpinner size="sm" role="status"/>
                         </div>
                     ) : error ? (
                         <div className="text-center text-danger py-3">

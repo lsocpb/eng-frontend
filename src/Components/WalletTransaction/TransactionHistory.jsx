@@ -83,7 +83,7 @@ const TransactionHistory = () => {
           <MDBCol md="10" lg="8">
             {isLoading ? (
               <div className="text-center py-5">
-                <MDBSpinner />
+                <MDBSpinner role="status"/>
               </div>
             ) : error ? (
               <div className="text-center text-danger py-4">
