@@ -1,5 +1,4 @@
 import {MDBCard, MDBCardBody, MDBCardTitle, MDBIcon} from "mdb-react-ui-kit";
-import React from "react";
 
 /**
  * Component to display a list of top users with their number of auctions and bids.

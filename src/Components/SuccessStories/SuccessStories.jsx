@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-// CSS for animations
 const styles = `
 .fade-in {
   animation: fadeIn 0.5s ease-in;
@@ -33,11 +32,19 @@ const styles = `
 }
 `;
 
+/**
+ * Component that displays success stories from charity auctions.
+ * @returns {Element}
+ * @constructor
+ */
 const SuccessStories = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  /**
+   * Navigates to the home page.
+   */
   const handleNavigation = () => {
     navigate("/home");
   }

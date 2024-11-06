@@ -21,6 +21,7 @@ const ProfileImage = ({ imageUrl, username, city, role, onUploadSuccess, onLogou
       <MDBCardImage
         src={imageUrl || 'https://via.placeholder.com/150x150'}
         alt="avatar"
+        data-testid="profile-image-upload"
         className="rounded-circle"
         style={{width: '150px'}}
         fluid

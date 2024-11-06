@@ -1,9 +1,6 @@
 import {useState, useEffect, useCallback} from "react";
 import axios from "axios";
-import React from "react";
-import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
-import {MDBBadge, MDBBtn, MDBSpinner, MDBTable, MDBTableBody, MDBTableHead} from "mdb-react-ui-kit";
+import {MDBBadge, MDBBtn, MDBTable, MDBTableBody, MDBTableHead} from "mdb-react-ui-kit";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import {BASE_API_URL} from "../../api/config";
 import Cookies from "js-cookie";
@@ -18,8 +15,6 @@ const ViewAllCategories = () => {
     const [loading, setLoading] = useState(true);
 
     const admin_jwtToken = Cookies.get("active-user");
-
-    let navigate = useNavigate();
 
     /**
      * Function to retrieve all categories from the API.
