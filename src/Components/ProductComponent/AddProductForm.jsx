@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import {
   MDBBtn,
@@ -14,6 +12,7 @@ import {
   MDBModalTitle,
 } from "mdb-react-ui-kit";
 import "./AddProductForm.css";
+import { showErrorToast, showSuccessToast } from "../ToastNotifications/ToastNotifications";
 import { BASE_API_URL } from "../../api/config";
 import Cookies from "js-cookie";
 
@@ -87,8 +86,8 @@ const AddProductForm = () => {
 
   /**
    * Function to handle the image change event.
-   * @param {Event} e 
-   * @param {string} imageKey 
+   * @param {Event} e
+   * @param {string} imageKey
    */
   const handleImageChange = (e, imageKey) => {
     const file = e.target.files[0];
@@ -124,8 +123,8 @@ const AddProductForm = () => {
 
   /**
    * Function to upload images to the server.
-   * @param {File[]} files - The array of image files to upload. 
-   * @returns 
+   * @param {File[]} files - The array of image files to upload.
+   * @returns
    */
   const uploadImage = async (files) => {
     if (!files.length) return null;
@@ -168,12 +167,12 @@ const AddProductForm = () => {
     e.preventDefault();
 
     if (new Date(endDate) <= new Date()) {
-      toast.error("End date must be in the future");
+      showErrorToast("End date must be in the future");
       return;
     }
 
     if (!selectedImages.image1) {
-      toast.error("At least one image is required");
+      showErrorToast("At least one image is required");
       return;
     }
 
@@ -187,7 +186,7 @@ const AddProductForm = () => {
         const imageUrls = await uploadImage(files);
 
         if (!imageUrls || imageUrls.length === 0) {
-          toast.error("Failed to upload images");
+          showErrorToast("Failed to upload images");
           return;
         }
 
@@ -216,14 +215,14 @@ const AddProductForm = () => {
         );
 
         if (response.data) {
-          toast.success("Auction Added Successfully");
+          showSuccessToast("Auction Added Successfully");
           setTimeout(() => {
             navigate("/home");
           }, 1000);
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.detail || "Error adding auction");
+      showErrorToast(error.response?.data?.detail || "Error adding auction");
     } finally {
       setLoading(false);
     }
@@ -246,6 +245,7 @@ const AddProductForm = () => {
                     </label>
                     <input
                       type="text"
+                      id="title"
                       className="form-control"
                       name="name"
                       onChange={handleInput}
@@ -265,6 +265,7 @@ const AddProductForm = () => {
                     <textarea
                       className="form-control"
                       name="description"
+                      id="description"
                       onChange={handleInput}
                       value={formData.description}
                       placeholder="Describe the item"
@@ -273,9 +274,10 @@ const AddProductForm = () => {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label text-muted">Category</label>
+                    <label htmlFor="category_id" className="form-label text-muted">Category</label>
                     <select
                       name="category_id"
+                      id="category_id"
                       onChange={handleInput}
                       className="form-select"
                       value={formData.category_id}
@@ -291,11 +293,12 @@ const AddProductForm = () => {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label text-muted">
+                    <label htmlFor="auction_type" className="form-label text-muted">
                       Auction Type
                     </label>
                     <select
                       name="auction_type"
+                      id="auction_type"
                       onChange={handleInput}
                       className="form-select"
                       value={formData.auction_type}
@@ -307,7 +310,7 @@ const AddProductForm = () => {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label className="form-label text-muted">
+                    <label htmlFor="price" className="form-label text-muted">
                       {formData.auction_type === "bid"
                         ? "Starting Bid"
                         : "Buy Now Price"}
@@ -317,6 +320,7 @@ const AddProductForm = () => {
                       <input
                         type="number"
                         className="form-control"
+                        id="price"
                         name="price"
                         onChange={handleInput}
                         value={formData.price}
@@ -329,11 +333,12 @@ const AddProductForm = () => {
                   </div>
 
                   <div className="col-md-6 mb-3">
-                    <label htmlFor="endDate" className="form-label text-muted">
+                    <label htmlFor="auction-deadline" className="form-label text-muted">
                       Auction Deadline
                     </label>
                     <input
                       type="datetime-local"
+                      id="auction-deadline"
                       className="form-control"
                       value={endDate}
                       min={minDate}
@@ -343,19 +348,20 @@ const AddProductForm = () => {
                   </div>
 
                   <div className="col-md-12 mb-3">
-                    <label className="form-label text-muted">Item Images</label>
+                    <label htmlFor="auction-image" className="form-label text-muted">Item Images</label>
                     <div className="row g-2">
                       {["image1", "image2", "image3"].map((imageKey, index) => (
                         <div className="col-md-4" key={imageKey}>
                           <div className="form-file">
                             <input
                               type="file"
+                              id="auction-image"
                               className="form-file-input"
                               onChange={(e) => handleImageChange(e, imageKey)}
                               accept="image/*"
                               required={index === 0}
                             />
-                            <label className="form-file-label">
+                            <label htmlFor="image_name"  className="form-file-label">
                               <span className="form-file-text">
                                 {imageNames[imageKey]}
                               </span>
@@ -434,7 +440,6 @@ const AddProductForm = () => {
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
-      <ToastContainer />
     </div>
   );
 };

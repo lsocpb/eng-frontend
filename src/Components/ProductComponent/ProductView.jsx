@@ -234,6 +234,7 @@ const ProductPage = () => {
                     pill
                     color={"danger"}
                     className="mb-2 w-auto"
+                    data-testid="place-bid-button"
                     onClick={toggleBidModal}
                     disabled={finished}
                   >

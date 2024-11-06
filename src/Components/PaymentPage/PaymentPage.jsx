@@ -136,6 +136,7 @@ const PaymentPage = () => {
               <div className="mb-4">
                 <MDBInput
                   label="Own amount (PLN)"
+                  id="own-amount"
                   type="number"
                   value={amount}
                   onChange={handleCustomAmount}
