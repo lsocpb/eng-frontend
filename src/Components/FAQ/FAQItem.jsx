@@ -17,11 +17,6 @@ const FAQItem = ({ question, answer }) => {
                     style={{ cursor: 'pointer' }}
                 >
                     <h5 className="mb-0 font-weight-bold">{question}</h5>
-                    <MDBIcon
-                        fas
-                        icon={isOpen ? 'chevron-up' : 'chevron-down'}
-                        className="text-danger transition-icon"
-                    />
                 </div>
                 <div className={`faq-answer mt-3 ${isOpen ? 'show' : ''}`}>
                     <p className="text-muted mb-0">

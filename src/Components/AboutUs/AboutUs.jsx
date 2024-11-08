@@ -10,6 +10,10 @@ import {
 import {useScreenSize} from '../../hooks/useScreenSize';
 import "./AboutUs.css";
 
+/**
+ * Component for the About Us page
+ * @returns {JSX.Element} - Rendered AboutUs component
+ */
 export default function AboutUs() {
     const {screenWidth} = useScreenSize();
 
