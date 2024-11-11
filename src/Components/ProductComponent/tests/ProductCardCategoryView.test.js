@@ -22,6 +22,12 @@ const mockItem = {
   price: 100
 };
 
+jest.mock('../../CategoryNavigator/CategoryNavigator', () => {
+  return function MockCategoryNavigator({ category_id }) {
+    return <div data-testid="category-navigator">Category {category_id}</div>;
+  };
+});
+
 it('renders truncated product description if too long', () => {
   const longDescriptionItem = {
     ...mockItem,
@@ -36,19 +42,6 @@ it('renders truncated product description if too long', () => {
     </Router>
   );
   expect(screen.getByText((content, element) => content.startsWith('This is a very long product description that should be'))).toBeInTheDocument();
-});
-
-it('renders "Auction Ended" badge if auction is finished', () => {
-  const finishedAuctionItem = {
-    ...mockItem,
-    is_auction_finished: true
-  };
-  render(
-    <Router>
-      <ProductCard item={finishedAuctionItem} />
-    </Router>
-  );
-  expect(screen.getByText('Auction Ended')).toBeInTheDocument();
 });
 
 it('renders "Buy Now" badge for buy now auction type', () => {

@@ -1,68 +1,196 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import HomePage from '../HomePage';
-import { MemoryRouter } from 'react-router-dom';
 import useCategories from '../../../hooks/useCategories';
 import useFetchProducts from '../../../hooks/useFetchProducts';
 import { useScreenSize } from '../../../hooks/useScreenSize';
 
+// Mock the custom hooks
 jest.mock('../../../hooks/useCategories');
 jest.mock('../../../hooks/useFetchProducts');
 jest.mock('../../../hooks/useScreenSize');
-jest.mock('../../LoadingSpinner/LoadingSpinner', () => jest.fn(() => <div>Loading...</div>));
-
-const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
+  useNavigate: () => jest.fn()
 }));
 
-beforeEach(() => {
-  jest.clearAllMocks();
+// Mock Slider component
+jest.mock('react-slick', () => {
+  return function MockSlider({ children }) {
+    return <div data-testid="mock-slider">{children}</div>;
+  };
 });
 
-it('renders LoadingSpinner when categories or products are loading', () => {
-  useCategories.mockReturnValue([[], true]);
-  useFetchProducts.mockReturnValue([[], true]);
-  useScreenSize.mockReturnValue({ screenWidth: 1024 });
+jest.mock('../../LoadingSpinner/LoadingSpinner', () => () => <div data-testid="LoadingSpinner">LoadingSpinner</div>);
+jest.mock('../../CategoryList/CategoryList', () => () => <div data-testid="category-list">CategoryList</div>);
+jest.mock('../../MobileCategoryList/MobileCategoryList', () => () => <div data-testid="mobile-category-sidebar">MobileCategorySidebar</div>);
+const mockCategories = [
+  { id: 1, name: 'Category 1' },
+  { id: 2, name: 'Category 2' }
+];
 
-  render(<HomePage />, { wrapper: MemoryRouter });
-  expect(screen.getByText('Loading...')).toBeInTheDocument();
-});
+const mockProducts = [
+  { id: 1, title: 'Product 1', description: 'Description 1', price: 100, image_url_1: 'image1.jpg' },
+  { id: 2, title: 'Product 2', description: 'Description 2', price: 200, image_url_1: 'image2.jpg' }
+];
 
-it('renders HomePage with categories and products', () => {
-  useCategories.mockReturnValue([[{ id: 1, name: 'Category 1' }], false]);
-  useFetchProducts.mockReturnValue([[{ id: 1, name: 'Product 1' }], false]);
-  useScreenSize.mockReturnValue({ screenWidth: 1024 });
+describe('HomePage Component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
 
-  render(<HomePage />, { wrapper: MemoryRouter });
-  expect(screen.getByText('Join Us in Making a Difference')).toBeInTheDocument();
-});
+    useCategories.mockReturnValue([mockCategories, false]);
+    useFetchProducts.mockReturnValue([mockProducts, false]);
+    useScreenSize.mockReturnValue({ screenWidth: 1200 });
+  });
 
-it('navigates to product category page when Start Bidding button is clicked', () => {
-  useCategories.mockReturnValue([[{ id: 1, name: 'Category 1' }], false]);
-  useFetchProducts.mockReturnValue([[{ id: 1, name: 'Product 1' }], false]);
-  useScreenSize.mockReturnValue({ screenWidth: 1024 });
+  test('renders loading spinner when data is being fetched', () => {
+    useCategories.mockReturnValue([[], true]);
+    useFetchProducts.mockReturnValue([[], true]);
 
-  render(<HomePage />, { wrapper: MemoryRouter });
-  fireEvent.click(screen.getByText('Start Bidding'));
-  expect(mockNavigate).toHaveBeenCalledWith('/product/category/1');
-});
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
 
-it('navigates to contact page when Contact Us button is clicked', () => {
-  useCategories.mockReturnValue([[{ id: 1, name: 'Category 1' }], false]);
-  useFetchProducts.mockReturnValue([[{ id: 1, name: 'Product 1' }], false]);
-  useScreenSize.mockReturnValue({ screenWidth: 1024 });
+    expect(screen.getByTestId('LoadingSpinner')).toBeInTheDocument();
+  });
 
-  render(<HomePage />, { wrapper: MemoryRouter });
-  fireEvent.click(screen.getByText('Contact Us'));
-  expect(mockNavigate).toHaveBeenCalledWith('/contact');
-});
+  test('renders CategoryList on desktop view', () => {
+    useScreenSize.mockReturnValue({ screenWidth: 1200 });
 
-it('renders MobileCategorySidebar on small screens', () => {
-  useCategories.mockReturnValue([[{ id: 1, name: 'Category 1' }], false]);
-  useFetchProducts.mockReturnValue([[{ id: 1, name: 'Product 1' }], false]);
-  useScreenSize.mockReturnValue({ screenWidth: 500 });
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
 
-  render(<HomePage />, { wrapper: MemoryRouter });
-  expect(screen.getByText('Categories')).toBeInTheDocument();
+    expect(screen.queryByTestId('category-list')).toBeInTheDocument();
+    expect(screen.queryByTestId('mobile-category-sidebar')).not.toBeInTheDocument();
+  });
+
+  test('renders MobileCategorySidebar on mobile view', () => {
+    useScreenSize.mockReturnValue({ screenWidth: 480 });
+
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    expect(screen.queryByTestId('mobile-category-sidebar')).toBeInTheDocument();
+    expect(screen.queryByTestId('category-list')).not.toBeInTheDocument();
+  });
+
+  test('renders main content sections', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    // Check for main headings
+    expect(screen.getByText('Join Us in Making a Difference')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Our Charity Auction!')).toBeInTheDocument();
+    expect(screen.getByText('Become Our Partner')).toBeInTheDocument();
+    expect(screen.getByText('Last Auctions')).toBeInTheDocument();
+  });
+
+  test('renders product slider with products', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByTestId('mock-slider')).toBeInTheDocument();
+    mockProducts.forEach(product => {
+      expect(screen.getByText(product.title)).toBeInTheDocument();
+    });
+  });
+
+  test('handles View All Auctions button click', () => {
+    const navigateMock = jest.fn();
+    jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(() => navigateMock);
+
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    const viewAllButtons = screen.getAllByText('View All Auctions');
+    fireEvent.click(viewAllButtons[0]);
+
+    expect(navigateMock).toHaveBeenCalledWith('/product/category/1');
+  });
+
+  test('handles Contact Us button click', () => {
+    const navigateMock = jest.fn();
+    jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(() => navigateMock);
+
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    const contactButton = screen.getByText('Contact Us');
+    fireEvent.click(contactButton);
+
+    expect(navigateMock).toHaveBeenCalledWith('/contact');
+  });
+
+  test('displays correct email address', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    expect(screen.getByText('charfaircharity@gmail.com')).toBeInTheDocument();
+  });
+
+  test('renders carousel images', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    const carouselImages = screen.getAllByAltText('Charity Bidding Platform');
+    expect(carouselImages).toHaveLength(2);
+    carouselImages.forEach(image => {
+      expect(image).toBeInTheDocument();
+    });
+  });
+
+  test('displays charity impact icons and text', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    const impactTexts = [
+      'Support Great Causes',
+      'Safe & Easy Access',
+      'Global Community'
+    ];
+
+    impactTexts.forEach(text => {
+      expect(screen.getByText(text)).toBeInTheDocument();
+    });
+  });
+
+  test('displays 100% proceeds message', () => {
+    render(
+      <BrowserRouter>
+        <HomePage />
+      </BrowserRouter>
+    );
+
+    const proceedsText = screen.getAllByText(/100% of proceeds go directly to our partner charities/i);
+    expect(proceedsText.length).toBeGreaterThan(0);
+  });
 });

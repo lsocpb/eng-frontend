@@ -2,6 +2,12 @@ import { render, screen } from '@testing-library/react';
 import ProductCard from '../ProductCard';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+jest.mock('../../CategoryNavigator/CategoryNavigator', () => {
+  return function MockCategoryNavigator({ category_id }) {
+    return <div data-testid="category-navigator">Category {category_id}</div>;
+  };
+});
+
 const mockItem = {
   id: 1,
   auction_type: 'buy_now',
@@ -22,66 +28,105 @@ const mockItem = {
   price: 100
 };
 
-describe('ProductCard Component', () => {
-  beforeEach(() => {
-    render(
-      <Router>
-        <ProductCard item={mockItem} />
-      </Router>
-    );
-  });
+const renderProductCard = (itemProps = {}) => {
+  const item = { ...mockItem, ...itemProps };
+  return render(
+    <Router>
+      <ProductCard item={item} />
+    </Router>
+  );
+};
 
+describe('ProductCard Component', () => {
   it('renders product name', () => {
+    renderProductCard();
     expect(screen.getByText('Test Product')).toBeInTheDocument();
   });
 
   it('renders product description', () => {
+    renderProductCard();
     expect(screen.getByText('This is a test product description.')).toBeInTheDocument();
   });
 
   it('renders seller username', () => {
+    renderProductCard();
     expect(screen.getByText('test_seller')).toBeInTheDocument();
   });
 
   it('renders default seller username if not provided', () => {
-    const noSellerItem = {
-      ...mockItem,
+    renderProductCard({
       seller: {}
-    };
-    render(
-      <Router>
-        <ProductCard item={noSellerItem} />
-      </Router>
-    );
+    });
     expect(screen.getByText('Anonymous')).toBeInTheDocument();
   });
 
   it('renders "Buy Now" button for buy now auction type', () => {
+    renderProductCard();
     expect(screen.getByText('Buy Now')).toBeInTheDocument();
   });
 
   it('renders "Bid Now" button for bid auction type', () => {
-    const bidItem = {
-      ...mockItem,
+    renderProductCard({
       auction_type: 'bid'
-    };
-    render(
-      <Router>
-        <ProductCard item={bidItem} />
-      </Router>
-    );
+    });
     expect(screen.getByText('Bid Now')).toBeInTheDocument();
   });
 
   it('renders product price', () => {
+    renderProductCard();
     expect(screen.getByText('$100')).toBeInTheDocument();
   });
 
   it('renders number of bids', () => {
+    renderProductCard();
     expect(screen.getByText('10')).toBeInTheDocument();
   });
 
   it('renders "New" badge', () => {
+    renderProductCard();
     expect(screen.getByText('New')).toBeInTheDocument();
+  });
+
+  it('renders days left', () => {
+    renderProductCard();
+    expect(screen.getByText(/5 days left/)).toBeInTheDocument();
+  });
+
+  it('truncates long description', () => {
+    const longDescription = 'This is a very long description that should be truncated at some point to ensure proper display';
+    renderProductCard({
+      product: {
+        ...mockItem.product,
+        description: longDescription
+      }
+    });
+    expect(screen.getByText(/\.\.\.$/)).toBeInTheDocument();
+  });
+
+  it('renders category navigator', () => {
+    renderProductCard();
+    expect(screen.getByTestId('category-navigator')).toBeInTheDocument();
+  });
+
+  it('renders product image', () => {
+    renderProductCard();
+    const image = screen.getByAltText('product-image');
+    expect(image).toHaveAttribute('src', 'https://via.placeholder.com/150');
+  });
+
+  it('renders seller profile image', () => {
+    renderProductCard();
+    const image = screen.getByAltText('Seller');
+    expect(image).toHaveAttribute('src', 'https://via.placeholder.com/40');
+  });
+
+  it('renders default seller image if not provided', () => {
+    renderProductCard({
+      seller: {
+        username: 'test_seller'
+      }
+    });
+    const image = screen.getByAltText('Seller');
+    expect(image).toHaveAttribute('src', 'https://via.placeholder.com/40');
   });
 });

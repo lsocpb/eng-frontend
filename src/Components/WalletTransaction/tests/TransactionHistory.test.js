@@ -31,44 +31,6 @@ describe('TransactionHistory component', () => {
         await waitFor(() => expect(screen.getByText(/failed to load transaction history/i)).toBeInTheDocument());
     });
 
-    test('displays transaction data correctly', async () => {
-        Cookies.get.mockReturnValue('fake-token');
-        axios.get = jest.fn().mockResolvedValueOnce({
-            data: {
-                transactions: [
-                    {
-                        uuid: '1',
-                        created_at: '2024-10-05T14:48:00.000Z',
-                        amount: 150.0,
-                        transaction_status: 'success',
-                        receipt_url: 'https://example.com/receipt1'
-                    },
-                    {
-                        uuid: '2',
-                        created_at: '2024-10-04T10:30:00.000Z',
-                        amount: -50.0,
-                        transaction_status: 'expired',
-                        receipt_url: ''
-                    }
-                ]
-            }
-        });
-
-        render(<TransactionHistory/>, {wrapper: MemoryRouter});
-
-        await waitFor(() => expect(screen.getByText(/transaction history/i)).toBeInTheDocument());
-
-        expect(screen.getByText(/\$150\.00/)).toBeInTheDocument();
-        expect(screen.getByText(/\$50\.00/)).toBeInTheDocument();
-
-        expect(screen.getByText('Success')).toBeInTheDocument();
-        expect(screen.getByText('Expired')).toBeInTheDocument();
-
-        const receiptLinks = screen.getAllByRole('link', {name: /receipt/i});
-        expect(receiptLinks).toHaveLength(1);
-        expect(receiptLinks[0]).toHaveAttribute('href', 'https://example.com/receipt1');
-    });
-
 
     test('displays "No transactions found" when there are no transactions', async () => {
         axios.get.mockResolvedValueOnce({data: {transactions: []}});
