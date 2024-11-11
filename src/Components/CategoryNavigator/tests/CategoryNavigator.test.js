@@ -11,7 +11,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('CategoryNavigator', () => {
   const mockNavigate = jest.fn();
-  const mockCategory = { item: { id: 1, name: 'Electronics' } };
+  const mockItem = { id: 1, name: 'Electronics' };
 
   beforeEach(() => {
     useNavigate.mockReturnValue(mockNavigate);
@@ -24,7 +24,7 @@ describe('CategoryNavigator', () => {
   test('renders category name correctly', () => {
     useParams.mockReturnValue({ sellerId: null, sellerName: null });
 
-    render(<CategoryNavigator category={mockCategory} />);
+    render(<CategoryNavigator item={mockItem} />);
 
     expect(screen.getByText(/Electronics/i)).toBeInTheDocument();
   });
@@ -32,7 +32,7 @@ describe('CategoryNavigator', () => {
   test('navigates to seller category page if sellerId is present', () => {
     useParams.mockReturnValue({ sellerId: '123', sellerName: 'SellerName' });
 
-    render(<CategoryNavigator category={mockCategory} />);
+    render(<CategoryNavigator item={mockItem} />);
 
     fireEvent.click(screen.getByText(/Electronics/i));
 
@@ -45,7 +45,7 @@ describe('CategoryNavigator', () => {
   test('navigates to general category page if sellerId is not present', () => {
     useParams.mockReturnValue({ sellerId: null, sellerName: null });
 
-    render(<CategoryNavigator category={mockCategory} />);
+    render(<CategoryNavigator item={mockItem} />);
 
     fireEvent.click(screen.getByText(/Electronics/i));
 

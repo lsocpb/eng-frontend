@@ -10,7 +10,9 @@ jest.mock('js-cookie');
 jest.mock('../../ToastNotifications/ToastNotifications');
 
 const mockToggle = jest.fn();
-Object.defineProperty(window, 'matchMedia', {
+beforeEach(() => {
+  jest.clearAllMocks();
+  Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
     matches: false,
@@ -23,8 +25,6 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
-beforeEach(() => {
-  jest.clearAllMocks();
 });
 
 it('calls toggle function when cancel button is clicked', () => {

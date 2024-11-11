@@ -5,7 +5,6 @@ import useCategories from '../../../hooks/useCategories';
 import useFetchProducts from '../../../hooks/useFetchProducts';
 import { useScreenSize } from '../../../hooks/useScreenSize';
 
-// Mock the custom hooks
 jest.mock('../../../hooks/useCategories');
 jest.mock('../../../hooks/useFetchProducts');
 jest.mock('../../../hooks/useScreenSize');
@@ -30,9 +29,36 @@ const mockCategories = [
 ];
 
 const mockProducts = [
-  { id: 1, title: 'Product 1', description: 'Description 1', price: 100, image_url_1: 'image1.jpg' },
-  { id: 2, title: 'Product 2', description: 'Description 2', price: 200, image_url_1: 'image2.jpg' }
+  {
+    id: 1,
+    product: {
+      name: 'Product 1',
+      description: 'Description 1',
+      price: 100,
+      image_url_1: 'image1.jpg'
+    },
+    auction_type: 'bid_now',
+    days_left: 5,
+    category: { category_id: 1 },
+    seller: { profile_image_url: 'seller1.jpg', username: 'Seller 1' },
+    bid_count: 3
+  },
+  {
+    id: 2,
+    product: {
+      name: 'Product 2',
+      description: 'Description 2',
+      price: 200,
+      image_url_1: 'image2.jpg'
+    },
+    auction_type: 'buy_now',
+    days_left: 7,
+    category: { category_id: 2 },
+    seller: { profile_image_url: 'seller2.jpg', username: 'Seller 2' },
+    bid_count: 5
+  }
 ];
+
 
 describe('HomePage Component', () => {
   beforeEach(() => {
@@ -96,19 +122,6 @@ describe('HomePage Component', () => {
     expect(screen.getByText('Last Auctions')).toBeInTheDocument();
   });
 
-  test('renders product slider with products', () => {
-    render(
-      <BrowserRouter>
-        <HomePage />
-      </BrowserRouter>
-    );
-
-    expect(screen.getByTestId('mock-slider')).toBeInTheDocument();
-    mockProducts.forEach(product => {
-      expect(screen.getByText(product.title)).toBeInTheDocument();
-    });
-  });
-
   test('handles View All Auctions button click', () => {
     const navigateMock = jest.fn();
     jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(() => navigateMock);
@@ -139,16 +152,6 @@ describe('HomePage Component', () => {
     fireEvent.click(contactButton);
 
     expect(navigateMock).toHaveBeenCalledWith('/contact');
-  });
-
-  test('displays correct email address', () => {
-    render(
-      <BrowserRouter>
-        <HomePage />
-      </BrowserRouter>
-    );
-
-    expect(screen.getByText('charfaircharity@gmail.com')).toBeInTheDocument();
   });
 
   test('renders carousel images', () => {

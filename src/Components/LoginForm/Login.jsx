@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import './Login.css';
 import {
     MDBInput,
@@ -7,8 +7,6 @@ import {
     MDBBtn,
     MDBContainer,
 } from 'mdb-react-ui-kit';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import { showSuccessToast, showErrorToast } from '../ToastNotifications/ToastNotifications';
 import Cookies from 'js-cookie';
@@ -145,7 +143,6 @@ function Login() {
                     </div>
                 </MDBCol>
             </MDBRow>
-            <ToastContainer/>
         </MDBContainer>
     );
 }

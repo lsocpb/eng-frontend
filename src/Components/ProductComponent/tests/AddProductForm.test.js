@@ -1,36 +1,34 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import axios from "axios";
+import { render, screen } from "@testing-library/react";
 import AddProductForm from "../AddProductForm";
-import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router } from "react-router-dom";
-import Cookies from "js-cookie";
-
-jest.mock("axios");
-jest.mock("js-cookie");
+import { MemoryRouter } from "react-router-dom";
 
 describe("AddProductForm", () => {
-  beforeAll(() => {
-  Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: jest.fn().mockImplementation(query => ({
-      matches: true,
-      addListener: jest.fn(), // Deprecated
-      removeListener: jest.fn(), // Deprecated
-      addEventListener: jest.fn(), // Modern
-      removeEventListener: jest.fn() // Modern
-    }))
-  });
-});
-  beforeEach(() => {
-    Cookies.get.mockReturnValue("1-abc123");
-  });
+    beforeEach(() => {
+        jest.clearAllMocks();
+        Object.defineProperty(window, 'matchMedia', {
+            writable: true,
+            value: jest.fn().mockImplementation(query => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addListener: jest.fn(),
+                removeListener: jest.fn(),
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+                dispatchEvent: jest.fn(),
+            })),
+        });
+    });
 
-  it("renders the form correctly", () => {
-    render(
-      <Router>
-        <AddProductForm />
-      </Router>
-    );
-    expect(screen.getByText("Place an item for the charities!")).toBeInTheDocument();
-  });
+    it("should render the form elements", () => {
+        render(<AddProductForm />, { wrapper: MemoryRouter });
+
+        expect(screen.getByLabelText(/Item Name/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Item Description/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Category/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Auction Type/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Buy Now Price/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Auction Deadline/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Item Images/i)).toBeInTheDocument();
+    });
 });

@@ -5,13 +5,6 @@ import Cookies from 'js-cookie';
 import { showErrorToast, showSuccessToast } from '../../ToastNotifications/ToastNotifications';
 import { MemoryRouter} from "react-router-dom";
 
-jest.mock('framer-motion', () => ({
-  AnimatePresence: ({ children }) => children,
-  motion: {
-    div: ({ children, ...props }) => <div {...props}>{children}</div>,
-  },
-}));
-
 jest.mock('axios');
 jest.mock('js-cookie');
 jest.mock('../../ToastNotifications/ToastNotifications');
@@ -20,6 +13,19 @@ const mockToggle = jest.fn();
 
 beforeEach(() => {
   jest.clearAllMocks();
+  Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 });
 
 it('displays success toast when bid submission succeeds', async () => {
