@@ -48,7 +48,6 @@ const ContactForm = () => {
     return (
         <MDBContainer>
             <MDBContainer fluid className="py-5">
-                {/* Header Section */}
                 <MDBRow className="justify-content-center mb-5">
                     <MDBCol md="10" lg="8" className="text-center">
                         <h1 className="display-4 text-danger font-weight-bold mb-4">
@@ -59,8 +58,6 @@ const ContactForm = () => {
                         </p>
                     </MDBCol>
                 </MDBRow>
-
-                {/* Contact Form Section */}
                 <MDBRow className="justify-content-center">
                     <MDBCol md="10" lg="8">
                         <MDBCard className="border-0 shadow-sm card-hover">
@@ -79,6 +76,7 @@ const ContactForm = () => {
                                     <MDBInput
                                         label="Your Name"
                                         name="name"
+                                        id="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         className="mb-4 form-field"
@@ -86,6 +84,7 @@ const ContactForm = () => {
                                     />
                                     <MDBInput
                                         type="email"
+                                        id="email"
                                         label="Your Email"
                                         name="email"
                                         value={formData.email}
@@ -95,6 +94,7 @@ const ContactForm = () => {
                                     />
                                     <MDBTextArea
                                         label="Your Message"
+                                        id="message"
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}

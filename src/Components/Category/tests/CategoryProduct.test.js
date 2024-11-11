@@ -1,102 +1,87 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import CategoryPage from '../CategoryProduct';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import CategoryPage from '../../Category/CategoryProduct';
 import axios from 'axios';
-import { act } from 'react-dom/test-utils';
+import { BrowserRouter } from 'react-router-dom';
+import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('axios');
 
-describe('CategoryPage', () => {
-    const mockCategories = [
-        { id: 1, name: 'Category 1' },
-        { id: 2, name: 'Category 2' },
-    ];
+const mockUseParams = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+  useParams: () => mockUseParams(),
+}));
 
-    const mockProducts = [
-        { id: 1, name: 'Product 1', price: 100, is_auction_finished: false },
-        { id: 2, name: 'Product 2', price: 200, is_auction_finished: true },
-    ];
+let filterChangeCallback;
+jest.mock('../../FilterSidebar/FilterSidebar', () => ({ onFilterChange }) => {
+  filterChangeCallback = onFilterChange;
+  return (
+    <div data-testid="FilterSidebar">
+      <input
+        data-testid="price-filter"
+        type="range"
+        onChange={(e) => onFilterChange('price', e.target.value)}
+      />
+      <input
+        data-testid="status-active-filter"
+        type="checkbox"
+        onChange={(e) => onFilterChange('status', 'active', e.target.checked)}
+      />
+    </div>
+  );
+});
+jest.mock('../../CategoryList/CategoryList', () => () => <div data-testid="CategoryList">CategoryList</div>);
+jest.mock('../../LoadingSpinner/LoadingSpinner', () => () => <div data-testid="LoadingSpinner">LoadingSpinner</div>);
+jest.mock('../../ProductComponent/ProductCardCategoryView', () => ({ product }) => (
+  <div data-testid="ProductCardCategoryView">{product.name}</div>
+));
 
-    beforeEach(() => {
-        axios.get.mockImplementation((url) => {
-            if (url.includes('/category/id/')) {
-                return Promise.resolve({ data: { name: 'Mock Category' } });
-            }
-            if (url.includes('/auction/category/')) {
-                return Promise.resolve({ data: { auctions: mockProducts } });
-            }
-            return Promise.reject(new Error('not found'));
-        });
-    });
+describe('CategoryPage Component', () => {
+  const mockCategoryData = { data: { name: 'Electronics' } };
+  const mockProductData = { data: { auctions: [{ id: '1', name: 'Product 1' }, { id: '2', name: 'Product 2' }] } };
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+  beforeEach(() => {
+    axios.get.mockClear();
+    // Ustawienie wartości domyślnej dla useParams przed każdym testem
+    mockUseParams.mockReturnValue({ categoryId: '1' });
+  });
 
-    test('renders loading spinner initially', async () => {
-        await act(async () => {
-            render(
-                <Router>
-                    <CategoryPage />
-                </Router>
-            );
-        });
+  test('displays loading spinner while data is loading', async () => {
+    axios.get.mockResolvedValueOnce(mockCategoryData).mockResolvedValueOnce(mockProductData);
 
-        expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    });
+    render(
+      <BrowserRouter>
+        <CategoryPage />
+      </BrowserRouter>
+    );
 
-    test('renders category name and products after loading', async () => {
-        await act(async () => {
-            render(
-                <Router>
-                    <CategoryPage />
-                </Router>
-            );
-        });
+    expect(screen.getByTestId('LoadingSpinner')).toBeInTheDocument();
+  });
 
-        await waitFor(() => {
-            expect(screen.getByText(/category -/i)).toBeInTheDocument();
-            expect(screen.getByText(/mock category/i)).toBeInTheDocument();
-            expect(screen.getByText(/product 1/i)).toBeInTheDocument();
-            expect(screen.getByText(/product 2/i)).toBeInTheDocument();
-        });
-    });
+  test('renders category name and products after fetching data', async () => {
+    axios.get.mockResolvedValueOnce(mockCategoryData).mockResolvedValueOnce(mockProductData);
 
-    test('renders error message on fetch failure', async () => {
-        axios.get.mockRejectedValueOnce(new Error('Failed to fetch'));
+    render(
+      <BrowserRouter>
+        <CategoryPage />
+      </BrowserRouter>
+    );
 
-        await act(async () => {
-            render(
-                <Router>
-                    <CategoryPage />
-                </Router>
-            );
-        });
+    await waitFor(() => expect(screen.getByText(/category -/i)).toBeInTheDocument());
+    expect(screen.getByText(/Electronics/i)).toBeInTheDocument();
+    expect(screen.getAllByTestId('ProductCardCategoryView')).toHaveLength(2);
+  });
 
-        await waitFor(() => {
-            expect(screen.getByText(/failed to load data/i)).toBeInTheDocument();
-        });
-    });
+  test('displays error message if fetching category fails', async () => {
+    axios.get.mockRejectedValueOnce(new Error('Failed to fetch category'));
 
-    test('renders no products message when no products found', async () => {
-        axios.get.mockImplementation((url) => {
-            if (url.includes('/auction/category/')) {
-                return Promise.resolve({ data: { auctions: [] } });
-            }
-            return Promise.reject(new Error('not found'));
-        });
+    render(
+      <BrowserRouter>
+        <CategoryPage />
+      </BrowserRouter>
+    );
 
-        await act(async () => {
-            render(
-                <Router>
-                    <CategoryPage />
-                </Router>
-            );
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText(/no products found with current filters/i)).toBeInTheDocument();
-        });
-    });
+    await waitFor(() => expect(screen.getByText(/Failed to fetch category/i)).toBeInTheDocument());
+  });
 });

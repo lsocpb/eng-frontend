@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import {useState, useEffect, useCallback, useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -101,8 +101,8 @@ export default function CategoryPage() {
     const paginatedProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
-        return filteredProducts.slice(startIndex, endIndex);  // Now using filteredProducts
-    }, [filteredProducts, currentPage]);  // Updated dependencies
+        return filteredProducts.slice(startIndex, endIndex);
+    }, [filteredProducts, currentPage]);
 
     const totalPages = useMemo(() => {
         return Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -133,7 +133,7 @@ export default function CategoryPage() {
                 [filterType]: filterType === 'price' ? parseFloat(value) : value
             };
         });
-        setCurrentPage(1);  // Reset to first page when filters change
+        setCurrentPage(1);
     }, []);
 
     const renderPagination = () => {

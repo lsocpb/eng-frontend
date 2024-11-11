@@ -1,52 +1,54 @@
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent } from '@testing-library/react';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { useNavigate, useParams } from 'react-router-dom';
 import CategoryNavigator from '../CategoryNavigator';
 
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn(),
-    useParams: () => ({ sellerId: '1', sellerName: 'JohnDoe' }),
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
+  useNavigate: jest.fn(),
 }));
 
 describe('CategoryNavigator', () => {
-    const navigate = useNavigate();
+  const mockNavigate = jest.fn();
+  const mockCategory = { item: { id: 1, name: 'Electronics' } };
 
-    beforeEach(() => {
-        navigate.mockReset();
-    });
+  beforeEach(() => {
+    useNavigate.mockReturnValue(mockNavigate);
+  });
 
-    it('should navigate to the correct category page when clicked', () => {
-        const category = { item: { id: '123', name: 'Electronics' } };
-        const { getByText } = render(
-            <MemoryRouter>
-                <CategoryNavigator {...category} />
-            </MemoryRouter>
-        );
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-        fireEvent.click(getByText('Electronics'));
+  test('renders category name correctly', () => {
+    useParams.mockReturnValue({ sellerId: null, sellerName: null });
 
-        expect(navigate).toHaveBeenCalledWith(
-            '/product/seller/1/JohnDoe/category/123/Electronics',
-            { state: { id: '1', firstName: 'JohnDoe' } }
-        );
-    });
+    render(<CategoryNavigator category={mockCategory} />);
 
-    it('should navigate to the category page without seller info if sellerId is 0', () => {
-        jest.mock('react-router-dom', () => ({
-            ...jest.requireActual('react-router-dom'),
-            useParams: () => ({ sellerId: '0', sellerName: '' }),
-        }));
+    expect(screen.getByText(/Electronics/i)).toBeInTheDocument();
+  });
 
-        const category = { item: { id: '123', name: 'Electronics' } };
-        const { getByText } = render(
-            <MemoryRouter>
-                <CategoryNavigator {...category} />
-            </MemoryRouter>
-        );
+  test('navigates to seller category page if sellerId is present', () => {
+    useParams.mockReturnValue({ sellerId: '123', sellerName: 'SellerName' });
 
-        fireEvent.click(getByText('Electronics'));
+    render(<CategoryNavigator category={mockCategory} />);
 
-        expect(navigate).toHaveBeenCalledWith('/product/category/123/Electronics');
-    });
+    fireEvent.click(screen.getByText(/Electronics/i));
+
+    expect(mockNavigate).toHaveBeenCalledWith(
+      '/product/seller/123/SellerName/category/1/Electronics',
+      { state: { id: '123', firstName: 'SellerName' } }
+    );
+  });
+
+  test('navigates to general category page if sellerId is not present', () => {
+    useParams.mockReturnValue({ sellerId: null, sellerName: null });
+
+    render(<CategoryNavigator category={mockCategory} />);
+
+    fireEvent.click(screen.getByText(/Electronics/i));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/product/category/1/Electronics');
+  });
 });

@@ -1,5 +1,4 @@
 import {MDBIcon} from "mdb-react-ui-kit";
-import React from "react";
 
 /**
  * SampleNextArrow component represents a custom next arrow for the slider.

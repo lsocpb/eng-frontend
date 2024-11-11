@@ -13,10 +13,8 @@ describe('FAQ Component', () => {
             </Router>
         );
 
-        // Check if the FAQ title is rendered
         expect(screen.getByText("Frequently Asked Questions")).toBeInTheDocument();
 
-        // Check if the FAQ questions are rendered
         expect(screen.getByText("How does CharFair's auction platform work?")).toBeInTheDocument();
         expect(screen.getByText("How can charities join the platform?")).toBeInTheDocument();
         expect(screen.getByText("What types of items can be auctioned?")).toBeInTheDocument();

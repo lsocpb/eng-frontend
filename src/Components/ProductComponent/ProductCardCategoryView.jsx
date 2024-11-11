@@ -34,7 +34,6 @@ const ProductCardCategoryView = ({ product, onClick, CountdownTimer }) => {
         className="hover-shadow transition-all duration-300 transform hover:-translate-y-1"
         tabIndex="0"
         role="button"
-        aria-label={`View details for ${product.product.name}`}
       >
         <MDBRow className="g-0">
           <MDBCol xs="12" md="4" className="d-flex align-items-stretch">

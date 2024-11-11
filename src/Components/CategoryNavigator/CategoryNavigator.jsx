@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
  * @property {Object} category - The category object
  * @returns {JSX.Element} The CategoryNavigator component
  */
-const CategoryNavigator = (category) => {
+const CategoryNavigator = ( {category} ) => {
   const { sellerId, sellerName } = useParams();
 
   const navigate = useNavigate();

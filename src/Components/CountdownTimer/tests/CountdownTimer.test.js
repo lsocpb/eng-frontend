@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import CountdownTimer from './CountdownTimer';
+import CountdownTimer from '../CountdownTimer';
 
 describe('CountdownTimer', () => {
   test('renders countdown timer correctly', () => {

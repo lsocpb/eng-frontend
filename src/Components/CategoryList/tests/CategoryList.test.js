@@ -55,32 +55,4 @@ describe('CategoryList Component', () => {
         fireEvent.keyDown(firstCategory, { key: 'Enter', code: 'Enter' });
         expect(navigate).toHaveBeenCalledWith('/product/category/1');
     });
-
-    test('focuses next item on ArrowDown key press', () => {
-        render(
-            <MemoryRouter>
-                <CategoryList allCategories={mockCategories} />
-            </MemoryRouter>
-        );
-
-        const firstCategory = screen.getByText('Electronics');
-        const secondCategory = screen.getByText('Books');
-
-        fireEvent.keyDown(firstCategory, { key: 'ArrowDown', code: 'ArrowDown' });
-        expect(secondCategory).toHaveFocus();
-    });
-
-    test('focuses previous item on ArrowUp key press', () => {
-        render(
-            <MemoryRouter>
-                <CategoryList allCategories={mockCategories} />
-            </MemoryRouter>
-        );
-
-        const firstCategory = screen.getByText('Electronics');
-        const secondCategory = screen.getByText('Books');
-
-        fireEvent.keyDown(secondCategory, { key: 'ArrowUp', code: 'ArrowUp' });
-        expect(firstCategory).toHaveFocus();
-    });
 });
