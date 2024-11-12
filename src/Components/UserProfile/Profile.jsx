@@ -62,7 +62,7 @@ export default function ProfilePage() {
         <section style={{ backgroundColor: '#ffffff' }}>
             <MDBContainer className="py-5">
                 <MDBRow>
-                    <MDBCol lg="4">
+                    <MDBCol lg="4" className="flex-grow-1">
                         <ProfileImage
                             imageUrl={profileData.profile_image_url}
                             username={profileData.username}
@@ -72,9 +72,8 @@ export default function ProfilePage() {
                             onLogout={logout}
                             onAdminNavigate={() => navigate('/admin')}
                         />
-                        <SocialLinks />
                     </MDBCol>
-                    <MDBCol lg="8">
+                    <MDBCol lg="8" className="flex-grow-1">
                         <ProfileDetails
                             username={profileData.username}
                             email={profileData.email}
@@ -82,9 +81,6 @@ export default function ProfilePage() {
                             city={billingData.city}
                             postalCode={billingData.postal_code}
                         />
-                        <MDBRow>
-                            <ProfileCharts />
-                        </MDBRow>
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
