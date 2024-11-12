@@ -22,7 +22,7 @@ import {useScreenSize} from "../../hooks/useScreenSize";
 import {WidthBreakpoints} from "../../constans/WidthBreakpoints";
 import MobileCategorySidebar from "../MobileCategoryList/MobileCategoryList";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 3;
 
 export default function CategoryPage() {
     const [products, setProducts] = useState([]);

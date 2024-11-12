@@ -53,6 +53,7 @@ const ProductPage = () => {
   const [isPriceUpdating, setIsPriceUpdating] = useState(false);
   const [showSocialModal, setShowSocialModal] = useState(false);
   const { user } = useUser();
+  const [winner, setWinner] = useState(null);
   const shareUrl = window.location.href;
 
   useEffect(() => {
@@ -71,6 +72,15 @@ const ProductPage = () => {
         setIsBuyNow(response.data.auction_type === "buy_now")
         setSeller(response.data.seller);
         checkAuctionStatus(response.data.product.end_date);
+
+        if (response.data.is_auction_finished) {
+          if (response.data.auction_type === "bid") {
+            setWinner(response.data.bid.current_bid_winner);
+          } else {
+            setWinner(response.data.buyer);
+          }
+        }
+
         const token = Cookies.get("active-user");
         if (token) {
           socketService.connect(token);
@@ -200,6 +210,12 @@ const ProductPage = () => {
               </MDBCarousel>
             </MDBCardBody>
           </MDBCard>
+          <MDBCard className="shadow-6-strong">
+            <MDBCardBody>
+              <MDBCardText className="h2">About</MDBCardText>
+              <MDBCardText className="lead">{product.description}</MDBCardText>
+            </MDBCardBody>
+          </MDBCard>
         </MDBCol>
 
         <MDBCol md="4">
@@ -291,17 +307,28 @@ const ProductPage = () => {
               </MDBCardText>
             </MDBCardBody>
           </MDBCard>
-        </MDBCol>
-      </MDBRow>
-
-      <MDBRow className="mt-2">
-        <MDBCol md="8">
-          <MDBCard className="shadow-6-strong">
-            <MDBCardBody>
-              <MDBCardText className="h2">About</MDBCardText>
-              <MDBCardText className="lead">{product.description}</MDBCardText>
-            </MDBCardBody>
-          </MDBCard>
+          {finished && winner && (
+            <MDBCard className="shadow-6-strong bg-light mt-4">
+              <MDBCardBody className="d-flex flex-column align-items-center">
+                <MDBCardText>
+                  <h2 className="text-center mb-3">Winner</h2>
+                </MDBCardText>
+                <MDBCardImage
+                  src={winner.profile_image_url || 'https://via.placeholder.com/150'}
+                  alt="Winner Profile Picture"
+                  className="rounded-circle mb-3 border border-success"
+                  style={{ width: "120px", height: "120px", objectFit: "cover" }}
+                />
+                <MDBCardText className="text-center mb-3">
+                  <strong className="h4 text-success">{winner.username}</strong>
+                </MDBCardText>
+                <MDBCardText className="text-center mt-3 small">
+                  <MDBIcon fas icon="trophy" className="text-warning me-2" />
+                  auction winner
+                </MDBCardText>
+              </MDBCardBody>
+            </MDBCard>
+          )}
         </MDBCol>
       </MDBRow>
       <BidModal

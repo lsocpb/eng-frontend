@@ -28,8 +28,8 @@ function FilterSidebar({ onFilterChange, margin }) {
         <MDBRange
           defaultValue={100000}
           min={0}
-          max={100000}
-          step={100}
+          max={1000000}
+          step={1000}
           id="priceRange"
           label="Price"
           onChange={(e) => onFilterChange('price', e.target.value)}
