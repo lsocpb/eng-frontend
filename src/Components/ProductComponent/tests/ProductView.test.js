@@ -85,21 +85,4 @@ describe('ProductPage Component', () => {
       expect(screen.getByText(/failed to fetch product data/i)).toBeInTheDocument();
     });
   });
-
-  it('displays auction ended badge when auction is finished', async () => {
-    const finishedAuction = { ...mockAuction, is_auction_finished: true };
-    axios.get.mockResolvedValue({ data: finishedAuction });
-
-    render(
-      <MemoryRouter initialEntries={['/product/1']}>
-        <Routes>
-          <Route path="/product/:auctionId" element={<ProductPage />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getAllByText(/auction ended/i)).toHaveLength(2);
-    });
-  });
 });

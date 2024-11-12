@@ -133,6 +133,7 @@ export default function AuthorizedNavbar() {
                                                 rippleColor='dark'
                                                 className='rounded-pill ms-2'
                                                 type='submit'
+                                                aria-label='Search'
                                                 disabled={isLoading}
                                             >
                                                 {isLoading ? (
@@ -161,6 +162,7 @@ export default function AuthorizedNavbar() {
                                                     type="button"
                                                     className="btn btn-link p-1 rounded-circle hover:bg-gray-200"
                                                     onClick={() => setShowResults(false)}
+                                                    aria-label="Times"
                                                 >
                                                     <MDBIcon fas icon="times" className="text-gray-600"/>
                                                 </button>
