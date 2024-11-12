@@ -64,48 +64,58 @@ const SocialModal = ({ url, isOpen, toggle, title, hashtag, source }) => {
       className="fade" 
       staticBackdrop
       animation="slide-in-up"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <div className="modal-content" style={{
         background: "linear-gradient(to bottom right, #ffffff, #fff5f7)",
         borderRadius: "15px",
         border: "none",
-        boxShadow: "0 0 30px rgba(0,0,0,0.1)"
+        boxShadow: "0 0 30px rgba(0,0,0,0.1)",
+        width: '90%',
+        maxWidth: '400px',
+        margin: 'auto'
       }}>
         <MDBModalHeader className="border-bottom-0 pb-0">
           <h5 className="modal-title d-flex align-items-center" style={{
             background: "linear-gradient(45deg, #ff4081, #ff1744)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontWeight: "bold"
+            fontWeight: "bold",
+            fontSize: '1rem'
           }}>
             <MDBIcon fas icon="share-alt" className="me-2 text-center" />
-            You're awesome! Share this with your friends!
+            Share with your friends!
           </h5>
-          <MDBBtn 
+          <MDBBtn
             floating
             color="danger"
             tag="button"
             onClick={toggle}
             className="btn btn-close btn-danger"
-            />
+          />
         </MDBModalHeader>
 
-        <MDBModalBody className="pt-4">
-          <MDBContainer className="px-4">
-            <div className="d-flex flex-column gap-3 justify-content-center align-items-center">
+        <MDBModalBody className="pt-3">
+          <MDBContainer className="px-3">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center">
               {socialButtons.map(({ Button, icon, gradient, label, props }) => (
-                <Button {...props} key={label} className="w-50">
-                    <MDBBtn 
+                <Button {...props} key={label} className="w-100">
+                    <MDBBtn
                       style={{
                         background: gradient,
                       }}
-                      className="w-100 d-flex align-items-center justify-content-center py-3 shadow-sm hover-shadow"
+                      className="w-100 d-flex align-items-center justify-content-center py-2"
+                      size="sm"
                     >
                       <MDBIcon
                         fab
-                        icon={icon} 
+                        icon={icon}
                         size="lg"
-                        className="me-3" 
+                        className="me-2"
                       />
                       Share on {label}
                     </MDBBtn>
@@ -113,18 +123,18 @@ const SocialModal = ({ url, isOpen, toggle, title, hashtag, source }) => {
               ))}
             </div>
 
-            <div className="mt-4 pt-3 border-top border-light">
+            <div className="mt-3 pt-2 border-top border-light">
               <p className="text-muted mb-2 small fw-bold">Or copy link</p>
               <div className="input-group shadow-sm">
-                <input 
-                  type="text" 
-                  value={url} 
-                  className="form-control bg-light border-0" 
+                <input
+                  type="text"
+                  value={url}
+                  className="form-control bg-light border-0"
                   readOnly
-                  style={{ padding: "0.8rem" }}
+                  style={{ padding: "0.5rem" }}
                 />
-                <MDBTooltip 
-                  tag="span" 
+                <MDBTooltip
+                  tag="span"
                   title={copiedTooltip}
                   placement="top"
                 >
@@ -135,6 +145,7 @@ const SocialModal = ({ url, isOpen, toggle, title, hashtag, source }) => {
                     }}
                     onClick={handleCopy}
                     className="px-3"
+                    size="sm"
                   >
                     <MDBIcon far icon="copy" />
                   </MDBBtn>
@@ -144,12 +155,13 @@ const SocialModal = ({ url, isOpen, toggle, title, hashtag, source }) => {
           </MDBContainer>
         </MDBModalBody>
 
-        <MDBModalFooter className="border-top-0 justify-content-center">
-          <small className="text-muted" style={{ 
+        <MDBModalFooter className="border-top-0 justify-content-center py-2">
+          <small className="text-muted" style={{
             fontWeight: "500",
             background: "linear-gradient(45deg, #ff4081, #ff1744)",
             WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent"
+            WebkitTextFillColor: "transparent",
+            fontSize: '0.8rem'
           }}>
             Thanks for sharing! 💖
           </small>
