@@ -34,11 +34,6 @@ const AddProductForm = () => {
   const [loading, setLoading] = useState(false);
   const [endDate, setEndDate] = useState("");
 
-  useEffect(() => {
-    console.log(seller_jwtToken);
-    console.log(user.id);
-  });
-
   const [selectedImages, setSelectedImages] = useState({
     image1: null,
     image2: null,
@@ -229,7 +224,6 @@ const AddProductForm = () => {
         }
       }
     } catch (error) {
-      console.log(error.response);
       showErrorToast(error.response?.data?.detail || "Error adding auction");
     } finally {
       setLoading(false);

@@ -79,7 +79,6 @@ const BuyModal = ({ isOpen, toggle, productName, productPrice, auctionId }) => {
         "Item purchased successfully, we notified buyer and will contact you soon"
       );
     } catch (error) {
-      console.log("Error purchasing item:", error);
       showErrorToast(error);
     } finally {
       setIsSubmitting(false);

@@ -30,7 +30,6 @@ export const UserProvider = ({ children }) => {
                 id: decoded.id,
                 role: decoded.role
             });
-            console.log(user);
         } else {
             setUser(null);
         }
