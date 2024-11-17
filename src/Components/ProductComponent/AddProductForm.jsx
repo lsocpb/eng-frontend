@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import "./AddProductForm.css";
 import { showErrorToast, showSuccessToast } from "../ToastNotifications/ToastNotifications";
 import { BASE_API_URL } from "../../api/config";
 import Cookies from "js-cookie";
+import {useUser} from "../UserContext/UserContext";
 
 const formatDateTimeLocal = (date) => {
   return date.toISOString().slice(0, 16);
@@ -27,10 +28,16 @@ const formatDateTimeLocal = (date) => {
 const AddProductForm = () => {
   const [categories, setCategories] = useState([]);
   const seller_jwtToken = Cookies.get("active-user");
+  const {user} = useUser();
   const [minDate, setMinDate] = useState(formatDateTimeLocal(new Date()));
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    console.log(seller_jwtToken);
+    console.log(user.id);
+  });
 
   const [selectedImages, setSelectedImages] = useState({
     image1: null,
@@ -191,7 +198,7 @@ const AddProductForm = () => {
         }
 
         const auctionData = {
-          user_id: parseInt(seller_jwtToken.split("-")[0]),
+          user_id: user.id,
           auction_type: formData.auction_type,
           end_date: new Date(endDate).toISOString(),
           price: parseFloat(formData.price),
@@ -222,6 +229,7 @@ const AddProductForm = () => {
         }
       }
     } catch (error) {
+      console.log(error.response);
       showErrorToast(error.response?.data?.detail || "Error adding auction");
     } finally {
       setLoading(false);

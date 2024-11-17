@@ -22,8 +22,7 @@ import {STORAGE_KEY} from "../../constans/applicationStorageConstans";
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState(() => {
     const savedNotifications = localStorage.getItem(STORAGE_KEY);
-    return savedNotifications ? JSON.parse(savedNotifications) : [
-    ];
+    return savedNotifications ? JSON.parse(savedNotifications) : [];
   });
 
   useEffect(() => {
@@ -38,14 +37,18 @@ const NotificationDropdown = () => {
 
     /**
      * Function to handle new notifications received from the socket
-     * @param {Array} data 
+     * @param {Object} data
      */
     const handleNewNotification = (data) => {
       setNotifications(prev => {
+        let messageText;
+        if (data.type === 'bid_price_update') {
+          messageText = `Someone outbid you with $${data.price}`;
+        }
         const newNotification = {
           id: Date.now(),
           title: data.title || 'New Notification',
-          message: data,
+          message: messageText,
           time: new Date().toLocaleTimeString(),
           isRead: false,
           icon: data.icon || 'bell',
@@ -56,11 +59,13 @@ const NotificationDropdown = () => {
     };
 
     socketService.addListener("notification", handleNewNotification);
-    socketService.addListener("bid_price_update", handleNewNotification);
-    socketService.addListener("bid_winner_update", handleNewNotification);
+    socketService.addListener("bid_price_update", (data) => handleNewNotification({ ...data, type: 'bid_price_update' }));
+    socketService.addListener("bid_winner_update", (data) => handleNewNotification({ ...data, type: 'bid_winner_update' }));
 
     return () => {
       socketService.removeListener("notification", handleNewNotification);
+      socketService.removeListener("bid_price_update", handleNewNotification);
+      socketService.removeListener("bid_winner_update", handleNewNotification);
       socketService.disconnect();
     };
   }, []);
