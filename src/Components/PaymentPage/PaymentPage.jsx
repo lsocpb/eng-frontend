@@ -180,7 +180,7 @@ const PaymentPage = () => {
                 <MDBBtn
                   color="light"
                   size="lg"
-                  href="/wallet/history"
+                  href="/wallet/transaction/history"
                 >
                   View History
                 </MDBBtn>
