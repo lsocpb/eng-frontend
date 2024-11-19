@@ -277,7 +277,7 @@ function CompanyRegister() {
                         </MDBRow>
 
                         <div className="d-flex justify-content-center">
-                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit" disabled={!!isValid}>
+                            <MDBBtn className='w-50 mt-3 btn-danger' size='md' type="submit" disabled={!isValid}>
                                 Register Company
                             </MDBBtn>
                         </div>
