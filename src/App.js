@@ -25,6 +25,7 @@ import AboutUs from "./Components/AboutUs/AboutUs";
 import FAQ from "./Components/FAQ/FAQ";
 import TransactionHistory from "./Components/WalletTransaction/TransactionHistory";
 import FaliurePayment from "./Components/FaliurePayment/FaliurePayment";
+import AuctionReport from "./Components/AuctionRaport/AuctionRaport";
 function App() {
     return (
         <Router>
@@ -49,6 +50,7 @@ function App() {
                     <Route path="/register/company" element={<CompanyRegister/>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/auction/:auctionId" element={<ProductPage />} />
+                    <Route path="/auction/:auctionId/report" element={<AuctionReport />} />
                     <Route path="/product/category/:categoryId" element={<CategoryPage />} />
                     <Route path="/stories" element={<SuccessStories />} />
                     <Route path="/aboutus" element={<AboutUs />} />
