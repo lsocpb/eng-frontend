@@ -15,7 +15,6 @@ import {
 const ProductCardCategoryView = ({ product, onClick, CountdownTimer }) => {
   const timeLeft = new Date(product.end_date) - new Date();
   const isEnding = timeLeft <= 24 * 60 * 60 * 1000;
-
   /**
    * Handles the keydown event for the card
    * @param {event} event

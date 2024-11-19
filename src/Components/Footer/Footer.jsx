@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   MDBFooter,
   MDBContainer,
@@ -106,12 +105,6 @@ const Footer = () => {
           CharFair
         </a>
         <span className='mx-2'>|</span>
-        <a className='text-muted me-2' href='/privacy'>
-          Privacy Policy
-        </a>
-        <a className='text-muted' href='/terms'>
-          Terms of Service
-        </a>
       </div>
     </MDBFooter>
   );
