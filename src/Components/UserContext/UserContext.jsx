@@ -28,7 +28,8 @@ export const UserProvider = ({ children }) => {
             setUser({
                 username: decoded.sub,
                 id: decoded.id,
-                role: decoded.role
+                role: decoded.role,
+                account_type: decoded.account_type
             });
         } else {
             setUser(null);

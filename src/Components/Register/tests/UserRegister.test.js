@@ -12,8 +12,7 @@ jest.mock('../../AuthRedirect/withAuthRedirect', () => (component) => component)
 
 describe('UserRegister Component', () => {
     beforeEach(() => {
-        // Clear all mocks before each test
-        jest.clearAllMocks();
+        jest.clearAllMocks();f
     });
 
     test('renders registration form with all required fields', () => {
@@ -82,7 +81,6 @@ describe('UserRegister Component', () => {
         await userEvent.type(screen.getByLabelText(/state/i), 'Test State');
         await userEvent.type(screen.getByLabelText(/country/i), 'Test Country');
 
-        // Submit the form
         fireEvent.click(screen.getByRole('button', {name: /register account/i}));
 
         await waitFor(() => {

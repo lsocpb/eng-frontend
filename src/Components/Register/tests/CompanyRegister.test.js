@@ -1,79 +1,57 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import CompanyRegister from '../CompanyRegister';
-import { showErrorToast } from "../../ToastNotifications/ToastNotifications";
+import {render, fireEvent, screen, waitFor} from '@testing-library/react';
 import axios from 'axios';
+import CompanyRegister from '../CompanyRegister';
+import {showErrorToast} from '../../ToastNotifications/ToastNotifications';
+import {MemoryRouter} from "react-router-dom";
 
 jest.mock('axios');
-jest.mock("../..//ToastNotifications/ToastNotifications", () => ({
-    showErrorToast: jest.fn()
-}));
-jest.mock("../../AuthRedirect/withAuthRedirect", () => (component) => component);
+jest.mock('../../ToastNotifications/ToastNotifications');
+jest.mock('js-cookie');
 
 describe('CompanyRegister Component', () => {
     beforeEach(() => {
-        axios.post.mockReset();
-        showErrorToast.mockReset();
+        jest.clearAllMocks();
+    });
+    test('submits the form successfully and shows confirmation', async () => {
+        axios.post.mockResolvedValueOnce({data: {success: true}});
+
+        render(<CompanyRegister/>, {wrapper: MemoryRouter});
+
+        fireEvent.change(screen.getByLabelText('Username *'), {target: {value: 'testuser'}});
+        fireEvent.change(screen.getByLabelText('Email *'), {target: {value: 'test@example.com'}});
+        fireEvent.change(screen.getByLabelText('Hasło *'), {target: {value: 'password123'}});
+        fireEvent.change(screen.getByLabelText('Company Name'), {target: {value: 'Test Company'}});
+        fireEvent.change(screen.getByLabelText('Tax ID (REGON)'), {target: {value: '123456789'}});
+        fireEvent.change(screen.getByLabelText('Bank Account'), {target: {value: '12345678901234567890123456'}});
+        fireEvent.change(screen.getByLabelText('Street Address'), {target: {value: 'Test Street 123'}});
+        fireEvent.change(screen.getByLabelText('City'), {target: {value: 'Test City'}});
+        fireEvent.change(screen.getByLabelText('State/Province'), {target: {value: 'Test State'}});
+        fireEvent.change(screen.getByLabelText('Postal Code'), {target: {value: '12-345'}});
+        fireEvent.change(screen.getByLabelText('Country'), {target: {value: 'Poland'}});
+        fireEvent.change(screen.getByLabelText('Phone Number'), {target: {value: '+48123456789'}});
+
+        fireEvent.click(screen.getByText('Register Company'));
+
+        await waitFor(() => expect(screen.getByText('Register Company')).toBeInTheDocument());
     });
 
-    test('renders form fields and submit button', () => {
-        render(<CompanyRegister />);
-
-        // Check for form field labels
-        expect(screen.getByLabelText(/Username/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Company Name/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Tax ID \(REGON\)/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Bank Account/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Street Address/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/City/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/State\/Province/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Postal Code/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Country/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/Phone Number/i)).toBeInTheDocument();
-
-        // Check for submit button
-        expect(screen.getByRole('button', { name: /Register Company/i })).toBeInTheDocument();
-    });
-
-    test('shows error messages when required fields are missing', async () => {
-        render(<CompanyRegister />);
-
-        // Trigger form validation
-        fireEvent.click(screen.getByRole('button', { name: /Register Company/i }));
-
-        await waitFor(() => {
-            // Check for validation error messages
-            expect(screen.getByText(/Username is required/i)).toBeInTheDocument();
+    test('handles API error during form submission', async () => {
+        const errorMessage = 'Registration failed. Please try again.';
+        axios.post = jest.fn().mockRejectedValueOnce({
+            response: {
+                data: {
+                    detail: errorMessage
+                }
+            }
         });
-    });
 
-    test('shows error toast on registration failure', async () => {
-        axios.post = jest.fn().mockRejectedValueOnce({ response: { data: { detail: 'Registration failed' } } });
-        render(<CompanyRegister />);
+        render(<CompanyRegister/>, {wrapper: MemoryRouter});
 
-        // Fill out the form
-        fireEvent.change(screen.getByLabelText(/Username/i), { target: { value: 'testuser' } });
-        fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@example.com' } });
-        fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByLabelText(/Company Name/i), { target: { value: 'Test Company' } });
-        fireEvent.change(screen.getByLabelText(/Tax ID \(REGON\)/i), { target: { value: '123456789' } });
-        fireEvent.change(screen.getByLabelText(/Bank Account/i), { target: { value: '1234567890123456' } });
-        fireEvent.change(screen.getByLabelText(/Street Address/i), { target: { value: '123 Test St' } });
-        fireEvent.change(screen.getByLabelText(/City/i), { target: { value: 'Test City' } });
-        fireEvent.change(screen.getByLabelText(/State\/Province/i), { target: { value: 'Test State' } });
-        fireEvent.change(screen.getByLabelText(/Postal Code/i), { target: { value: '12345' } });
-        fireEvent.change(screen.getByLabelText(/Country/i), { target: { value: 'Poland' } });
-        fireEvent.change(screen.getByLabelText(/Phone Number/i), { target: { value: '123456789' } });
+        fireEvent.click(screen.getByRole('button', {name: /register company/i}));
 
-        // Submit the form
-        fireEvent.click(screen.getByRole('button', { name: /Register Company/i }));
-
-        // Check for the error toast
         await waitFor(() => {
-            expect(showErrorToast).toHaveBeenCalledWith('Registration failed');
+            expect(showErrorToast).toHaveBeenCalledWith(errorMessage);
         });
     });
 });

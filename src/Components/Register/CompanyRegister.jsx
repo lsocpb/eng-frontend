@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {
     MDBBtn,
     MDBContainer,
@@ -8,8 +8,8 @@ import {
     MDBRow,
     MDBInput,
 } from 'mdb-react-ui-kit';
-import { showErrorToast } from "../ToastNotifications/ToastNotifications";
-import { BASE_API_URL } from "../../api/config";
+import {showErrorToast} from "../ToastNotifications/ToastNotifications";
+import {BASE_API_URL} from "../../api/config";
 import axios from "axios";
 import withAuthRedirect from "../AuthRedirect/withAuthRedirect";
 import RegistrationConfirmation from "./RegistrationConfirmation";
@@ -18,8 +18,11 @@ function CompanyRegister() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid }
-    } = useForm();
+        formState: {errors, isValid}
+    } = useForm({
+        mode: 'onChange',
+        criteriaMode: 'all'
+    });
 
     const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -64,65 +67,73 @@ function CompanyRegister() {
         <MDBContainer className='overflow-hidden my-5'>
             <MDBCol className='mb-5 p-5'>
                 <MDBCardBody className='d-flex flex-column text-center'>
-                    <h2 className="fw-bold mb-5">Company Registration</h2>
+                    <MDBRow className="justify-content-center mb-5">
+                        <MDBCol md="10" lg="8" className="text-center">
+                            <h2 className="display-4 text-danger font-weight-bold mb-4">
+                                Company Registration
+                            </h2>
+                            <p className="lead text-muted">
+                                Register your company account to start donating items and supporting charitable causes.
+                            </p>
+                        </MDBCol>
+                    </MDBRow>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <MDBRow className='mb-4'>
                             <MDBCol md='6'>
                                 <h4 className="text-start mb-4">Account Information</h4>
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Username'
+                                    label='Username *'
                                     id='username'
                                     type='text'
                                     {...register('username', {
                                         required: 'Username is required',
                                         minLength: {
                                             value: 3,
-                                            message: 'Username must be at least 3 characters'
+                                            message: 'Username must be at least 3 characters long'
                                         },
                                         maxLength: {
                                             value: 20,
-                                            message: 'Username cannot exceed 20 characters'
+                                            message: 'Username must be at most 20 characters long'
+                                        },
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9_]{3,20}$/,
+                                            message: 'Invalid username format. Use only letters, numbers, and underscores'
                                         }
                                     })}
+                                    labelClass={errors.username ? 'text-danger' : ''}
                                 />
                                 {errors.username && <p className="text-danger">{errors.username.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Email'
+                                    label='Email *'
                                     id='email'
                                     type='email'
                                     {...register('email', {
                                         required: 'Email is required',
                                         pattern: {
-                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                            message: 'Invalid email address'
-                                        },
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Email cannot exceed 255 characters'
+                                            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                            message: 'Invalid email format'
                                         }
                                     })}
+                                    labelClass={errors.email ? 'text-danger' : ''}
                                 />
                                 {errors.email && <p className="text-danger">{errors.email.message}</p>}
 
                                 <MDBInput
                                     wrapperClass='mb-4'
-                                    label='Password'
+                                    label='Hasło *'
                                     id='password'
                                     type='password'
                                     {...register('password', {
                                         required: 'Password is required',
                                         minLength: {
                                             value: 8,
-                                            message: 'Password must be at least 8 characters'
+                                            message: 'Password must be at least 8 characters long'
                                         },
-                                        maxLength: {
-                                            value: 20,
-                                            message: 'Password cannot exceed 20 characters'
-                                        }
                                     })}
+                                    labelClass={errors.password ? 'text-danger' : ''}
                                 />
                                 {errors.password && <p className="text-danger">{errors.password.message}</p>}
                             </MDBCol>
@@ -136,9 +147,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('companyName', {
                                         required: 'Company name is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Company name cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9\s&.,'-]{2,255}$/,
+                                            message: 'Invalid company name format'
                                         }
                                     })}
                                 />
@@ -151,9 +162,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('regon', {
                                         required: 'Tax ID is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Tax ID cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[0-9]{9,14}$/,
+                                            message: 'Tax ID must be 9-14 digits'
                                         }
                                     })}
                                 />
@@ -166,9 +177,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('bankAccount', {
                                         required: 'Bank account is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Bank account cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[0-9]{26}$/,
+                                            message: 'Bank account must be 26 digits'
                                         }
                                     })}
                                 />
@@ -188,9 +199,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('street', {
                                         required: 'Street address is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Address cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9\s.,/-]{3,255}$/,
+                                            message: 'Invalid street address format'
                                         }
                                     })}
                                 />
@@ -203,9 +214,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('city', {
                                         required: 'City is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'City cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[a-zA-Z\s-]{2,255}$/,
+                                            message: 'Invalid city name'
                                         }
                                     })}
                                 />
@@ -218,9 +229,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('state', {
                                         required: 'State is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'State cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[a-zA-Z\s-]{2,255}$/,
+                                            message: 'Invalid state/province name'
                                         }
                                     })}
                                 />
@@ -235,9 +246,9 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('zip', {
                                         required: 'Postal code is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Postal code cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^\d{2}-\d{3}$/,
+                                            message: 'Postal code must be in format XX-XXX'
                                         }
                                     })}
                                 />
@@ -251,9 +262,9 @@ function CompanyRegister() {
                                     defaultValue="Poland"
                                     {...register('country', {
                                         required: 'Country is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Country cannot exceed 255 characters'
+                                        pattern: {
+                                            value: /^[a-zA-Z\s]{2,255}$/,
+                                            message: 'Invalid country name'
                                         }
                                     })}
                                 />
@@ -266,10 +277,6 @@ function CompanyRegister() {
                                     type='text'
                                     {...register('phone', {
                                         required: 'Phone number is required',
-                                        maxLength: {
-                                            value: 255,
-                                            message: 'Phone number cannot exceed 255 characters'
-                                        }
                                     })}
                                 />
                                 {errors.phone && <p className="text-danger">{errors.phone.message}</p>}

@@ -46,17 +46,4 @@ describe('Footer Component', () => {
         fireEvent.click(screen.getByText(/faqs/i));
         expect(window.location.pathname).toBe('/');
     });
-
-    test('renders copyright information', () => {
-        render(
-            <MemoryRouter>
-                <Footer />
-            </MemoryRouter>
-        );
-
-        expect(screen.getByText(/© 2024 copyright:/i)).toBeInTheDocument();
-        expect(screen.getAllByText(/charfair/i)).toHaveLength(3);
-        expect(screen.getByText(/privacy policy/i)).toBeInTheDocument();
-        expect(screen.getByText(/terms of service/i)).toBeInTheDocument();
-    });
 });

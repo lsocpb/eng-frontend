@@ -229,7 +229,8 @@ export default function AuthorizedNavbar() {
                                 </div>
                             </MDBNavbarItem>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' aria-label="Home" href='/home' className='text-dark'>
+                                <MDBNavbarLink active aria-current='page' aria-label="Home" href='/home'
+                                               className='text-dark'>
                                     <MDBIcon fas icon="home" size={"lg"} className="me-2 mx-2"/>
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
@@ -248,12 +249,14 @@ export default function AuthorizedNavbar() {
                                     </MDBNavbarLink>
                                 </MDBNavbarItem>
                             }
-                            <MDBNavbarItem>
-                                <MDBBtn rounded pill="true" aria-current='page' href='/product/add'
-                                        className='mx-2 text-white btn-danger'>
-                                    <MDBIcon fas icon="hand-holding-heart" className="me-2"/> Donate
-                                </MDBBtn>
-                            </MDBNavbarItem>
+                            {user.account_type === 'business' &&
+                                <MDBNavbarItem>
+                                    <MDBBtn rounded pill="true" aria-current='page' href='/product/add'
+                                            className='mx-2 text-white btn-danger'>
+                                        <MDBIcon fas icon="hand-holding-heart" className="me-2"/> Donate
+                                    </MDBBtn>
+                                </MDBNavbarItem>
+                            }
                         </MDBNavbarNav>
                     </MDBCollapse>
                 </MDBContainer>

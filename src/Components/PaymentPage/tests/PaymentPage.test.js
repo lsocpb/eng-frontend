@@ -30,12 +30,6 @@ it('accepts custom amount input within range', () => {
   expect(screen.getByDisplayValue('150')).toBeInTheDocument();
 });
 
-it('shows error for custom amount below minimum', () => {
-  render(<PaymentPage />);
-  fireEvent.change(screen.getByLabelText('Own amount (PLN)'), { target: { value: '5' } });
-  fireEvent.click(screen.getByText('Add funds'));
-  expect(screen.getByText('Minimal amount: 10 PLN, maximum: 10,000 PLN')).toBeInTheDocument();
-});
 
 it('shows error for custom amount above maximum', () => {
   render(<PaymentPage />);

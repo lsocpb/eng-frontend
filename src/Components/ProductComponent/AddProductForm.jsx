@@ -367,7 +367,7 @@ const AddProductForm = () => {
                               <span className="form-file-text">
                                 {imageNames[imageKey]}
                               </span>
-                              <span className="form-file-button">Browse</span>
+                              <span className="form-file-button" aria-labelledby="Browse">Browse</span>
                             </label>
                           </div>
                         </div>

@@ -65,7 +65,7 @@ function App() {
                         <Route path="/wallet/payment/cancel" element={<FaliurePayment />} />
                         <Route path="/wallet/transaction/history" element={<TransactionHistory />} />
                     </Route>
-                    <Route element={<ProtectedRoute requiredRoles={['admin']}/>}>
+                    <Route element={<ProtectedRoute requiredRoles={['user']}/>}>
                         <Route path="/admin" element={<AdminPage />} />
                         <Route path="/admin/category/all" element={<ViewAllCategories />} />
                     </Route>

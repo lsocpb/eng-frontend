@@ -24,7 +24,8 @@ export default function UnAuthorizedNavbar() {
     const [searchResults, setSearchResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const {user} = useUser();
+    const userContext = useUser();
+    const user = userContext?.user;
     const searchContainerRef = useRef(null);
     const [showResults, setShowResults] = useState(false);
 

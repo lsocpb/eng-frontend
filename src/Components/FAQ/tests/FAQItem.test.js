@@ -23,7 +23,6 @@ describe('FAQItem Component', () => {
         const questionElement = screen.getByText(question);
         fireEvent.click(questionElement);
 
-        // Check if the answer is rendered after clicking the question
         expect(screen.getByText(answer)).toBeInTheDocument();
     });
 });
