@@ -8,12 +8,17 @@ import {
   MDBIcon,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import { useNavigate} from "react-router-dom";
 
 /**
  * Component to display a success message after a payment has been processed.
  * @returns {JSX.Element} A card containing a success message and options to navigate back to bidding or view transactions.
  */
 const SuccessPayment = () => {
+
+    const navigate = useNavigate();
+
+
   return (
     <MDBContainer>
       <MDBRow className="justify-content-center py-3">
@@ -48,6 +53,7 @@ const SuccessPayment = () => {
                 <MDBBtn
                   block
                   className="btn btn-danger"
+                  onClick={() => window.location.href = '/'}
                 >
                   <MDBIcon fas icon="heart" className="me-2" />
                   Back to bidding!
@@ -55,6 +61,7 @@ const SuccessPayment = () => {
                 <MDBBtn
                   block
                   className="btn btn-outline-danger"
+                  onClick={() => window.location.href = '/wallet/transaction/history'}
                 >
                   <MDBIcon fas icon="history" className="me-2" />
                   View Transactions

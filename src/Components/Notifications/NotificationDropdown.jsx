@@ -45,6 +45,7 @@ const NotificationDropdown = () => {
         if (data.type === 'bid_price_update') {
           messageText = `Someone outbid you with $${data.price}`;
         }
+        console.log(data);
         const newNotification = {
           id: Date.now(),
           title: data.title || 'New Notification',
