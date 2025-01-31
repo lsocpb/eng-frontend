@@ -70,11 +70,11 @@ function Login() {
                         window.location.href = "/home";
                     }, 1000);
                 } else {
-                    showErrorToast('Wrong username or password');
+                    showErrorToast(data.detail);
                 }
             } else {
                 const data = await response.json();
-                showErrorToast(data.message || 'Wrong username or password');
+                showErrorToast(data.detail || 'Wrong username or password');
             }
         } catch (error) {
             setLoading(false);
